@@ -17,8 +17,10 @@ public class UIValues {
 
     static final double LIST_TO_CANVAS_WIDTH = 10;
 
+    static final double LAYER_LABEL_HEIGHT = 20;
+
     static final double LAYER_LIST_WIDTH = 150.0;
     static final double LAYER_LIST_HEIGHT = WINDOW_HEIGHT - FOOTER_HEIGHT - MENU_HEIGHT;
-
+    static final double LAYER_LIST_SCREEN_Y = MENU_HEIGHT + LAYER_LABEL_HEIGHT;
 
 }

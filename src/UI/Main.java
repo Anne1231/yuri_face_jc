@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static UI.UIValues.MENU_HEIGHT;
 import static UI.UIValues.WINDOW_HEIGHT;
 import static UI.UIValues.WINDOW_WIDTH;
 
@@ -113,10 +114,14 @@ public class Main extends Application {
             }
         });
 
+        Label layer_label = new Label("レイヤー");
+        AnchorPane.setTopAnchor(layer_label, MENU_HEIGHT);
+        AnchorPane.setLeftAnchor(layer_label, UIValues.LAYER_LIST_WIDTH / 3);
+
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, layer_list, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
+        root.getChildren().addAll(menubar, layer_list, layer_label, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
 
         /*
         * レイヤーの順番をここで描画
@@ -373,7 +378,7 @@ public class Main extends Application {
     * レイヤーのリストビューの初期設定
      */
     private static void ConfigLayerList(ListView<String> listView){
-        AnchorPane.setTopAnchor(listView, UIValues.MENU_HEIGHT);
+        AnchorPane.setTopAnchor(listView, UIValues.LAYER_LIST_SCREEN_Y);
         AnchorPane.setLeftAnchor(listView, 0.0);
         listView.setPrefWidth(UIValues.LAYER_LIST_WIDTH);
         listView.setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
