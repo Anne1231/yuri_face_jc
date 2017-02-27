@@ -4,6 +4,7 @@ import FileIO.ImageIO;
 import FileIO.OpenYFML;
 import FileIO.Save;
 import Layers.Footer;
+import Layers.GridLayer;
 import Layers.ImageLayer;
 import Layers.Layer;
 import javafx.application.Application;
@@ -70,7 +71,7 @@ public class Main extends Application {
          */
         Layer front = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);       //ドットを描画するレイヤー
         Layer lines = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);       //線を描画するレイヤー
-        Layer grid  = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);       //グリッドを描画するレイヤー
+        GridLayer grid  = new GridLayer(WINDOW_WIDTH, WINDOW_HEIGHT, INIT_GRID_INTERVAL);       //グリッドを描画するレイヤー
         ImageLayer image_layer = new ImageLayer(WINDOW_WIDTH, WINDOW_HEIGHT); //下敷き画像を描画するレイヤー
         Layer preview = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);     //プレビューを描画するレイヤー
 
@@ -90,7 +91,7 @@ public class Main extends Application {
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
          */
-        ConfigFrontLayer(front, lines);
+        ConfigFrontLayer(front, lines, grid);
         ConfigLayer.ConfigLinesLayer(lines, front);
         ConfigImageLayer(image_layer);
         SettingAnchor(preview);
@@ -170,7 +171,7 @@ public class Main extends Application {
     /*
     * ドットを描画するレイヤーの初期設定
      */
-    private static void ConfigFrontLayer(Layer front, Layer lines){
+    private static void ConfigFrontLayer(Layer front, Layer lines, GridLayer gridLayer){
 
         SettingAnchor(front);
 
@@ -178,7 +179,7 @@ public class Main extends Application {
         MenuItem choose = new MenuItem("ドットを選択");
         MenuItem put = new MenuItem("ドットを配置");
         put.setOnAction(event -> {
-            Dot dot = new Dot(x, y, 30);
+            Dot dot = new Dot(x, y, gridLayer.getInterval());
             dot.Draw(front, Color.BLACK);
             CurrentLayerData.AddDot(dot);
         });
@@ -245,7 +246,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, Layer grid_layer, ImageLayer image_layer, Layer preview, ListView<String> listView, TextField image_b){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, GridLayer grid_layer, ImageLayer image_layer, Layer preview, ListView<String> listView, TextField image_b){
         Menu help = new Menu("ヘルプ");
         MenuItem about = new MenuItem("About");
         help.getItems().addAll(about);
@@ -356,12 +357,15 @@ public class Main extends Application {
     /*
     * グリッドを描画する関数
      */
-    private static void DrawGrid(Layer grid_layer, int interval){
+    private static void DrawGrid(GridLayer grid_layer, int interval){
         int i;
         grid_layer.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         grid_layer.getCanvas().toFront();
         grid_layer.getGraphicsContext().setStroke(Color.GRAY);
         grid_layer.getGraphicsContext().setLineWidth(0.5);
+
+        grid_layer.setInterval(interval);
+
         for(i = 0;i < WINDOW_WIDTH;i += interval){
             grid_layer.getGraphicsContext().strokeLine(i, 0, i, WINDOW_HEIGHT);
         }

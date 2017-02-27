@@ -23,4 +23,6 @@ public class UIValues {
     static final double LAYER_LIST_HEIGHT = 500;
     static final double LAYER_LIST_SCREEN_Y = MENU_HEIGHT + LAYER_LABEL_HEIGHT;
 
+    static final int INIT_GRID_INTERVAL = 30;
+
 }
