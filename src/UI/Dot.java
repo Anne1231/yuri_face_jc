@@ -15,25 +15,20 @@ public class Dot extends Point2i {
 
     public Dot(int x, int y){
         super(x, y);
-        if(x % 2 == 1)
-            x++;
-        if(y % 2 == 1)
-            y++;
-
         connected_dots = new ArrayList<>();
         selected = false;
     }
 
     public Dot(int x, int y, int interval){
         super(x, y);
-        if (x % interval > interval) {
-            this.x += (x % interval);
+        if (x % interval > interval / 2) {
+            this.x += (interval - (x % interval));
         }else{
             this.x -= (x % interval);
         }
 
-        if (y % interval > interval) {
-            this.y += (y % interval);
+        if (y % interval > interval / 2) {
+            this.y += (interval - (y % interval));
         }else{
             this.y -= (y % interval);
         }

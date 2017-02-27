@@ -294,7 +294,7 @@ public class Main extends Application {
         });
 
         grid_complete.setOnAction(event -> {
-            grid_layer.ConfigComplation(grid_complete.isSelected());
+            grid_layer.ConfigCompletion(grid_complete.isSelected());
         });
 
         preview_menu.setOnAction(event -> {

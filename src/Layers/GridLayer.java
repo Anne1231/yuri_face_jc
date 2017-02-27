@@ -21,7 +21,7 @@ public class GridLayer extends Layer {
         this.interval = interval;
     }
 
-    public void ConfigComplation(boolean status){
+    public void ConfigCompletion(boolean status){
         enableComplete = status;
     }
 
