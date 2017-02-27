@@ -8,6 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,9 +19,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static UI.UIValues.MENU_HEIGHT;
-import static UI.UIValues.WINDOW_HEIGHT;
-import static UI.UIValues.WINDOW_WIDTH;
+import static UI.UIValues.*;
 
 /**
  * Created by Akihiro on 2017/02/25.
@@ -114,14 +113,28 @@ public class Main extends Application {
             }
         });
 
+        /*
+        * ラベルの設定
+         */
         Label layer_label = new Label("レイヤー");
         AnchorPane.setTopAnchor(layer_label, MENU_HEIGHT);
         AnchorPane.setLeftAnchor(layer_label, UIValues.LAYER_LIST_WIDTH / 3);
 
+        Label bairitsu_label = new Label("下敷き画像倍率");
+        AnchorPane.setBottomAnchor(bairitsu_label, UIValues.FOOTER_HEIGHT + 30);
+        AnchorPane.setLeftAnchor(bairitsu_label, UIValues.LAYER_LIST_WIDTH / 3);
+
+        TextField image_bairitsu = new TextField("100");
+        image_bairitsu.setAlignment(Pos.BASELINE_RIGHT);
+        image_bairitsu.setPrefWidth(LAYER_LIST_WIDTH - 20);
+        AnchorPane.setBottomAnchor(image_bairitsu, UIValues.FOOTER_HEIGHT + 5);
+        AnchorPane.setLeftAnchor(image_bairitsu, 0.0);
+
+
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, layer_list, layer_label, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
+        root.getChildren().addAll(menubar, layer_list, layer_label, bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
 
         /*
         * レイヤーの順番をここで描画
