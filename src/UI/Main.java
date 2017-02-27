@@ -68,7 +68,7 @@ public class Main extends Application {
         Layer front = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);       //ドットを描画するレイヤー
         Layer lines = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);       //線を描画するレイヤー
         Layer grid  = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);       //グリッドを描画するレイヤー
-        Layer image_layer = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT); //下敷き画像を描画するレイヤー
+        ImageLayer image_layer = new ImageLayer(WINDOW_WIDTH, WINDOW_HEIGHT); //下敷き画像を描画するレイヤー
         Layer preview = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);     //プレビューを描画するレイヤー
 
         /*
@@ -124,11 +124,15 @@ public class Main extends Application {
         AnchorPane.setBottomAnchor(bairitsu_label, UIValues.FOOTER_HEIGHT + 30);
         AnchorPane.setLeftAnchor(bairitsu_label, UIValues.LAYER_LIST_WIDTH / 3);
 
-        TextField image_bairitsu = new TextField("100");
+        TextField image_bairitsu = new TextField("100%");
         image_bairitsu.setAlignment(Pos.BASELINE_RIGHT);
         image_bairitsu.setPrefWidth(LAYER_LIST_WIDTH - 20);
         AnchorPane.setBottomAnchor(image_bairitsu, UIValues.FOOTER_HEIGHT + 5);
         AnchorPane.setLeftAnchor(image_bairitsu, 0.0);
+
+        image_bairitsu.setOnAction(event -> {
+
+        });
 
 
         /*
@@ -233,7 +237,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, Layer grid_layer, Layer image_layer, Layer preview, ListView<String> listView){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, Layer grid_layer, ImageLayer image_layer, Layer preview, ListView<String> listView){
         Menu help = new Menu("ヘルプ");
         MenuItem about = new MenuItem("About");
         help.getItems().addAll(about);
@@ -307,8 +311,7 @@ public class Main extends Application {
                 System.out.println(e);
                 return;
             }
-            image_layer.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-            image_layer.getGraphicsContext().drawImage(img, 0, 0);
+            image_layer.DrawImageNormal(img, 0, 0);
         });
 
         open_yfml.setOnAction(event -> {
