@@ -1,4 +1,4 @@
-package UI;
+package FileIO;
 
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;

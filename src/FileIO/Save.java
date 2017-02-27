@@ -1,5 +1,7 @@
-package UI;
+package FileIO;
 
+import UI.Dot;
+import UI.LayerData;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
