@@ -28,7 +28,11 @@ public class Save {
             File file = new File(file_name);
             PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             printWriter.println("yfml");
-            printWriter.println(imageLayer.getImagePath());
+            if(!imageLayer.getImagePath().isEmpty()) {
+                printWriter.println(imageLayer.getImagePath());
+            }else{
+                printWriter.println("null");
+            }
             printWriter.println("{");
             for (LayerData layerData : data) {
                 printWriter.println("LayerName " + layerData.getName());
