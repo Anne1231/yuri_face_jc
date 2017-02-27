@@ -179,7 +179,12 @@ public class Main extends Application {
         MenuItem choose = new MenuItem("ドットを選択");
         MenuItem put = new MenuItem("ドットを配置");
         put.setOnAction(event -> {
-            Dot dot = new Dot(x, y, gridLayer.getInterval());
+            Dot dot;
+            if(gridLayer.isEnableComplete()) {
+                dot = new Dot(x, y, gridLayer.getInterval());
+            }else{
+                dot = new Dot(x, y);
+            }
             dot.Draw(front, Color.BLACK);
             CurrentLayerData.AddDot(dot);
         });
@@ -252,6 +257,7 @@ public class Main extends Application {
         help.getItems().addAll(about);
         Menu  display = new Menu("表示");
         CheckMenuItem grid_config = new CheckMenuItem("グリッド");
+        CheckMenuItem grid_complete = new CheckMenuItem("グリッドによる補完");
         CheckMenuItem preview_menu = new CheckMenuItem("プレビュー");
 
         grid_config.setOnAction(event -> {
@@ -287,6 +293,10 @@ public class Main extends Application {
 
         });
 
+        grid_complete.setOnAction(event -> {
+            grid_layer.ConfigComplation(grid_complete.isSelected());
+        });
+
         preview_menu.setOnAction(event -> {
             Preview(preview);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -300,9 +310,9 @@ public class Main extends Application {
         });
 
         grid_config.setSelected(true);
-        DrawGrid(grid_layer, 30);
+        DrawGrid(grid_layer, INIT_GRID_INTERVAL);
 
-        display.getItems().addAll(grid_config, preview_menu);
+        display.getItems().addAll(grid_config, grid_complete, preview_menu);
         Menu file = new Menu("ファイル");
         MenuItem open = new MenuItem("下敷き画像を開く");
         MenuItem open_yfml = new MenuItem("YuriFaceドキュメントを開く");

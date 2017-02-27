@@ -1,7 +1,7 @@
 package FileIO;
 
 import UI.Dot;
-import UI.Layer;
+import Layers.Layer;
 import UI.LayerData;
 import UI.Main;
 import javafx.scene.control.ListView;
