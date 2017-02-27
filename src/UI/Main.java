@@ -291,6 +291,8 @@ public class Main extends Application {
             DrawGrid(grid_layer, interval);
             grid_config.setSelected(true);
 
+            image_layer.getCanvas().toBack();
+
         });
 
         grid_complete.setOnAction(event -> {
