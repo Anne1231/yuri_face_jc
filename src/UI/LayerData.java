@@ -1,5 +1,6 @@
 package UI;
 
+import Layers.Layer;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;

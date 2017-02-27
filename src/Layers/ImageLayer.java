@@ -1,5 +1,6 @@
-package UI;
+package Layers;
 
+import Layers.Layer;
 import javafx.scene.image.Image;
 
 import static UI.UIValues.WINDOW_HEIGHT;

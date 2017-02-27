@@ -5,8 +5,8 @@ package UI;
  */
 public class UIValues {
 
-    static final int WINDOW_WIDTH = 1920;
-    static final int WINDOW_HEIGHT = 1050;
+    public static final int WINDOW_WIDTH = 1920;
+    public static final int WINDOW_HEIGHT = 1050;
 
     static final double DOT_CIRCLE_WIDTH = 1;
 

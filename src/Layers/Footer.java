@@ -1,5 +1,7 @@
-package UI;
+package Layers;
 
+import Layers.Layer;
+import UI.UIValues;
 import javafx.geometry.VPos;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
@@ -14,7 +16,7 @@ public class Footer extends Layer {
 
     public void PutText(String str, int from_left){
         graphicsContext.setFill(new Color(0.7f, 0.7f, 0.7f, 1.0f));
-        graphicsContext.fillRect(from_left - 100, 0, UIValues.WINDOW_WIDTH, 20);
+        graphicsContext.fillRect(from_left - 100, 0, UI.UIValues.WINDOW_WIDTH, 20);
 
         graphicsContext.setFill(new Color(0.2f, 0.2f, 0.2f, 1.0f));
         graphicsContext.setTextAlign(TextAlignment.CENTER);

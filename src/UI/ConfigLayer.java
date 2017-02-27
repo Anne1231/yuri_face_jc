@@ -1,5 +1,6 @@
 package UI;
 
+import Layers.Layer;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
