@@ -84,11 +84,6 @@ public class Main extends Application {
         MenuBar menubar = new MenuBar();
 
         /*
-        * メニューバーの設定
-         */
-        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, layer_list);
-
-        /*
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
          */
@@ -124,15 +119,25 @@ public class Main extends Application {
         AnchorPane.setBottomAnchor(bairitsu_label, UIValues.FOOTER_HEIGHT + 30);
         AnchorPane.setLeftAnchor(bairitsu_label, UIValues.LAYER_LIST_WIDTH / 3);
 
-        TextField image_bairitsu = new TextField("100%");
+        TextField image_bairitsu = new TextField("100.0%");
         image_bairitsu.setAlignment(Pos.BASELINE_RIGHT);
         image_bairitsu.setPrefWidth(LAYER_LIST_WIDTH - 20);
         AnchorPane.setBottomAnchor(image_bairitsu, UIValues.FOOTER_HEIGHT + 5);
         AnchorPane.setLeftAnchor(image_bairitsu, 0.0);
 
         image_bairitsu.setOnAction(event -> {
-            
+            double result = Double.parseDouble(image_bairitsu.getText().replaceAll("[^0-9]",""));
+            image_bairitsu.setText(result + "%");
+            result /= 100.0;
+            Image image = image_layer.getImage();
+            image_layer.clear();
+            image_layer.DrawImageWithResize(image, 0, 0, image.getWidth() * result, image.getHeight() * result);
         });
+
+        /*
+        * メニューバーの設定
+         */
+        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, layer_list, image_bairitsu);
 
 
         /*
@@ -237,7 +242,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, Layer grid_layer, ImageLayer image_layer, Layer preview, ListView<String> listView){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, Layer grid_layer, ImageLayer image_layer, Layer preview, ListView<String> listView, TextField image_b){
         Menu help = new Menu("ヘルプ");
         MenuItem about = new MenuItem("About");
         help.getItems().addAll(about);
@@ -311,6 +316,7 @@ public class Main extends Application {
                 System.out.println(e);
                 return;
             }
+            image_b.setText("100.0%");
             image_layer.DrawImageNormal(img, 0, 0);
         });
 

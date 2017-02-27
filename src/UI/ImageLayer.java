@@ -9,7 +9,7 @@ import static UI.UIValues.WINDOW_WIDTH;
  * Created by Akihiro on 2017/02/27.
  */
 public class ImageLayer extends Layer {
-    Image image;
+    private Image image;
 
     public ImageLayer(double width, double height){
         super(width, height);
