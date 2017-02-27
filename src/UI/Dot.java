@@ -23,6 +23,25 @@ public class Dot extends Point2i {
         selected = false;
     }
 
+    public Dot(int x, int y, int interval){
+        super(x, y);
+        if (x % interval > interval) {
+            this.x += (x % interval);
+        }else{
+            this.x -= (x % interval);
+        }
+
+        if (y % interval > interval) {
+            this.y += (y % interval);
+        }else{
+            this.y -= (y % interval);
+        }
+
+
+        connected_dots = new ArrayList<>();
+        selected = false;
+    }
+
     public boolean isSelected(){
         return selected;
     }

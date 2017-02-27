@@ -175,7 +175,7 @@ public class Main extends Application {
         MenuItem choose = new MenuItem("ドットを選択");
         MenuItem put = new MenuItem("ドットを配置");
         put.setOnAction(event -> {
-            Dot dot = new Dot(x, y);
+            Dot dot = new Dot(x, y, 30);
             dot.Draw(front, Color.BLACK);
             CurrentLayerData.AddDot(dot);
         });
