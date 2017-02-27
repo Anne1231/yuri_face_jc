@@ -327,7 +327,7 @@ public class Main extends Application {
         open.setOnAction(event -> {
             Image img;
             try {
-                img = ImageIO.SelectAndOpenImage(stage);
+                img = ImageIO.SelectAndOpenImage(stage, image_layer);
             }catch (Exception e){
                 System.out.println(e);
                 return;
@@ -341,7 +341,7 @@ public class Main extends Application {
         });
 
         save.setOnAction(event -> {
-            Save.save_to_file(LayerDatas, stage);
+            Save.save_to_file(LayerDatas, stage, image_layer);
         });
 
         file.getItems().addAll(open_yfml, open, save, quit);

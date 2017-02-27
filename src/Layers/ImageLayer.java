@@ -11,6 +11,7 @@ import static UI.UIValues.WINDOW_WIDTH;
  */
 public class ImageLayer extends Layer {
     private Image image;
+    private String image_path;
 
     public ImageLayer(double width, double height){
         super(width, height);
@@ -36,6 +37,13 @@ public class ImageLayer extends Layer {
         graphicsContext.drawImage(image, 0, 0, width, height);
     }
 
+    public void setImagePath(String path){
+        this.image_path = path;
+    }
+
+    public String getImagePath(){
+        return image_path;
+    }
     public void clear(){
         graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     }

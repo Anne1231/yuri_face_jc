@@ -1,5 +1,6 @@
 package FileIO;
 
+import Layers.ImageLayer;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -36,8 +37,9 @@ public class ImageIO {
     * SelectAndOpenImage関数
     * 画像を選択し、開く処理を一度にこなす関数
      */
-    public static Image SelectAndOpenImage(Stage stage){
-        return new Image(Paths.get(GetImagePath(stage)).toUri().toString());
+    public static Image SelectAndOpenImage(Stage stage, ImageLayer imageLayer){
+        imageLayer.setImagePath(Paths.get(GetImagePath(stage)).toUri().toString());
+        return new Image(imageLayer.getImagePath());
     }
 
 }

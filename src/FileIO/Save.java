@@ -1,5 +1,6 @@
 package FileIO;
 
+import Layers.ImageLayer;
 import UI.Dot;
 import UI.LayerData;
 import javafx.stage.FileChooser;
@@ -18,7 +19,7 @@ public class Save {
 
     private static FileChooser saver = new FileChooser();
 
-    public static void save_to_file(ArrayList<LayerData> data, Stage stage){
+    public static void save_to_file(ArrayList<LayerData> data, Stage stage, ImageLayer imageLayer){
         String file_name = GetSavePath(stage);
         if(file_name == null)
             return;
@@ -27,6 +28,7 @@ public class Save {
             File file = new File(file_name);
             PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             printWriter.println("yfml");
+            printWriter.println(imageLayer.getImagePath());
             printWriter.println("{");
             for (LayerData layerData : data) {
                 printWriter.println("LayerName " + layerData.getName());
