@@ -131,7 +131,7 @@ public class Main extends Application {
         AnchorPane.setLeftAnchor(image_bairitsu, 0.0);
 
         image_bairitsu.setOnAction(event -> {
-
+            
         });
 
 
