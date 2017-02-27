@@ -1,10 +1,13 @@
 package FileIO;
 
+import Layers.ImageLayer;
 import UI.Dot;
 import Layers.Layer;
 import UI.LayerData;
 import UI.Main;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -20,7 +23,7 @@ import java.util.StringTokenizer;
 public class OpenYFML {
     private static FileChooser chooser = new FileChooser();
 
-    public static void open_yfml(Stage stage, ArrayList<LayerData> data, Layer front, Layer lines, ListView<String> listview){
+    public static void open_yfml(Stage stage, ArrayList<LayerData> data, Layer front, Layer lines, ImageLayer imageLayer, ListView<String> listview, TextField image_b){
 
         listview.getItems().remove(0);
         data.remove(0);
@@ -36,7 +39,16 @@ public class OpenYFML {
                 System.exit(-1);
             }
 
+            /*
+            * 下敷き画像があれば読む
+             */
             str = bufferedReader.readLine();
+            if(!str.equals("null")){
+                Image img = new Image(str);
+                image_b.setText("100.0%");
+                imageLayer.DrawImageNormal(img, 0, 0);
+            }
+
 
             while(str != null){
                 switch (str){
