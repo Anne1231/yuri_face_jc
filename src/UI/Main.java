@@ -20,6 +20,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import sub.AskLayerType;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -53,7 +56,7 @@ public class Main extends Application {
         * リストビューの初期化
          */
         ListView<String> layer_list = new ListView<>();
-        ConfigLayerList(layer_list);
+        ConfigLayerList(stage, layer_list);
 
         /*
         * yuri faceの初期化
@@ -424,7 +427,7 @@ public class Main extends Application {
     /*
     * レイヤーのリストビューの初期設定
      */
-    private static void ConfigLayerList(ListView<String> listView){
+    private static void ConfigLayerList(Stage stage, ListView<String> listView){
         AnchorPane.setTopAnchor(listView, UIValues.LAYER_LIST_SCREEN_Y);
         AnchorPane.setLeftAnchor(listView, 0.0);
         listView.setPrefWidth(UIValues.LAYER_LIST_WIDTH);
@@ -434,7 +437,7 @@ public class Main extends Application {
         MenuItem create_layer = new MenuItem("新規レイヤー");
         popup_ll.getItems().addAll(create_layer);
 
-        create_layer.setOnAction(event -> CreateLayer(listView));
+        create_layer.setOnAction(event -> CreateLayer(stage, listView));
 
         listView.setOnContextMenuRequested(event -> {
             popup_ll.show(listView, event.getScreenX(), event.getScreenY());
@@ -458,17 +461,11 @@ public class Main extends Application {
     /*
     * レイヤーを新しく作成する関数
      */
-    private static void CreateLayer(ListView<String> listView){
-        TextInputDialog create_layer = new TextInputDialog("レイヤー");
-        create_layer.setTitle("新規レイヤー");
-        create_layer.setHeaderText("新規レイヤーの作成");
-        create_layer.setContentText("レイヤー名 :");
-        Optional<String> result = create_layer.showAndWait();
-
-        if(result.isPresent()){
-            addLayer(create_layer.getEditor().getText(), listView);
-        }
-
+    private static void CreateLayer(Stage stage, ListView<String> listView){
+        Window window = stage;
+        Stage select_window = new AskLayerType(window);
+        select_window.showAndWait();
+        addLayer(AskLayerType.layer_name, listView);
     }
 
     /*
