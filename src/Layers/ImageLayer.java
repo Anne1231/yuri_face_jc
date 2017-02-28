@@ -12,9 +12,11 @@ import static UI.UIValues.WINDOW_WIDTH;
 public class ImageLayer extends Layer {
     private Image image;
     private String image_path;
+    private double bairitsu;
 
     public ImageLayer(double width, double height){
         super(width, height);
+        bairitsu = 1.0;
     }
 
     public void SetImage(Image image){
@@ -31,10 +33,11 @@ public class ImageLayer extends Layer {
         graphicsContext.drawImage(image, 0, 0);
     }
 
-    public void DrawImageWithResize(final Image image, double x, double y, double width, double height){
+    public void DrawImageWithResize(final Image image, double x, double y, double width, double height, double bairitsu){
         this.image = image;
+        this.bairitsu = bairitsu;
         graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        graphicsContext.drawImage(image, 0, 0, width, height);
+        graphicsContext.drawImage(image, 0, 0, width * bairitsu, height * bairitsu);
     }
 
     public void setImagePath(String path){

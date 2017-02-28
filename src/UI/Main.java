@@ -135,7 +135,7 @@ public class Main extends Application {
             result /= 100.0;
             Image image = image_layer.getImage();
             image_layer.clear();
-            image_layer.DrawImageWithResize(image, 0, 0, image.getWidth() * result, image.getHeight() * result);
+            image_layer.DrawImageWithResize(image, 0, 0, image.getWidth(), image.getHeight(), result);
         });
 
         /*
