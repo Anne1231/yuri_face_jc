@@ -1,6 +1,8 @@
 package UI;
 
+import Layers.FrontDotLayer;
 import Layers.Layer;
+import Layers.LinesLayer;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
@@ -14,7 +16,7 @@ import static UI.UIValues.WINDOW_WIDTH;
  */
 public class ConfigLayer {
 
-    public static void ConfigLinesLayer(Layer lines, Layer front){
+    public static void ConfigLinesLayer(LinesLayer lines, FrontDotLayer front){
 
         SettingAnchor(lines);
 
