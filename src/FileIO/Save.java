@@ -39,12 +39,32 @@ public class Save {
                 printWriter.println("{");
                 printWriter.println("dots");
                 for(Dot dot : layerData.getDotList()){
-                    printWriter.println(dot.getX() + " " + dot.getY());
+                    printWriter.println(
+                            (int)(dot.getX() / imageLayer.getBairitsu())
+                                    +
+                                    " "
+                                    +
+                                    (int)(dot.getY() / imageLayer.getBairitsu())
+                    );
                 }
                 printWriter.println("lines");
                 for(Dot dot : layerData.getDotList()){
                     for(Dot connected : dot.getConnected_dots()){
-                        printWriter.println(dot.getX() +  " " + dot.getY() + " " + connected.getX() + " " + connected.getY());
+                        printWriter.println(
+                                (int)(dot.getX() / imageLayer.getBairitsu())
+                                        +
+                                        " "
+                                        +
+                                        (int)(dot.getY() / imageLayer.getBairitsu())
+                                        +
+                                        " "
+                                        +
+                                        (int)(connected.getX() / imageLayer.getBairitsu())
+                                        +
+                                        " "
+                                        +
+                                        (int)(connected.getY() / imageLayer.getBairitsu())
+                        );
                     }
                 }
 

@@ -27,6 +27,10 @@ public class ImageLayer extends Layer {
         return image;
     }
 
+    public double getBairitsu(){
+        return this.bairitsu;
+    }
+
     public void DrawImageNormal(final Image image, double x, double y){
         this.image = image;
         graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
