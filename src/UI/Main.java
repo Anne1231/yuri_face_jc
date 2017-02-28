@@ -91,7 +91,7 @@ public class Main extends Application {
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
          */
-        ConfigFrontLayer(front, lines, grid);
+        ConfigFrontLayer(front, lines, grid, layer_list);
         ConfigLayer.ConfigLinesLayer(lines, front);
         ConfigImageLayer(image_layer);
         SettingAnchor(preview);
@@ -171,7 +171,7 @@ public class Main extends Application {
     /*
     * ドットを描画するレイヤーの初期設定
      */
-    private static void ConfigFrontLayer(Layer front, Layer lines, GridLayer gridLayer){
+    private static void ConfigFrontLayer(Layer front, Layer lines, GridLayer gridLayer, ListView<String> listView){
 
         SettingAnchor(front);
 
@@ -179,6 +179,9 @@ public class Main extends Application {
         MenuItem choose = new MenuItem("ドットを選択");
         MenuItem put = new MenuItem("ドットを配置");
         put.setOnAction(event -> {
+            if(listView.getItems().size() == 0){
+                return;
+            }
             Dot dot;
             if(gridLayer.isEnableComplete()) {
                 dot = new Dot(x, y, gridLayer.getInterval());
@@ -220,6 +223,9 @@ public class Main extends Application {
         });
 
         front.getCanvas().setOnMouseMoved(event -> {
+            if(listView.getItems().size() == 0){
+                return;
+            }
             for(final Dot p : CurrentLayerData.getDotList()){
                 if(p.isSelected())
                     continue;
@@ -480,7 +486,7 @@ public class Main extends Application {
     * 今のところ、初期レイヤーの作成のみ
      */
     private static void yuri_face_init(ListView<String> listView){
-        addLayer("レイヤー1", listView);
+        //addLayer("レイヤー1", listView);
     }
 
     /*
