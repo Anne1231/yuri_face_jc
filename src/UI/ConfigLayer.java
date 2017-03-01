@@ -64,6 +64,8 @@ public class ConfigLayer {
 
             selecting_dot.Erase(front);
             CurrentLayerData.RemoveDot(selecting_dot);
+            lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+            CurrentLayerData.DrawAllLines(lines);
 
         });
 
