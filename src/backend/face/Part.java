@@ -1,33 +1,26 @@
 package backend.face;
 
 import UI.Dot;
+import UI.LayerData;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
-
-import java.util.ArrayList;
 
 /**
  * Created by Akihiro on 2017/03/01.
  */
 public class Part {
-    private String name;
-    private ArrayList<Dot> dots;
+    private LayerData layerData;
     private Mat image;
     private Rect in_file;
 
-    public Part(String object_name, Mat image, Rect rect){
-        this.name = object_name;
-        dots = new ArrayList<>();
+    public Part(LayerData data, Mat image, Rect rect){
+        this.layerData = data;
         this.image = image.clone();
         this.in_file = rect.clone();
     }
 
     public String getName(){
-        return name;
-    }
-
-    ArrayList<Dot> getDots(){
-        return this.dots;
+        return layerData.getName();
     }
 
     public Mat getImage() {
