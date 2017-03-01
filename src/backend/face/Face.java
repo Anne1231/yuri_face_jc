@@ -20,7 +20,9 @@ public class Face {
     public Face(Mat src_image, ArrayList<LayerData> LayerDatas){
         original = src_image.clone();
         for(LayerData data : LayerDatas){
-
+            switch (data.getType()){
+                case FaceBase:
+            }
         }
     }
 
