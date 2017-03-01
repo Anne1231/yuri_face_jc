@@ -51,7 +51,7 @@ public class Dot extends Point2i {
         selected = false;
     }
 
-    public void Draw(FrontDotLayer layer, Paint color){
+    public void Draw(Layer layer, Paint color){
         layer.getGraphicsContext().setFill(color);
         layer.getGraphicsContext().setStroke(color);
         layer.getGraphicsContext().setLineWidth(UIValues.DOT_CIRCLE_WIDTH);

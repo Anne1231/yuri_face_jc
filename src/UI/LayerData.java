@@ -36,7 +36,7 @@ public class LayerData {
         return name;
     }
 
-    public void AllDraw(FrontDotLayer front, Layer lines){
+    public void AllDraw(Layer front, Layer lines){
         for(Dot dot : dots){
             dot.Draw(front, Color.BLACK);
             for(Dot connected : dot.getConnected_dots()){

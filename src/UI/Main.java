@@ -487,7 +487,7 @@ public class Main extends Application {
     * レイヤーデータの差し替えを行う関数
     * リストビューをクリックして変更する方
      */
-    private static void SwitchLayer(LayerData new_layer_data, Layer front, Layer lines){
+    private static void SwitchLayer(LayerData new_layer_data, FrontDotLayer front, Layer lines){
         AllEraseLayer(front);
         AllEraseLayer(lines);
         new_layer_data.AllDraw(front, lines);
