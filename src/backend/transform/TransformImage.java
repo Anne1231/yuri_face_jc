@@ -21,6 +21,16 @@ public class TransformImage {
     * 返り値
     * 第一引数で受け取ったMatの透視射影変換結果の画像
     */
+    /*
+    *
+    * ゴミに見えるけど使用方法
+        Mat img = Imgcodecs.imread("C:\\Users\\Akihiro\\Desktop\\yuri_face_test1.png");
+        //img = TransformImage.RotationTransform(img, 45);
+        Mat original = new Mat(4,2, CvType.CV_32F);
+        original.put(0, 0, new float[]{ 0.0f, 0.0f, img.cols()*0.2f, img.rows()*0.8f, img.cols(), img.rows(), img.cols()*0.8f, img.rows()*0.2f });
+        img = TransformImage.PerspectiveTransform(img, original, img.size());
+        Imgcodecs.imwrite("C:\\Users\\Akihiro\\Desktop\\a.png", img);
+     */
     public static Mat PerspectiveTransform(Mat image, Mat src_matrix, Size dst_size) {
         Mat result, dst = new Mat(image.rows(), image.cols(), image.type());
 
@@ -58,8 +68,8 @@ public class TransformImage {
         Rect rect = new RotatedRect(center, image.size(), angle).boundingRect();
 
         //変換行列を調整
-        rot_mat.put(0, 2, rect.width / 2.0 - center.x);
-        rot_mat.put(1, 2, rect.height / 2.0 - center.y);
+        rot_mat.put(0, 2, rot_mat.get(0, 2)[0] + (rect.width >> 1) - center.x);
+        rot_mat.put(1, 2, rot_mat.get(1, 2)[0] + (rect.height >> 1) - center.y);
 
         Imgproc.warpAffine(image, result, rot_mat, rect.size());
 
