@@ -1,7 +1,10 @@
 package backend.face;
 
 import UI.LayerData;
+import backend.transform.TransformImage;
+import backend.utility.Geometry;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 
 import java.util.ArrayList;
 
@@ -19,9 +22,31 @@ public class Face {
 
     public Face(Mat src_image, ArrayList<LayerData> LayerDatas){
         original = src_image.clone();
+        Rect rect;
         for(LayerData data : LayerDatas){
+            rect = Geometry.MakeBoundingBox(data.getDotList(), original.size());
             switch (data.getType()){
                 case FaceBase:
+                    faceBase = new FaceBase(data, TransformImage.CutImage(original, rect), rect);
+                    break;
+                case LeftEyebrows:
+                    leftEyebrows = new LeftEyebrows(data, TransformImage.CutImage(original, rect), rect);
+                    break;
+                case RightEyebrows:
+                    rightEyebrows = new RightEyebrows(data, TransformImage.CutImage(original, rect), rect);
+                    break;
+                case LeftEye:
+                    leftEye = new LeftEye(data, TransformImage.CutImage(original, rect), rect);
+                    break;
+                case RightEye:
+                    rightEye = new RightEye(data, TransformImage.CutImage(original, rect), rect);
+                    break;
+                case Mouth:
+                    mouth = new Mouth(data, TransformImage.CutImage(original, rect), rect);
+                    break;
+                case NullNull:
+                    break;
+                default:
             }
         }
     }
