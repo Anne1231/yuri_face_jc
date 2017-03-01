@@ -2,6 +2,7 @@ package backend.transform;
 
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.photo.Photo;
 
 /**
  * Created by Akihiro on 2017/03/01.
@@ -91,8 +92,20 @@ public class TransformImage {
         return new Mat(image, rect).clone();
     }
 
-    public static Mat PasteImage(Mat dst, Mat image, int tx, int ty){
-        Mat base = dst.clone();
+    /*
+    * PasteImage関数
+    * 引数
+    * Mat base
+    * 貼り付けさきの画像
+    * Mat image
+    * 貼り付ける画像
+    * int tx
+    * 貼り付けるX位置
+    * int ty
+    * 貼り付けるY位置
+     */
+    public static Mat PasteImage(Mat base, Mat image, int tx, int ty){
+        Mat dst = base.clone();
         byte[] color = new byte[3];
         int ix, iy = 0;
         int base_row = base.rows();
@@ -108,7 +121,72 @@ public class TransformImage {
                 base.put(y, x, color);
             }
         }
-        return base;
+        return dst;
+    }
+
+    /*
+    * SharpenImage関数
+    * 回転画像等の周りを黒いピクセルで埋められた画像において、黒い部分と本来の画像の曖昧な部分を削りとる関数
+    * 引数
+    * cv::Mat src_image
+    * 削りとる画像
+    * 返り値
+    * 削り取られた画像
+    */
+    public static Mat SharpenImage(Mat src_image) {
+
+        int start_x, start_y, end_x, end_y;
+        start_x = start_y = end_x = end_y = 0;
+
+        byte[] color = new byte[3];
+
+        loop1 : for(int y = 0; y < src_image.rows(); y++){
+            for(int x = 0; x < src_image.cols(); x++){
+                src_image.get(y, x, color);
+                if(color[0] + color[1] + color[2] == 0){
+                    start_x = x;
+                    start_y = y;
+                    break loop1;
+                }
+            }
+        }
+
+        loop2 : for(int y = src_image.rows() - 1; y >= 0; y--){
+            for(int x = src_image.cols() - 1; x >= 0; x--){
+                src_image.get(y, x, color);
+                if(color[0] + color[1] + color[2] == 0){
+                    end_x = x;
+                    end_y = y;
+                    break loop2;
+                }
+            }
+        }
+
+        Scalar black = new Scalar(0, 0, 0);
+        Imgproc.line(src_image, new Point(start_x, start_y), new Point(end_x, start_y), black, 5);
+        Imgproc.line(src_image, new Point(end_x, start_y), new Point(end_x, end_y), black, 5);
+        Imgproc.line(src_image, new Point(end_x, end_y), new Point(start_x, end_y), black, 5);
+        Imgproc.line(src_image, new Point(start_x, end_y), new Point(start_x, start_y), black, 5);
+
+        return src_image.clone();
+    }
+
+    /*
+    * YuriInpainting関数
+    * 画像の指定された範囲を修復する関数
+    * 今回はナビエストークスのアルゴリズム
+    * 引数
+    * Mat image
+    * 修復する画像
+    * Rect rect
+    * 修復する範囲
+     */
+    public static Mat YuriInpainting(Mat image, Rect rect) {
+        Mat mask = new Mat(image.size(), CvType.CV_8UC1, Scalar.all(0));
+        mask.submat(rect).setTo(Scalar.all(255));
+        Mat result = image.clone();
+        Photo.inpaint(image, mask, result, 10, Photo.INPAINT_NS);
+        return result;
     }
 
 }
