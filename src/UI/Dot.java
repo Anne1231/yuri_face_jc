@@ -60,7 +60,7 @@ public class Dot extends Point2i {
     }
 
     public void Erase(FrontDotLayer layer){
-        layer.getGraphicsContext().clearRect(this.x - 5, this.y - 5, 10, 10);
+        layer.getGraphicsContext().clearRect(this.x-3, this.y-3, 11, 11);
     }
 
     public void Connect(Dot dot){

@@ -26,6 +26,9 @@ public class ConfigLayer {
         MenuItem quit_cat = new MenuItem("選択状態を終了");
         MenuItem remove_dot = new MenuItem("選択中のドットを削除");
 
+        /*
+        * ドット連結
+         */
         cat_dot.setOnAction(event -> {
             for(final Dot p : CurrentLayerData.getDotList()){
                 if(Math.abs(p.getX() - x) < 5){
@@ -46,11 +49,17 @@ public class ConfigLayer {
 
         cat_dot.setDisable(true);
 
+        /*
+        * 選択状態終了
+         */
         quit_cat.setOnAction(event -> {
             selecting_dot.UnSelect();
             SwitchFrontLayer(front);
         });
 
+        /*
+        * ドット削除
+         */
         remove_dot.setOnAction(event -> {
 
             selecting_dot.Erase(front);
@@ -58,7 +67,7 @@ public class ConfigLayer {
 
         });
 
-        popup_lines.getItems().addAll(cat_dot, quit_cat);
+        popup_lines.getItems().addAll(cat_dot, remove_dot, quit_cat);
 
         lines.getCanvas().setOnContextMenuRequested(event -> {
             popup_lines.show(lines.getCanvas(), event.getScreenX(), event.getScreenY());
