@@ -351,7 +351,7 @@ public class Main extends Application {
         });
 
         open_yfml.setOnAction(event -> {
-            OpenYFML.open_yfml(stage, LayerDatas, front, lines, image_layer, listView, image_b);
+            OpenYFML.open_yfml(stage, front, lines, image_layer, listView, image_b);
         });
 
         save.setOnAction(event -> {

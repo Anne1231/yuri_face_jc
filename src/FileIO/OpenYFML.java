@@ -23,10 +23,8 @@ import java.util.StringTokenizer;
 public class OpenYFML {
     private static FileChooser chooser = new FileChooser();
 
-    public static void open_yfml(Stage stage, ArrayList<LayerData> data, Layer front, Layer lines, ImageLayer imageLayer, ListView<String> listview, TextField image_b){
+    public static void open_yfml(Stage stage, Layer front, Layer lines, ImageLayer imageLayer, ListView<String> listview, TextField image_b){
 
-        listview.getItems().remove(0);
-        data.remove(0);
         String path = GetFilePath(stage);
         try {
             int section_count = 0;
