@@ -9,14 +9,14 @@ import org.opencv.core.Rect;
  * Created by Akihiro on 2017/03/01.
  */
 public class Part {
-    private LayerData layerData;
-    private Mat image;
-    private Rect in_file;
+    protected LayerData layerData;
+    protected Mat image;
+    protected Rect in_face;
 
     public Part(LayerData data, Mat image, Rect rect){
         this.layerData = data;
         this.image = image.clone();
-        this.in_file = rect.clone();
+        this.in_face = rect.clone();
     }
 
     public String getName(){
@@ -28,7 +28,7 @@ public class Part {
     }
 
     public Rect getIn_file() {
-        return in_file;
+        return in_face;
     }
 
 }

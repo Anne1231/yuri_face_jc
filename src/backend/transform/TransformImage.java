@@ -112,11 +112,9 @@ public class TransformImage {
         int image_row = image.rows();
         int base_col = base.cols();
         int image_col = image.cols();
-        int begin_x = tx;
-        int begin_y = ty;
-        for(int y = begin_y;y < base_row && iy < image_row; y++, iy++){
+        for(int y = ty;y < base_row && iy < image_row; y++, iy++){
             ix = 0;
-            for(int x = begin_x;x < base_col && ix < image_col; x++, ix++){
+            for(int x = tx;x < base_col && ix < image_col; x++, ix++){
                 image.get(iy, ix, color);
                 base.put(y, x, color);
             }
@@ -187,6 +185,25 @@ public class TransformImage {
         Mat result = image.clone();
         Photo.inpaint(image, mask, result, 10, Photo.INPAINT_NS);
         return result;
+    }
+
+    public static Mat YuriFacePasteImage(Mat dst_image, Mat src_image, int dx, int dy){
+        Mat dst = dst_image.clone();
+        byte[] color = new byte[3];
+        int ix, iy = 0;
+        int base_row = dst.rows();
+        int image_row = dst.rows();
+        int base_col = dst.cols();
+        int image_col = dst.cols();
+        for(int y = dy;y < base_row && iy < image_row; y++, iy++){
+            ix = 0;
+            for(int x = dx;x < base_col && ix < image_col; x++, ix++){
+                src_image.get(iy, ix, color);
+                if(color[0] + color[1] + color[2] != 0)
+                    dst.put(y, x, color);
+            }
+        }
+        return dst;
     }
 
 }

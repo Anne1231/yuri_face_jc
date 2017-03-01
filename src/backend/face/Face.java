@@ -18,4 +18,27 @@ public class Face {
         //left_eyebrows = new LeftEyebrows();
     }
 
+    public FaceBase getFaceBase() {
+        return faceBase;
+    }
+
+    public LeftEye getLeftEye() {
+        return leftEye;
+    }
+
+    public LeftEyebrows getLeftEyebrows() {
+        return leftEyebrows;
+    }
+
+    public Mouth getMouth() {
+        return mouth;
+    }
+
+    public RightEye getRightEye() {
+        return rightEye;
+    }
+
+    public RightEyebrows getRightEyebrows() {
+        return rightEyebrows;
+    }
 }
