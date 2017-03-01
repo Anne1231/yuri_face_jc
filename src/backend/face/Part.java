@@ -37,5 +37,5 @@ public class Part {
     public Rect getIn_file() {
         return in_file;
     }
-    
+
 }
