@@ -92,7 +92,7 @@ public class Main extends Application {
         * この中でアンカーペインの設定も行う
          */
         ConfigFrontLayer(front, lines, grid, layer_list);
-        ConfigLayer.ConfigLinesLayer(lines, front);
+        ConfigLayer.ConfigLinesLayer(lines, front, grid);
         ConfigImageLayer(image_layer);
         SettingAnchor(preview);
 
@@ -178,6 +178,10 @@ public class Main extends Application {
         ContextMenu popup = new ContextMenu();
         MenuItem choose = new MenuItem("ドットを選択");
         MenuItem put = new MenuItem("ドットを配置");
+
+        /*
+        * ドット配置処理
+         */
         put.setOnAction(event -> {
             if(listView.getItems().size() == 0){
                 return;
@@ -191,6 +195,10 @@ public class Main extends Application {
             dot.Draw(front, Color.BLACK);
             CurrentLayerData.AddDot(dot);
         });
+
+        /*
+        * ドット選択処理
+         */
         choose.setOnAction(event -> {
             for(final Dot p : CurrentLayerData.getDotList()){
                 if(Math.abs(p.getX() - x) < 5){

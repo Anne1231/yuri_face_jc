@@ -7,7 +7,7 @@ import UI.Dot;
  */
 public class FrontDotLayer extends Layer {
     private boolean selecting;
-    
+
     public FrontDotLayer(double width, double height){
         super(width, height);
         selecting = false;

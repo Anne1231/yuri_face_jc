@@ -91,4 +91,25 @@ public class LayerData {
             java.util.Arrays.fill(memo, (short)(-1));
         }
     }
+
+    public void MoveDot(Dot select_dot, Dot update_dot){
+
+        for(Dot dot : this.dots){
+            for(Dot connected : dot.getConnected_dots()){
+                if(connected.equals(select_dot)){
+                    connected.setX(update_dot.getX());
+                    connected.setY(update_dot.getY());
+                }
+            }
+        }
+
+        for(Dot dot : this.dots){
+            if(dot.equals(select_dot)){
+                dot.setX(update_dot.getX());
+                dot.setY(update_dot.getY());
+                break;
+            }
+        }
+
+    }
 }

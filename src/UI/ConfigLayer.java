@@ -1,6 +1,7 @@
 package UI;
 
 import Layers.FrontDotLayer;
+import Layers.GridLayer;
 import Layers.Layer;
 import Layers.LinesLayer;
 import javafx.scene.control.ContextMenu;
@@ -17,7 +18,7 @@ import static UI.UIValues.WINDOW_WIDTH;
  */
 public class ConfigLayer {
 
-    public static void ConfigLinesLayer(LinesLayer lines, FrontDotLayer front){
+    public static void ConfigLinesLayer(LinesLayer lines, FrontDotLayer front, GridLayer gridLayer){
 
         SettingAnchor(lines);
 
@@ -25,6 +26,7 @@ public class ConfigLayer {
         MenuItem cat_dot = new MenuItem("選択中のドットと連結");
         MenuItem quit_cat = new MenuItem("選択状態を終了");
         MenuItem remove_dot = new MenuItem("選択中のドットを削除");
+        MenuItem move_dot = new MenuItem("選択中のドットをここに移動");
 
         /*
         * ドット連結
@@ -66,10 +68,43 @@ public class ConfigLayer {
             CurrentLayerData.RemoveDot(selecting_dot);
             lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
             CurrentLayerData.DrawAllLines(lines);
+            Main.SwitchFrontLayer(front);
 
         });
 
-        popup_lines.getItems().addAll(cat_dot, remove_dot, quit_cat);
+        /*
+        * ドットを移動
+         */
+        move_dot.setOnAction(event -> {
+
+            /*
+            * 新しい座標を決定
+             */
+            Dot update_dot;
+            if(gridLayer.isEnableComplete()) {
+                update_dot = new Dot(x, y, gridLayer.getInterval());
+            }else{
+                update_dot = new Dot(x, y);
+            }
+
+            //現在のドットをレイヤーから消す（消しゴム）
+            selecting_dot.Erase(front);
+
+            //レイヤーデータ上で、現在地のデータを移動先の座標に変更
+            CurrentLayerData.MoveDot(selecting_dot, update_dot);
+
+            //線も移動するので一回削除
+            lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+            //さっき変更されたレイヤーデータを元に線を再描画
+            CurrentLayerData.DrawAllLines(lines);
+
+            //消されていたドットを更新した座標に再描画
+            update_dot.Draw(front, Color.RED);
+
+        });
+
+        popup_lines.getItems().addAll(cat_dot, move_dot, remove_dot, quit_cat);
 
         lines.getCanvas().setOnContextMenuRequested(event -> {
             popup_lines.show(lines.getCanvas(), event.getScreenX(), event.getScreenY());
