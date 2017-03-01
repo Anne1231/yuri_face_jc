@@ -75,4 +75,40 @@ public class TransformImage {
 
         return result;
     }
+
+    /*
+    * CutImage関数
+    * 画像の指定した範囲を切り抜く関数
+    * 引数
+    * cv::Mat image
+    * 切り抜き元の画像
+    * cv::Rect rect
+    * 切り出す領域
+    * 返り値
+    * 切り出されたcv::Mat
+    */
+    public static Mat CutImage(Mat image, Rect rect) {
+        return new Mat(image, rect).clone();
+    }
+
+    public static Mat PasteImage(Mat dst, Mat image, int tx, int ty){
+        Mat base = dst.clone();
+        byte[] color = new byte[3];
+        int ix, iy = 0;
+        int base_row = base.rows();
+        int image_row = image.rows();
+        int base_col = base.cols();
+        int image_col = image.cols();
+        int begin_x = tx;
+        int begin_y = ty;
+        for(int y = begin_y;y < base_row && iy < image_row; y++, iy++){
+            ix = 0;
+            for(int x = begin_x;x < base_col && ix < image_col; x++, ix++){
+                image.get(iy, ix, color);
+                base.put(y, x, color);
+            }
+        }
+        return base;
+    }
+
 }
