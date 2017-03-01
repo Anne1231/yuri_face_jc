@@ -10,8 +10,19 @@ import java.util.ArrayList;
 /**
  * Created by Akihiro on 2017/02/26.
  */
+
+enum LayerDataType {
+    FaceBase,
+    LeftEye,
+    RightEye,
+    LeftEyebrows,
+    RightEyebrows,
+    Mouth
+}
+
 public class LayerData {
 
+    LayerDataType type;
     String name;
     ArrayList<Dot> dots;
 
