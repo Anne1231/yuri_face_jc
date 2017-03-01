@@ -4,6 +4,7 @@ import FileIO.ImageIO;
 import FileIO.OpenYFML;
 import FileIO.Save;
 import Layers.*;
+import backend.face.Face;
 import backend.transform.TransformImage;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -272,8 +273,8 @@ public class Main extends Application {
      */
     private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, GridLayer grid_layer, ImageLayer image_layer, Layer preview, ListView<String> listView, TextField image_b){
         Menu help = new Menu("ヘルプ");
-        MenuItem about = new MenuItem("About");
-        help.getItems().addAll(about);
+        MenuItem dev = new MenuItem("DEVELOPERS");
+        help.getItems().addAll(dev);
         Menu  display = new Menu("表示");
         CheckMenuItem grid_config = new CheckMenuItem("グリッド");
         CheckMenuItem grid_complete = new CheckMenuItem("グリッドによる補完");
@@ -361,6 +362,12 @@ public class Main extends Application {
 
         save.setOnAction(event -> {
             Save.save_to_file(LayerDatas, stage, image_layer);
+        });
+
+        dev.setOnAction(event -> {
+            Mat original = Imgcodecs.imread(image_layer.getImagePath().substring(8));
+            Face face = new Face(original, LayerDatas);
+            image_layer.DrawImageNormal(core.Convert.Mat2Image(face.getMouth().openMouth(face, 4, 0)), 0, 0);
         });
 
         file.getItems().addAll(open_yfml, open, save, quit);

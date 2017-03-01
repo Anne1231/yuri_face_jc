@@ -140,6 +140,33 @@ public class ConfigLayer {
             footer.PutText(String.valueOf((int)event.getX()) + ":" + String.valueOf((int)event.getY()), WINDOW_WIDTH - 80);
         });
 
+        lines.getCanvas().setOnMouseDragged(event -> {
+            /*
+            * 新しい座標を決定
+             */
+            Dot update_dot;
+            if(gridLayer.isEnableComplete()) {
+                update_dot = new Dot((int)event.getX(), (int)event.getY(), gridLayer.getInterval());
+            }else{
+                update_dot = new Dot((int)event.getX(), (int)event.getY());
+            }
+
+            //現在のドットをレイヤーから消す（消しゴム）
+            selecting_dot.Erase(front);
+
+            //レイヤーデータ上で、現在地のデータを移動先の座標に変更
+            CurrentLayerData.MoveDot(selecting_dot, update_dot);
+
+            //線も移動するので一回削除
+            lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+            //さっき変更されたレイヤーデータを元に線を再描画
+            CurrentLayerData.DrawAllLines(lines);
+
+            //消されていたドットを更新した座標に再描画
+            update_dot.Draw(front, Color.RED);
+        });
+
 
     }
 }

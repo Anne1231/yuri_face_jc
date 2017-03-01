@@ -192,9 +192,9 @@ public class TransformImage {
         byte[] color = new byte[3];
         int ix, iy = 0;
         int base_row = dst.rows();
-        int image_row = dst.rows();
+        int image_row = src_image.rows();
         int base_col = dst.cols();
-        int image_col = dst.cols();
+        int image_col = src_image.cols();
         for(int y = dy;y < base_row && iy < image_row; y++, iy++){
             ix = 0;
             for(int x = dx;x < base_col && ix < image_col; x++, ix++){

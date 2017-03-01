@@ -3,6 +3,7 @@ package backend.face;
 import UI.LayerData;
 import backend.transform.TransformImage;
 import org.opencv.core.*;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * Created by Akihiro on 2017/03/01.
@@ -22,6 +23,7 @@ public class Mouth extends Part {
 
         Point center = new Point((in_face.x + (in_face.width >> 1)), (in_face.y + (in_face.height >> 1)));
 
+        /*
         result = TransformImage.RotationTransform(result, 45);
 
         Mat matrix = new Mat(4,2, CvType.CV_32F);
@@ -43,10 +45,18 @@ public class Mouth extends Part {
 
         //変形後の幅（回転等で黒くなっている部分を除く）
         return TransformImage.YuriFacePasteImage(
-                face.getFaceBase().getImage().clone(),
+                TransformImage.YuriInpainting(face.getOriginal().clone(), this.in_face),
                 result.clone(),
                 (int)(center.x - (result.cols() >> 1)),
                 (int)(center.y - (result.rows() >> 1)));
+*/
+        Mat img = result.clone();
+        Imgproc.resize(result, img, new Size(0, 0), 0.5 + openMouth_sub(level), 0.5 + openMouth_sub(level), Imgproc.INTER_CUBIC);
+        return TransformImage.YuriFacePasteImage(
+                TransformImage.YuriInpainting(face.getOriginal().clone(), this.in_face),
+                img,
+                (int)(center.x - (img.cols() >> 1)),
+                (int)(center.y - (img.rows() >> 1)));
     }
 
     private static float openMouth_sub(int level) {
