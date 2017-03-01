@@ -11,16 +11,55 @@ import java.util.ArrayList;
  * Created by Akihiro on 2017/02/26.
  */
 
-enum LayerDataType {
-    FaceBase,
-    LeftEye,
-    RightEye,
-    LeftEyebrows,
-    RightEyebrows,
-    Mouth
-}
-
 public class LayerData {
+    public enum LayerDataType {
+        NullNull,
+        FaceBase,
+        LeftEye,
+        RightEye,
+        LeftEyebrows,
+        RightEyebrows,
+        Mouth;
+        public static String ToString(LayerDataType type){
+            switch (type){
+                case NullNull:
+                    return "null";
+                case FaceBase:
+                    return "FaceBase";
+                case LeftEye:
+                    return "LeftEye";
+                case RightEye:
+                    return "RightEey";
+                case LeftEyebrows:
+                    return "LeftEyebrows";
+                case RightEyebrows:
+                    return "RightEyebrows";
+                case Mouth:
+                    return "Mouth";
+                default:
+                    return "null";
+            }
+        }
+
+        public static LayerDataType ToType(String type_name){
+            switch (type_name){
+                case "FaceBase":
+                    return FaceBase;
+                case "LeftEye":
+                    return LeftEye;
+                case "RightEye":
+                    return RightEye;
+                case "LeftEyebrows":
+                    return LeftEyebrows;
+                case "RightEyebrows":
+                    return RightEyebrows;
+                case "Mouth":
+                    return Mouth;
+                default:
+                    return NullNull;
+            }
+        }
+    }
 
     LayerDataType type;
     String name;
@@ -30,9 +69,10 @@ public class LayerData {
         dots = new ArrayList<>();
     }
 
-    public LayerData(String layer_name){
+    public LayerData(String layer_name, LayerDataType type){
         dots = new ArrayList<>();
         name = layer_name;
+        this.type = type;
     }
 
     public void AddDot(Dot dot){
@@ -121,6 +161,9 @@ public class LayerData {
                 break;
             }
         }
+    }
 
+    public LayerDataType getType() {
+        return type;
     }
 }

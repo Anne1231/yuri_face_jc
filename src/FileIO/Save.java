@@ -35,7 +35,7 @@ public class Save {
             }
             printWriter.println("{");
             for (LayerData layerData : data) {
-                printWriter.println("LayerName " + layerData.getName());
+                printWriter.println("LayerName " + layerData.getName() + " " + LayerData.LayerDataType.ToString(layerData.getType()));
                 printWriter.println("{");
                 printWriter.println("dots");
                 for(Dot dot : layerData.getDotList()){

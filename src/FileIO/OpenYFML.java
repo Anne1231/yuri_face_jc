@@ -63,7 +63,8 @@ public class OpenYFML {
                             String term = tokenizer.nextToken();
                             if(term.equals("LayerName")){
                                 term = tokenizer.nextToken();
-                                Main.addLayer(term, listview);
+                                LayerData.LayerDataType type = LayerData.LayerDataType.ToType(tokenizer.nextToken());
+                                Main.addLayer(term, type, listview);
                             }else if(term.equals("dots")){
                                 str = bufferedReader.readLine();
                                 while(!str.equals("lines")){

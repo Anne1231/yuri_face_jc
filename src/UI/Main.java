@@ -475,14 +475,16 @@ public class Main extends Application {
         Window window = stage;
         Stage select_window = new AskLayerType(window);
         select_window.showAndWait();
-        addLayer(AskLayerType.layer_name, listView);
+        if(AskLayerType.success) {  //正常に終了したときのみレイヤー追加処理
+            addLayer(AskLayerType.layer_name, AskLayerType.type, listView);
+        }
     }
 
     /*
     * 新しいレイヤーを追加する関数
      */
-    public static void addLayer(String layer_name, ListView<String> listView){
-        CurrentLayerData = new LayerData(layer_name);
+    public static void addLayer(String layer_name, LayerData.LayerDataType type, ListView<String> listView){
+        CurrentLayerData = new LayerData(layer_name, type);
         LayerDatas.add(CurrentLayerData);
         listView.getItems().add(layer_name);
         listView.getSelectionModel().select(layer_name);
