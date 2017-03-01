@@ -1,5 +1,6 @@
 package UI;
 
+import Layers.FrontDotLayer;
 import Layers.Layer;
 import javafx.scene.paint.Paint;
 
@@ -50,12 +51,16 @@ public class Dot extends Point2i {
         selected = false;
     }
 
-    public void Draw(Layer layer, Paint color){
+    public void Draw(FrontDotLayer layer, Paint color){
         layer.getGraphicsContext().setFill(color);
         layer.getGraphicsContext().setStroke(color);
         layer.getGraphicsContext().setLineWidth(UIValues.DOT_CIRCLE_WIDTH);
         layer.getGraphicsContext().fillOval(x, y, 4, 4);
         layer.getGraphicsContext().strokeOval(x - 3, y - 3, 10, 10);
+    }
+
+    public void Erase(FrontDotLayer layer){
+        layer.getGraphicsContext().clearRect(this.x - 5, this.y - 5, 10, 10);
     }
 
     public void Connect(Dot dot){

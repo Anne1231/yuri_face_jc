@@ -25,4 +25,6 @@ public class UIValues {
 
     static final int INIT_GRID_INTERVAL = 30;
 
+    static final int MAX__CONNECTION = 50;
+
 }

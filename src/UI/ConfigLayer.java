@@ -9,6 +9,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 
 import static UI.Main.*;
+import static UI.UIValues.WINDOW_HEIGHT;
 import static UI.UIValues.WINDOW_WIDTH;
 
 /**
@@ -23,6 +24,8 @@ public class ConfigLayer {
         ContextMenu popup_lines = new ContextMenu();
         MenuItem cat_dot = new MenuItem("選択中のドットと連結");
         MenuItem quit_cat = new MenuItem("選択状態を終了");
+        MenuItem remove_dot = new MenuItem("選択中のドットを削除");
+
         cat_dot.setOnAction(event -> {
             for(final Dot p : CurrentLayerData.getDotList()){
                 if(Math.abs(p.getX() - x) < 5){
@@ -46,6 +49,13 @@ public class ConfigLayer {
         quit_cat.setOnAction(event -> {
             selecting_dot.UnSelect();
             SwitchFrontLayer(front);
+        });
+
+        remove_dot.setOnAction(event -> {
+
+            selecting_dot.Erase(front);
+            CurrentLayerData.RemoveDot(selecting_dot);
+
         });
 
         popup_lines.getItems().addAll(cat_dot, quit_cat);

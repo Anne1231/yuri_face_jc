@@ -3,10 +3,7 @@ package UI;
 import FileIO.ImageIO;
 import FileIO.OpenYFML;
 import FileIO.Save;
-import Layers.Footer;
-import Layers.GridLayer;
-import Layers.ImageLayer;
-import Layers.Layer;
+import Layers.*;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -72,8 +69,8 @@ public class Main extends Application {
         /*
         * 重要なグラフィックレイヤーたち
          */
-        Layer front = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);       //ドットを描画するレイヤー
-        Layer lines = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);       //線を描画するレイヤー
+        FrontDotLayer front = new FrontDotLayer(WINDOW_WIDTH, WINDOW_HEIGHT);       //ドットを描画するレイヤー
+        LinesLayer lines = new LinesLayer(WINDOW_WIDTH, WINDOW_HEIGHT);       //線を描画するレイヤー
         GridLayer grid  = new GridLayer(WINDOW_WIDTH, WINDOW_HEIGHT, INIT_GRID_INTERVAL);       //グリッドを描画するレイヤー
         ImageLayer image_layer = new ImageLayer(WINDOW_WIDTH, WINDOW_HEIGHT); //下敷き画像を描画するレイヤー
         Layer preview = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);     //プレビューを描画するレイヤー
@@ -174,7 +171,7 @@ public class Main extends Application {
     /*
     * ドットを描画するレイヤーの初期設定
      */
-    private static void ConfigFrontLayer(Layer front, Layer lines, GridLayer gridLayer, ListView<String> listView){
+    private static void ConfigFrontLayer(FrontDotLayer front, LinesLayer lines, GridLayer gridLayer, ListView<String> listView){
 
         SettingAnchor(front);
 
