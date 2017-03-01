@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.opencv.core.Core;
 import sub.AskLayerType;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage){
+
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         InitWindow(stage);
 

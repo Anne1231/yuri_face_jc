@@ -15,9 +15,11 @@ public class Part {
     private Mat image;
     private Rect in_file;
 
-    public Part(String object_name){
+    public Part(String object_name, Mat image, Rect rect){
         this.name = object_name;
         dots = new ArrayList<>();
+        this.image = image.clone();
+        this.in_file = rect.clone();
     }
 
     public String getName(){
@@ -27,4 +29,13 @@ public class Part {
     ArrayList<Dot> getDots(){
         return this.dots;
     }
+
+    public Mat getImage() {
+        return image;
+    }
+
+    public Rect getIn_file() {
+        return in_file;
+    }
+    
 }
