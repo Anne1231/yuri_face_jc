@@ -130,7 +130,7 @@ public class Main extends Application {
         AnchorPane.setLeftAnchor(image_bairitsu, 0.0);
 
         image_bairitsu.setOnAction(event -> {
-            double result = Double.parseDouble(image_bairitsu.getText().replaceAll("[^0-9]",""));
+            double result = Double.parseDouble(image_bairitsu.getText().replaceAll("[^.0-9]",""));
             image_bairitsu.setText(result + "%");
             result /= 100.0;
             Image image = image_layer.getImage();
