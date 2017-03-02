@@ -3,6 +3,7 @@ package UI;
 import FileIO.ImageIO;
 import FileIO.OpenYFML;
 import FileIO.Save;
+import FileIO.SaveXML;
 import Layers.*;
 import backend.face.Face;
 import backend.transform.TransformImage;
@@ -129,7 +130,7 @@ public class Main extends Application {
         /*
         * メニューバーの設定
          */
-        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, image_bairitsu);
+        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, image_bairitsu, layersTree);
 
 
         /*
@@ -253,7 +254,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree){
         Menu help = new Menu("ヘルプ");
         MenuItem dev = new MenuItem("DEVELOPERS");
         help.getItems().addAll(dev);
@@ -344,6 +345,7 @@ public class Main extends Application {
 
         save.setOnAction(event -> {
             Save.save_to_file(LayerDatas, stage, image_layer);
+            SaveXML.saveToXML(LayerDatas, layersTree, stage, image_layer);
         });
 
         dev.setOnAction(event -> {
@@ -583,7 +585,7 @@ public class Main extends Application {
         layer.getCanvas().toFront();
     }
 
-    private static String MakeLayerdataName(String tail, TreeItem<String> item){
+    public static String MakeLayerdataName(String tail, TreeItem<String> item){
         /*
             * 固有の名称を生成
              */

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog>
+<Mouth>
+<Layer inside="レイヤー口レイヤー">
+<name>レイヤー</name>
+<dot index="0">327 215</dot>
+<dot index="1">608 237</dot>
+<dot index="2">508 339</dot>
+<dot index="3">329 279</dot>
+<dot index="4">328 281</dot>
+<line index="0">329 279 508 339</line>
+</Layer>
+</Mouth>
+</catalog>
