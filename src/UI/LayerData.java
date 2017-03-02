@@ -80,7 +80,7 @@ public class LayerData {
     public LayerData clone(){
         LayerData layerData = new LayerData(this.name, this.type);
         for(Dot dot : this.dots){
-            layerData.dots.add(dot);
+            layerData.dots.add(dot.clone());
         }
         return layerData;
     }

@@ -37,6 +37,7 @@ public class Main extends Application {
     public static Dot selecting_dot;
 
     public static LayerData CurrentLayerData;
+    private static LayerData PinnedData;
     public static ArrayList<LayerData> LayerDatas = new ArrayList<>();
     public static Footer footer;
 
@@ -448,19 +449,55 @@ public class Main extends Application {
 
         ContextMenu popup_ll = new ContextMenu();
         MenuItem create_layer = new MenuItem("新規レイヤー");
-        popup_ll.getItems().addAll(create_layer);
+        MenuItem clone_item = new MenuItem("複製");
+        popup_ll.getItems().addAll(create_layer, clone_item);
+
+        ContextMenu copy_menu = new ContextMenu();
+        MenuItem copy_item = new MenuItem("コピー");
+        copy_menu.getItems().addAll(copy_item);
+
+        layersTree.setLayer_selecting(false);
 
         create_layer.setOnAction(event -> CreateLayer(stage, layersTree));
 
         layersTree.getTreeView().setOnContextMenuRequested(event -> {
             if(layersTree.getSelecting_tree() != null) {
                 popup_ll.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
+            }else if(layersTree.isLayer_selecting()){
+                copy_menu.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
+            }
+        });
+
+        copy_item.setOnAction(event -> {
+            PinnedData = CurrentLayerData;
+        });
+
+        clone_item.setOnAction(event -> {
+            TextInputDialog clone_layer = new TextInputDialog("レイヤー");
+            clone_layer.setTitle("レイヤー複製");
+            clone_layer.setHeaderText("レイヤーの複製");
+            clone_layer.setContentText("レイヤー名 :");
+            Optional<String> result = clone_layer.showAndWait();
+
+            if(result.isPresent()) {
+                if (result.get().isEmpty())
+                    return;
+                for (TreeItem<String> item : layersTree.getSelecting_tree().getChildren()) {
+                    if (item.getValue().equals(result.get())) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("同名のレイヤーが存在します");
+                        alert.showAndWait();
+                        return;
+                    }
+                }
+                addCloneLayer(result.get(), PinnedData, layersTree);
             }
         });
 
         layersTree.getTreeView().setOnMouseClicked(event -> {
             if(event.getButton() == MouseButton.PRIMARY){
                 popup_ll.hide();
+                copy_menu.hide();
             }
             TreeItem<String> select = layersTree.getTreeView().getSelectionModel().selectedItemProperty().get();
 
@@ -477,6 +514,7 @@ public class Main extends Application {
             if(depth == 2) {
                 layersTree.setSelecting_tree(select);
             }else if(depth == 3){
+                layersTree.setLayer_selecting(true);
                 for(LayerData layer_data : LayerDatas){
                     //select.getParent()な理由
                     /*
@@ -499,7 +537,6 @@ public class Main extends Application {
         });
 
         layersTree.getTreeView().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
         layersTree.getTreeView().setEditable(true);
 
     }
@@ -640,6 +677,48 @@ public class Main extends Application {
         }
 
         return builder.toString();
+    }
+
+    /*
+    * データのみをコピーして新しくレイヤーを作成する関数
+     */
+    public static void addCloneLayer(String clone_name, LayerData original, LayersTree layersTree){
+        CurrentLayerData = original.clone();
+        CurrentLayerData.setType(layersTree.WhichType(layersTree.getSelecting_tree()));
+        CurrentLayerData.setName(MakeLayerdataName(clone_name, layersTree.getSelecting_tree()));
+        LayerDatas.add(CurrentLayerData);
+        switch (layersTree.WhichType(layersTree.getSelecting_tree())){
+            case NullNull:
+                break;
+            case FaceBase:
+                break;
+            case LeftEye:
+                layersTree.getLeft_eye_tree().getChildren().add(new TreeItem<>(clone_name));
+                layersTree.getLeft_eye_tree().setExpanded(true);
+                layersTree.increase_layers_count();
+                break;
+            case RightEye:
+                layersTree.getRight_eye_tree().getChildren().add(new TreeItem<>(clone_name));
+                layersTree.getRight_eye_tree().setExpanded(true);
+                layersTree.increase_layers_count();
+                break;
+            case LeftEyebrows:
+                layersTree.getLeft_eyebrows_tree().getChildren().add(new TreeItem<>(clone_name));
+                layersTree.getLeft_eyebrows_tree().setExpanded(true);
+                layersTree.increase_layers_count();
+                break;
+            case RightEyebrows:
+                layersTree.getRight_eyebrows_tree().getChildren().add(new TreeItem<>(clone_name));
+                layersTree.getRight_eyebrows_tree().setExpanded(true);
+                layersTree.increase_layers_count();
+                break;
+            case Mouth:
+                layersTree.getMouth_tree().getChildren().add(new TreeItem<>(clone_name));
+                layersTree.getMouth_tree().setExpanded(true);
+                layersTree.increase_layers_count();
+            default:
+                break;
+        }
     }
 
 }

@@ -20,6 +20,8 @@ public class LayersTree {
     private String selecting;
     private int layers_count;
 
+    private boolean layer_selecting;
+
     public LayersTree(){
         layer_root = new TreeItem<>("レイヤー");
         layer_root.setExpanded(true);
@@ -110,5 +112,13 @@ public class LayersTree {
             return LayerData.LayerDataType.Mouth;
         }
         return LayerData.LayerDataType.NullNull;
+    }
+
+    public void setLayer_selecting(boolean status){
+        layer_selecting = status;
+    }
+
+    public boolean isLayer_selecting(){
+        return layer_selecting;
     }
 }
