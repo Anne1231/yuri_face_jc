@@ -61,9 +61,9 @@ public class LayerData {
         }
     }
 
-    LayerDataType type;
-    String name;
-    ArrayList<Dot> dots;
+    private LayerDataType type;
+    private String name;
+    private ArrayList<Dot> dots;
 
     public LayerData(){
         dots = new ArrayList<>();
@@ -166,4 +166,17 @@ public class LayerData {
     public LayerDataType getType() {
         return type;
     }
+
+    public ArrayList<Dot> getDots() {
+        return dots;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(LayerDataType type) {
+        this.type = type;
+    }
+
 }

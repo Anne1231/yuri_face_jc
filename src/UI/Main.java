@@ -1,9 +1,6 @@
 package UI;
 
-import FileIO.ImageIO;
-import FileIO.OpenYFML;
-import FileIO.Save;
-import FileIO.SaveXML;
+import FileIO.*;
 import Layers.*;
 import backend.face.Face;
 import backend.transform.TransformImage;
@@ -346,6 +343,9 @@ public class Main extends Application {
         save.setOnAction(event -> {
             Save.save_to_file(LayerDatas, stage, image_layer);
             SaveXML.saveToXML(LayerDatas, layersTree, stage, image_layer);
+            try {
+                LoadXML.loadXML("", LayerDatas, layersTree);
+            }catch (Exception e){}
         });
 
         dev.setOnAction(event -> {
