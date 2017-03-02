@@ -75,6 +75,14 @@ public class Dot extends Point2i {
         return connected_dots;
     }
 
+    public Dot clone(){
+        Dot dot = new Dot(this.x, this.y);
+        dot.selected = this.selected;
+        for(Dot connect : this.connected_dots){
+            dot.Connect(new Dot(connect.getX(), connect.getY()));
+        }
+        return dot;
+    }
 
     public void PrintInfo(){
         System.out.println("座標 : x = " + x + ", y = " + y);
