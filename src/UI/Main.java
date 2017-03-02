@@ -56,16 +56,10 @@ public class Main extends Application {
         footer.getGraphicsContext().fillRect(0, 0, UIValues.FOOTER_WIDTH, UIValues.FOOTER_HEIGHT);
 
         /*
-        * リストビューの初期化
-         */
-        ListView<String> layer_list = new ListView<>();
-        ConfigLayerList(stage, layer_list);
-
-        /*
         * yuri faceの初期化
         * 最初のレイヤーの作成とか
          */
-        yuri_face_init(layer_list);
+        //yuri_face_init(layer_list);
 
         /*
         * アンカーペインを採用してみた
@@ -93,30 +87,18 @@ public class Main extends Application {
          */
         MenuBar menubar = new MenuBar();
 
+        LayersTree layersTree = new LayersTree();
+        ConfigLayerList(stage, layersTree, front, lines);
+
         /*
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
          */
-        ConfigFrontLayer(front, lines, grid, layer_list);
+        //ConfigFrontLayer(front, lines, grid, layer_list);
+        ConfigFrontLayer(front, lines, grid, layersTree);
         ConfigLayer.ConfigLinesLayer(lines, front, grid);
         ConfigImageLayer(image_layer);
         SettingAnchor(preview);
-
-        /*
-        * リストビューのイベントハンドラの定義
-         */
-        layer_list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                for(LayerData layer_data : LayerDatas){
-                    if(layer_data.getName().equals(newValue)){
-                        CurrentLayerData = layer_data;
-                        SwitchLayer(CurrentLayerData, front, lines);
-                        break;
-                    }
-                }
-            }
-        });
 
         /*
         * ラベルの設定
@@ -147,13 +129,13 @@ public class Main extends Application {
         /*
         * メニューバーの設定
          */
-        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, layer_list, image_bairitsu);
+        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, image_bairitsu);
 
 
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, layer_list, layer_label, bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
+        root.getChildren().addAll(menubar, /*layer_list*/layersTree.getTreeView(), layer_label, bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
 
         /*
         * レイヤーの順番をここで描画
@@ -177,7 +159,7 @@ public class Main extends Application {
     /*
     * ドットを描画するレイヤーの初期設定
      */
-    private static void ConfigFrontLayer(FrontDotLayer front, LinesLayer lines, GridLayer gridLayer, ListView<String> listView){
+    private static void ConfigFrontLayer(FrontDotLayer front, LinesLayer lines, GridLayer gridLayer, LayersTree layersTree){
 
         SettingAnchor(front);
 
@@ -189,7 +171,7 @@ public class Main extends Application {
         * ドット配置処理
          */
         put.setOnAction(event -> {
-            if(listView.getItems().size() == 0){
+            if(layersTree.getLayers_count() == 0){
                 return;
             }
             Dot dot;
@@ -237,7 +219,7 @@ public class Main extends Application {
         });
 
         front.getCanvas().setOnMouseMoved(event -> {
-            if(listView.getItems().size() == 0){
+            if(layersTree.getLayers_count() == 0){
                 return;
             }
             for(final Dot p : CurrentLayerData.getDotList()){
@@ -271,7 +253,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, GridLayer grid_layer, ImageLayer image_layer, Layer preview, ListView<String> listView, TextField image_b){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b){
         Menu help = new Menu("ヘルプ");
         MenuItem dev = new MenuItem("DEVELOPERS");
         help.getItems().addAll(dev);
@@ -357,7 +339,7 @@ public class Main extends Application {
         });
 
         open_yfml.setOnAction(event -> {
-            OpenYFML.open_yfml(stage, front, lines, image_layer, listView, image_b);
+            OpenYFML.open_yfml(stage, front, lines, image_layer, null, image_b);
         });
 
         save.setOnAction(event -> {
@@ -441,49 +423,75 @@ public class Main extends Application {
         AnchorPane.setLeftAnchor(layer.getCanvas(), UIValues.LAYER_LIST_WIDTH + UIValues.LIST_TO_CANVAS_WIDTH);
     }
 
-    /*
-    * レイヤーのリストビューの初期設定
-     */
-    private static void ConfigLayerList(Stage stage, ListView<String> listView){
-        AnchorPane.setTopAnchor(listView, UIValues.LAYER_LIST_SCREEN_Y);
-        AnchorPane.setLeftAnchor(listView, 0.0);
-        listView.setPrefWidth(UIValues.LAYER_LIST_WIDTH);
-        listView.setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
+
+    private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer front, LinesLayer lines){
+        AnchorPane.setTopAnchor(layersTree.getTreeView(), UIValues.LAYER_LIST_SCREEN_Y);
+        AnchorPane.setLeftAnchor(layersTree.getTreeView(), 0.0);
+        layersTree.getTreeView().setPrefWidth(UIValues.LAYER_LIST_WIDTH);
+        layersTree.getTreeView().setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
 
         ContextMenu popup_ll = new ContextMenu();
         MenuItem create_layer = new MenuItem("新規レイヤー");
         popup_ll.getItems().addAll(create_layer);
 
-        create_layer.setOnAction(event -> CreateLayer(stage, listView));
+        create_layer.setOnAction(event -> CreateLayer(stage, layersTree));
 
-        listView.setOnContextMenuRequested(event -> {
-            popup_ll.show(listView, event.getScreenX(), event.getScreenY());
-        });
-
-        listView.setOnMouseClicked(event -> {
-            if(event.getButton() == MouseButton.PRIMARY){
-                popup_ll.hide();
+        layersTree.getTreeView().setOnContextMenuRequested(event -> {
+            if(layersTree.getSelecting_tree() != null) {
+                popup_ll.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
             }
         });
 
-        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        layersTree.getTreeView().setOnMouseClicked(event -> {
+            if(event.getButton() == MouseButton.PRIMARY){
+                popup_ll.hide();
+            }
+            TreeItem<String> select = layersTree.getTreeView().getSelectionModel().selectedItemProperty().get();
 
-        ObservableList<String> layer_names = FXCollections.observableArrayList();
+            int depth = 0;
+            TreeItem<String> ref = select;
+            while(true){
+                if(ref.getParent() == null){
+                    break;
+                }
+                ref = ref.getParent();
+                depth++;
+            }
 
-        listView.setItems(layer_names);
-        listView.setEditable(true);
+            if(depth == 1) {
+                layersTree.setSelecting_tree(select);
+            }else if(depth == 2){
+                for(LayerData layer_data : LayerDatas){
+                    //select.getParent()な理由
+                    /*
+                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
+                     */
+                    if(layer_data.getName().equals(MakeLayerdataName(select.getValue(), select.getParent()))){
+                        CurrentLayerData = layer_data;
+                        SwitchLayer(CurrentLayerData, front, lines);
+                        break;
+                    }
+                }
+            }else{
+                layersTree.setSelecting_tree(null);
+            }
+        });
+
+        layersTree.getTreeView().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        layersTree.getTreeView().setEditable(true);
 
     }
 
     /*
     * レイヤーを新しく作成する関数
      */
-    private static void CreateLayer(Stage stage, ListView<String> listView){
+    private static void CreateLayer(Stage stage, LayersTree layersTree){
         Window window = stage;
         Stage select_window = new AskLayerType(window);
         select_window.showAndWait();
         if(AskLayerType.success) {  //正常に終了したときのみレイヤー追加処理
-            addLayer(AskLayerType.layer_name, AskLayerType.type, listView);
+            addLayer(AskLayerType.layer_name, layersTree.WhichType(layersTree.getSelecting_tree()), layersTree);
         }
     }
 
@@ -495,6 +503,43 @@ public class Main extends Application {
         LayerDatas.add(CurrentLayerData);
         listView.getItems().add(layer_name);
         listView.getSelectionModel().select(layer_name);
+    }
+
+    /*
+   * 新しいレイヤーを追加する関数
+    */
+    public static void addLayer(String layer_name, LayerData.LayerDataType type, LayersTree layersTree){
+
+        CurrentLayerData = new LayerData(MakeLayerdataName(layer_name, layersTree.getSelecting_tree()), type);
+        LayerDatas.add(CurrentLayerData);
+
+        switch (type){
+            case NullNull:
+                break;
+            case FaceBase:
+                break;
+            case LeftEye:
+                layersTree.getLeft_eye_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.increase_layers_count();
+                break;
+            case RightEye:
+                layersTree.getRight_eye_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.increase_layers_count();
+                break;
+            case LeftEyebrows:
+                layersTree.getLeft_eyebrows_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.increase_layers_count();
+                break;
+            case RightEyebrows:
+                layersTree.getRight_eyebrows_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.increase_layers_count();
+                break;
+            case Mouth:
+                layersTree.getMouth_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.increase_layers_count();
+            default:
+                break;
+        }
     }
 
     /*
@@ -536,6 +581,21 @@ public class Main extends Application {
         }
 
         layer.getCanvas().toFront();
+    }
+
+    private static String MakeLayerdataName(String tail, TreeItem<String> item){
+        /*
+            * 固有の名称を生成
+             */
+        StringBuilder builder = new StringBuilder();
+        TreeItem<String> ref = item;
+        builder.append(tail);
+        while(ref != null){
+            builder.append(ref.getValue());
+            ref = ref.getParent();
+        }
+
+        return builder.toString();
     }
 
 }
