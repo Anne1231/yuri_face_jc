@@ -110,10 +110,10 @@ public class OpenYFML {
 
     }
 
-    private static String GetFilePath(Stage stage) {
+    public static String GetFilePath(Stage stage) {
 
         chooser.setTitle("File select");
-        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Yuri Face Markup Language", "*.yfml"));
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML", "*.xml"));
         File file = chooser.showOpenDialog(stage);
 
         if(file != null) {

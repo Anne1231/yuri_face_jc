@@ -5,6 +5,7 @@ import UI.Dot;
 import UI.LayerData;
 import UI.LayersTree;
 import UI.Main;
+import javafx.stage.Stage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,16 +19,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import static FileIO.OpenYFML.GetFilePath;
+
 /**
  * Created by Akihiro on 2017/03/02.
  */
 public class LoadXML {
 
-    public static void loadXML(String file_name, ArrayList<LayerData> data, LayersTree layersTree) throws SAXException, IOException, ParserConfigurationException {
+    public static void loadXML(Stage stage, ArrayList<LayerData> data, LayersTree layersTree) throws SAXException, IOException, ParserConfigurationException {
+
+        String path = GetFilePath(stage);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-        Document document = documentBuilder.parse("test.xml");
+        Document document = documentBuilder.parse(path);
 
         Element root = document.getDocumentElement();
 

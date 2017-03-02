@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.omg.CORBA.SystemException;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import sub.AskLayerType;
@@ -337,15 +338,17 @@ public class Main extends Application {
         });
 
         open_yfml.setOnAction(event -> {
-            OpenYFML.open_yfml(stage, front, lines, image_layer, null, image_b);
+            //OpenYFML.open_yfml(stage, front, lines, image_layer, null, image_b);
+            try {
+                LoadXML.loadXML(stage, LayerDatas, layersTree);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         });
 
         save.setOnAction(event -> {
             Save.save_to_file(LayerDatas, stage, image_layer);
             SaveXML.saveToXML(LayerDatas, layersTree, stage, image_layer);
-            try {
-                LoadXML.loadXML("", LayerDatas, layersTree);
-            }catch (Exception e){}
         });
 
         dev.setOnAction(event -> {
@@ -453,16 +456,18 @@ public class Main extends Application {
             int depth = 0;
             TreeItem<String> ref = select;
             while(true){
-                if(ref.getParent() == null){
+                if(ref == null){
                     break;
                 }
                 ref = ref.getParent();
                 depth++;
             }
 
-            if(depth == 1) {
+            System.out.println(depth);
+
+            if(depth == 2) {
                 layersTree.setSelecting_tree(select);
-            }else if(depth == 2){
+            }else if(depth == 3){
                 for(LayerData layer_data : LayerDatas){
                     //select.getParent()な理由
                     /*
@@ -474,7 +479,12 @@ public class Main extends Application {
                         break;
                     }
                 }
+                //新規レイヤーメニューは表示させない
+                //裏ではnullで判定してる
+                layersTree.setSelecting_tree(null);
             }else{
+                //新規レイヤーメニューは表示させない
+                //裏ではnullで判定してる
                 layersTree.setSelecting_tree(null);
             }
         });
