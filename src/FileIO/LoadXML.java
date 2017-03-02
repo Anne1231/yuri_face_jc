@@ -1,10 +1,12 @@
 package FileIO;
 
-import Layers.Layer;
+import Layers.ImageLayer;
 import UI.Dot;
 import UI.LayerData;
 import UI.LayersTree;
 import UI.Main;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -16,6 +18,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -26,7 +29,7 @@ import static FileIO.OpenYFML.GetFilePath;
  */
 public class LoadXML {
 
-    public static void loadXML(Stage stage, ArrayList<LayerData> data, LayersTree layersTree) throws SAXException, IOException, ParserConfigurationException {
+    public static void loadXML(Stage stage, ArrayList<LayerData> data, LayersTree layersTree, ImageLayer imageLayer, TextField image_b) throws SAXException, IOException, ParserConfigurationException {
 
         String path = GetFilePath(stage);
 
@@ -53,12 +56,11 @@ public class LoadXML {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element)node;
                 if (element.getNodeName().equals("Mouth")) {
-                    NodeList personChildren = node.getChildNodes();
-                    for (int j = 0;j < personChildren.getLength();j++) {
+                    NodeList children = node.getChildNodes();
+                    for (int j = 0;j < children.getLength();j++) {
                         layerData = new LayerData();
-                        Node MouthNode = personChildren.item(j);
+                        Node MouthNode = children.item(j);
                         if (MouthNode.getNodeType() == Node.ELEMENT_NODE) {
-
                             if (MouthNode.getNodeName().equals("Layer")) {
                                 System.out.println("レイヤー内部表現：" + ((Element)MouthNode).getAttribute("inside"));
                                 /*
@@ -103,6 +105,20 @@ public class LoadXML {
                         data.add(layerData);
                     }
                     System.out.println("------------------");
+                }else if (element.getNodeName().equals("ImagePath")){
+                    NodeList image_path = node.getChildNodes();
+                    for(int j = 0;j < image_path.getLength();j++) {
+                        Node image_path_node = image_path.item(j);
+                        System.out.println(image_path_node.getTextContent());
+                        if (!image_path_node.getNodeName().isEmpty()) {
+                            Image img;
+                            imageLayer.setImagePath(image_path_node.getTextContent());
+                            img = new Image(image_path_node.getTextContent());
+                            image_b.setText("100.0%");
+                            imageLayer.DrawImageNormal(img, 0, 0);
+
+                        }
+                    }
                 }
             }
 

@@ -107,7 +107,6 @@ public class LayersTree {
         }else if(left_eye_tree.equals(item)){
             return LayerData.LayerDataType.RightEye;
         }else if(mouth_tree.equals(item)){
-            System.out.println("aaa");
             return LayerData.LayerDataType.Mouth;
         }
         return LayerData.LayerDataType.NullNull;

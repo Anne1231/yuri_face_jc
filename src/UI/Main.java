@@ -342,14 +342,14 @@ public class Main extends Application {
         open_yfml.setOnAction(event -> {
             //OpenYFML.open_yfml(stage, front, lines, image_layer, null, image_b);
             try {
-                LoadXML.loadXML(stage, LayerDatas, layersTree);
+                LoadXML.loadXML(stage, LayerDatas, layersTree, image_layer, image_b);
             }catch (Exception e){
                 e.printStackTrace();
             }
         });
 
         save.setOnAction(event -> {
-            Save.save_to_file(LayerDatas, stage, image_layer);
+            //Save.save_to_file(LayerDatas, stage, image_layer);
             SaveXML.saveToXML(LayerDatas, layersTree, stage, image_layer);
         });
 

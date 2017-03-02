@@ -6,6 +6,7 @@ import UI.LayerData;
 import UI.LayersTree;
 import UI.Main;
 import javafx.scene.control.TreeItem;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,12 +23,19 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.ArrayList;
 
+import static FileIO.Save.GetSavePath;
+
 
 /**
  * Created by Akihiro on 2017/03/02.
  */
 public class SaveXML {
     public static void saveToXML(ArrayList<LayerData> data, LayersTree layersTree, Stage stage, ImageLayer imageLayer){
+
+        String file_name = GetSaveXMLPath(stage);
+        if(file_name == null)
+            return;
+
         // Documentインスタンスの生成
         DocumentBuilder documentBuilder = null;
         try {
@@ -38,20 +46,14 @@ public class SaveXML {
         }
         Document document = documentBuilder.newDocument();
 
-        /*
+
         Element image_path = document.createElement("ImagePath");
         Element image_name_value;
-        if(!imageLayer.getImagePath().isEmpty()) {
-            System.out.println(imageLayer.getImagePath().replaceAll("/", "a"));
-            image_name_value = document.createElement(imageLayer.getImagePath().replaceAll("/", "a"));
-        }else{
-            image_name_value = document.createElement("null");
-            image_path.appendChild(image_name_value);
-        }
-        image_path.appendChild(image_name_value);
 
-        document.appendChild(image_path);
-        */
+        String str = imageLayer.getImagePath();
+        System.out.println(str);
+        image_path.appendChild(document.createTextNode(str));
+
         // XML文書の作成
         Element catalog = document.createElement("catalog");
         document.appendChild(catalog);
@@ -114,10 +116,11 @@ public class SaveXML {
             mouth.appendChild(layer);
         }
 
+        catalog.appendChild(image_path);
         catalog.appendChild(mouth);
 
         // XMLファイルの作成
-        File file = new File("test.xml");
+        File file = new File(file_name);
         write(file, document);
     }
 
@@ -148,5 +151,19 @@ public class SaveXML {
         }
 
         return true;
+    }
+
+    public static String GetSaveXMLPath(Stage stage) {
+
+        FileChooser saver = new FileChooser();
+
+        saver.setTitle("保存");
+        saver.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML文書", "*.xml"));
+        File importFile = saver.showSaveDialog(stage);
+        if(importFile != null) {
+            String path = importFile.getPath().toString();
+            return path;
+        }
+        return null;
     }
 }
