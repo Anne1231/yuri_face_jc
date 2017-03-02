@@ -77,6 +77,14 @@ public class LayerData {
         this.type = type;
     }
 
+    public LayerData clone(){
+        LayerData layerData = new LayerData(this.name, this.type);
+        for(Dot dot : this.dots){
+            layerData.dots.add(dot);
+        }
+        return layerData;
+    }
+
     public void AddDot(Dot dot){
         dots.add(dot);
     }
