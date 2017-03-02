@@ -18,6 +18,7 @@ import static UI.UIValues.WINDOW_WIDTH;
  */
 public class ConfigLayer {
 
+    private static boolean dot_dragged = false;
     public static void ConfigLinesLayer(LinesLayer lines, FrontDotLayer front, GridLayer gridLayer){
 
         SettingAnchor(lines);
@@ -141,6 +142,8 @@ public class ConfigLayer {
         });
 
         lines.getCanvas().setOnMouseDragged(event -> {
+            if(!dot_dragged)
+                return;
             /*
             * 新しい座標を決定
              */
@@ -166,6 +169,16 @@ public class ConfigLayer {
             //消されていたドットを更新した座標に再描画
             update_dot.Draw(front, Color.RED);
         });
+
+        lines.getCanvas().setOnMousePressed(event -> {
+            if(Math.abs(selecting_dot.getX() - event.getX()) < 5){
+                if(Math.abs(selecting_dot.getY() - event.getY()) < 5) {
+                    dot_dragged = true;
+                }
+            }
+        });
+
+        lines.getCanvas().setOnMouseReleased(event -> dot_dragged = false);
 
 
     }
