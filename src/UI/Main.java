@@ -354,9 +354,18 @@ public class Main extends Application {
         });
 
         dev.setOnAction(event -> {
-            Mat original = Imgcodecs.imread(image_layer.getImagePath().substring(8));
-            Face face = new Face(original, LayerDatas);
-            image_layer.DrawImageNormal(core.Convert.Mat2Image(face.getMouth().openMouth(face, 4, 0)), 0, 0);
+            CurrentLayerData.Organize();
+            preview.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+            int size = CurrentLayerData.getDotList().size();
+            double[] xPoints = new double[size];
+            double[] yPoints = new double[size];
+            int i = 0;
+            for(Dot dot : CurrentLayerData.getDotList()){
+                xPoints[i] = dot.getX();
+                yPoints[i] = dot.getY();
+                i++;
+            }
+            preview.getGraphicsContext().fillPolygon(xPoints, yPoints, size);
         });
 
         file.getItems().addAll(open_yfml, open, save, quit);

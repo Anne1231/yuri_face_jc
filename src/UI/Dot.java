@@ -75,6 +75,7 @@ public class Dot extends Point2i {
         return connected_dots;
     }
 
+
     public void PrintInfo(){
         System.out.println("座標 : x = " + x + ", y = " + y);
         System.out.print("使用状態 : ");

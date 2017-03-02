@@ -4,6 +4,7 @@ import Layers.FrontDotLayer;
 import Layers.Layer;
 import Layers.LinesLayer;
 import javafx.scene.paint.Color;
+import org.opencv.core.Point;
 
 import java.util.ArrayList;
 
@@ -178,6 +179,66 @@ public class LayerData {
 
     public void setType(LayerDataType type) {
         this.type = type;
+    }
+
+    public void Organize(){
+        ArrayList<Dot> new_dots = new ArrayList<>();
+
+        int size = this.dots.size();
+        Dot ref;
+
+        ref = dots.get(1);
+
+        flag : for(int i = 1;i < size;i++){
+
+            new_dots.add(ref);
+
+            sub_loop1 : for(Dot dot : ref.getConnected_dots()) {
+                for(Point2i p : new_dots){
+                    if (p.getX() == dot.getX() && p.getY() == dot.getY()) {
+                        continue sub_loop1;
+                    }
+                }
+                ref = dot;
+                continue flag;
+            }
+            Dot[] connect = organize_sub_find_conect(ref);
+            sub_loop2 : for(int n = 0;n < 2;n++){
+                for(Point2i p : new_dots){
+                    if (p.getX() == connect[n].getX() && p.getY() == connect[n].getY()) {
+                        continue sub_loop2;
+                    }
+                }
+                ref = connect[n];
+                break;
+            }
+        }
+
+        for(Dot dot : dots){
+            if(!new_dots.contains(dot)) {
+                new_dots.add(dot);
+                break;
+            }
+        }
+
+        this.dots = null;
+        this.dots = new_dots;
+    }
+
+    public Dot[] organize_sub_find_conect(Dot finding){
+        char i = 0;
+        Dot[] result = new Dot[2];
+        result[0] = result[1] = null;
+        for(Dot p : dots){
+            for(Dot connect_p : p.getConnected_dots()){
+                if(finding.equals(connect_p)){
+                    result[i] = p;
+                    i++;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
 }
