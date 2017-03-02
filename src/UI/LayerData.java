@@ -67,6 +67,7 @@ public class LayerData {
 
     public LayerData(){
         dots = new ArrayList<>();
+        name = new String();
     }
 
     public LayerData(String layer_name, LayerDataType type){

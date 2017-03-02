@@ -47,6 +47,7 @@ public class LoadXML {
 ;
         System.out.println("------------------");
 
+        LayerData layerData;
         for(int i = 0;i < rootChildren.getLength();i++) {
             Node node = rootChildren.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -54,7 +55,7 @@ public class LoadXML {
                 if (element.getNodeName().equals("Mouth")) {
                     NodeList personChildren = node.getChildNodes();
                     for (int j = 0;j < personChildren.getLength();j++) {
-                        LayerData layerData = new LayerData();
+                        layerData = new LayerData();
                         Node MouthNode = personChildren.item(j);
                         if (MouthNode.getNodeType() == Node.ELEMENT_NODE) {
 
@@ -72,7 +73,7 @@ public class LoadXML {
                                     * このレイヤーデータをLayersTreeに追加
                                     * 最初にLayersTreeに関する情報が来る場所なので、ここでLayersTreeに追加
                                      */
-                                    Main.addLayer(mouth_info.getTextContent(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree);
+                                    Main.addLayer(mouth_info.getTextContent(), LayerData.LayerDataType.Mouth, layersTree);
                                     System.out.println("レイヤー名:" + mouth_info.getTextContent());
                                 }else if(mouth_info.getNodeName().equals("dot")){
                                     System.out.println("インデックス" + ((Element)mouth_info).getAttribute("index"));

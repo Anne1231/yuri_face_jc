@@ -463,8 +463,6 @@ public class Main extends Application {
                 depth++;
             }
 
-            System.out.println(depth);
-
             if(depth == 2) {
                 layersTree.setSelecting_tree(select);
             }else if(depth == 3){
