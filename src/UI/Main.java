@@ -93,7 +93,6 @@ public class Main extends Application {
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
          */
-        //ConfigFrontLayer(front, lines, grid, layer_list);
         ConfigFrontLayer(front, lines, grid, layersTree);
         ConfigLayer.ConfigLinesLayer(lines, front, grid);
         ConfigImageLayer(image_layer);
@@ -208,6 +207,9 @@ public class Main extends Application {
         });
 
         front.getCanvas().setOnContextMenuRequested(event -> {
+            if(layersTree.getLayers_count() == 0){
+                return;
+            }
             popup.show(front.getCanvas(), event.getScreenX(), event.getScreenY());
         });
 
@@ -318,7 +320,7 @@ public class Main extends Application {
         display.getItems().addAll(grid_config, grid_complete, preview_menu);
         Menu file = new Menu("ファイル");
         MenuItem open = new MenuItem("下敷き画像を開く");
-        MenuItem open_yfml = new MenuItem("YuriFaceドキュメントを開く");
+        MenuItem open_yfml = new MenuItem("XMLファイルを開く");
         MenuItem save = new MenuItem("保存");
         MenuItem quit = new MenuItem("終了");
         quit.setOnAction(event ->
@@ -497,11 +499,29 @@ public class Main extends Application {
     * レイヤーを新しく作成する関数
      */
     private static void CreateLayer(Stage stage, LayersTree layersTree){
+        /*
         Window window = stage;
         Stage select_window = new AskLayerType(window);
         select_window.showAndWait();
-        if(AskLayerType.success) {  //正常に終了したときのみレイヤー追加処理
-            addLayer(AskLayerType.layer_name, layersTree.WhichType(layersTree.getSelecting_tree()), layersTree);
+        */
+        TextInputDialog create_layer = new TextInputDialog("レイヤー");
+        create_layer.setTitle("新規レイヤー");
+        create_layer.setHeaderText("新規レイヤーの作成");
+        create_layer.setContentText("レイヤー名 :");
+        Optional<String> result = create_layer.showAndWait();
+
+        if(result.isPresent()){
+            if(result.get().isEmpty())
+                return;
+            for(TreeItem<String> item : layersTree.getSelecting_tree().getChildren()){
+                if(item.getValue().equals(result.get())){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("同名のレイヤーが存在します");
+                    alert.showAndWait();
+                    return;
+                }
+            }
+            addLayer(result.get(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree);
         }
     }
 
@@ -530,22 +550,27 @@ public class Main extends Application {
                 break;
             case LeftEye:
                 layersTree.getLeft_eye_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.getLeft_eye_tree().setExpanded(true);
                 layersTree.increase_layers_count();
                 break;
             case RightEye:
                 layersTree.getRight_eye_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.getRight_eye_tree().setExpanded(true);
                 layersTree.increase_layers_count();
                 break;
             case LeftEyebrows:
                 layersTree.getLeft_eyebrows_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.getLeft_eyebrows_tree().setExpanded(true);
                 layersTree.increase_layers_count();
                 break;
             case RightEyebrows:
                 layersTree.getRight_eyebrows_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.getRight_eyebrows_tree().setExpanded(true);
                 layersTree.increase_layers_count();
                 break;
             case Mouth:
                 layersTree.getMouth_tree().getChildren().add(new TreeItem<>(layer_name));
+                layersTree.getMouth_tree().setExpanded(true);
                 layersTree.increase_layers_count();
             default:
                 break;
