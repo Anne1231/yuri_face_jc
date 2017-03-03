@@ -4,7 +4,6 @@ import Layers.FrontDotLayer;
 import Layers.Layer;
 import Layers.LinesLayer;
 import javafx.scene.paint.Color;
-import org.opencv.core.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +84,7 @@ public class LayerData {
     public LayerData clone(){
         LayerData layerData = new LayerData(this.name, this.type);
         dot_set.forEach(dot -> layerData.dot_set.add(dot.clone()));
-        line_list.forEach(line -> layerData.connect(line));
+        line_list.forEach(line -> layerData.connect(line.clone()));
         return layerData;
     }
 
@@ -100,6 +99,7 @@ public class LayerData {
     }
 
     public void AllDraw(Layer front, Layer lines){
+        System.out.println(line_list.size());
         line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
         dot_set.forEach(dot -> dot.Draw(front, Color.BLACK));
     }
@@ -167,69 +167,32 @@ public class LayerData {
     }
 
 
-    public void Organize(){
-        /*
-        ArrayList<Dot> new_dots = new ArrayList<>();
+    public ArrayList<Dot> CreatePolygon(){
+        ArrayList<Line> memo = new ArrayList<>();
+        this.line_list.forEach(line -> memo.add(line));
+        ArrayList<Dot> polygon = new ArrayList<>();
+        Line line = memo.get(0);
+        Point2i next;
+        int index;
 
-        int size = this.dots.size();
-        Dot ref;
 
-        ref = dots.get(1);
+        for(int i = 0;i < line_list.size();i++){
 
-        flag : for(int i = 1;i < size;i++){
+            polygon.add(new Dot(line.getBegin().getX(), line.getBegin().getY()));
+            next = line.getEnd();
 
-            new_dots.add(ref);
+            index = memo.indexOf(line);
+            if(index != -1)
+                memo.remove(index);
 
-            sub_loop1 : for(Dot dot : ref.getConnected_dots()) {
-                for(Point2i p : new_dots){
-                    if (p.getX() == dot.getX() && p.getY() == dot.getY()) {
-                        continue sub_loop1;
-                    }
-                }
-                ref = dot;
-                continue flag;
-            }
-            Dot[] connect = organize_sub_find_conect(ref);
-            sub_loop2 : for(int n = 0;n < 2;n++){
-                for(Point2i p : new_dots){
-                    if (p.getX() == connect[n].getX() && p.getY() == connect[n].getY()) {
-                        continue sub_loop2;
-                    }
-                }
-                ref = connect[n];
-                break;
-            }
-        }
-
-        for(Dot dot : dots){
-            if(!new_dots.contains(dot)) {
-                new_dots.add(dot);
-                break;
-            }
-        }
-
-        this.dots = null;
-        this.dots = new_dots;
-        */
-    }
-
-    public Dot[] organize_sub_find_conect(Dot finding){
-        /*
-        char i = 0;
-        Dot[] result = new Dot[2];
-        result[0] = result[1] = null;
-        for(Dot p : dots){
-            for(Dot connect_p : p.getConnected_dots()){
-                if(finding.equals(connect_p)){
-                    result[i] = p;
-                    i++;
-                    break;
+            for(Line loop_line : memo){
+                if(loop_line.contains(next)){
+                    line = loop_line;
                 }
             }
         }
-        return result;
-    */
-        return null;
+
+        return polygon;
     }
 
 

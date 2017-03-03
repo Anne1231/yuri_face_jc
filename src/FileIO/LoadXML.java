@@ -6,6 +6,7 @@ import UI.LayerData;
 import UI.LayersTree;
 import UI.Main;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
@@ -31,6 +32,8 @@ public class LoadXML {
 
     public static void loadXML(Stage stage, ArrayList<LayerData> data, LayersTree layersTree, ImageLayer imageLayer, TextField image_b) throws SAXException, IOException, ParserConfigurationException {
 
+        boolean flag = false;
+
         String path = GetFilePath(stage);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -51,6 +54,7 @@ public class LoadXML {
         System.out.println("------------------");
 
         LayerData layerData;
+        String front_end_layer_name = null;
         for(int i = 0;i < rootChildren.getLength();i++) {
             Node node = rootChildren.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -62,6 +66,7 @@ public class LoadXML {
                         Node MouthNode = children.item(j);
                         if (MouthNode.getNodeType() == Node.ELEMENT_NODE) {
                             if (MouthNode.getNodeName().equals("Layer")) {
+                                flag = true;
                                 System.out.println("レイヤー内部表現：" + ((Element)MouthNode).getAttribute("inside"));
                                 /*
                                 * 内部表現をセット
@@ -75,7 +80,8 @@ public class LoadXML {
                                     * このレイヤーデータをLayersTreeに追加
                                     * 最初にLayersTreeに関する情報が来る場所なので、ここでLayersTreeに追加
                                      */
-                                    Main.addLayer(mouth_info.getTextContent(), LayerData.LayerDataType.Mouth, layersTree);
+                                    //Main.addLayer(mouth_info.getTextContent(), LayerData.LayerDataType.Mouth, layersTree);
+                                    front_end_layer_name = mouth_info.getTextContent();
                                     System.out.println("レイヤー名:" + mouth_info.getTextContent());
                                 }else if(mouth_info.getNodeName().equals("dot")){
                                     System.out.println("インデックス" + ((Element)mouth_info).getAttribute("index"));
@@ -92,37 +98,41 @@ public class LoadXML {
                                     * ラインを追加
                                      */
                                     StringTokenizer tokenizer = new StringTokenizer(mouth_info.getTextContent());
-                                    Dot dot = new Dot(Integer.valueOf(tokenizer.nextToken()), Integer.valueOf(tokenizer.nextToken()));
-                                    for(Dot finding : layerData.getDotSet()){
-                                        if(finding.equals(dot)){{
-                                            layerData.connect(dot, finding);
-                                        }}
-                                    }
+                                    layerData.connect(new Dot(Integer.valueOf(tokenizer.nextToken()), Integer.valueOf(tokenizer.nextToken())),
+                                            new Dot(Integer.valueOf(tokenizer.nextToken()), Integer.valueOf(tokenizer.nextToken())));
+
                                 }
                             }
 
                         }
-                        data.add(layerData);
+                        if(flag) {
+                            layerData.setType(LayerData.LayerDataType.Mouth);
+                            data.add(layerData);
+                            layersTree.getMouth_tree().getChildren().add(new TreeItem<>(front_end_layer_name));
+                            layersTree.getMouth_tree().setExpanded(true);
+                            layersTree.increase_layers_count();
+                            flag = false;
+                        }else{
+                            layerData = null;
+                        }
                     }
                     System.out.println("------------------");
                 }else if (element.getNodeName().equals("ImagePath")){
                     NodeList image_path = node.getChildNodes();
                     for(int j = 0;j < image_path.getLength();j++) {
                         Node image_path_node = image_path.item(j);
-                        System.out.println(image_path_node.getTextContent());
-                        if (!image_path_node.getNodeName().isEmpty()) {
-                            Image img;
-                            imageLayer.setImagePath(image_path_node.getTextContent());
-                            img = new Image(image_path_node.getTextContent());
-                            image_b.setText("100.0%");
-                            imageLayer.DrawImageNormal(img, 0, 0);
-
+                        if (image_path_node.getTextContent().isEmpty()) {
+                            if(!image_path_node.getTextContent().equals("null")) {
+                                Image img;
+                                imageLayer.setImagePath(image_path_node.getTextContent());
+                                img = new Image(image_path_node.getTextContent());
+                                image_b.setText("100.0%");
+                                imageLayer.DrawImageNormal(img, 0, 0);
+                            }
                         }
                     }
                 }
             }
-
         }
-
     }
 }

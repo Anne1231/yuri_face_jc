@@ -29,8 +29,10 @@ public class Preview {
         /*
         *指定されたタイプのみ抽出してデータリストに追加
          */
-        data.stream().filter(layerData -> layerData.getType() == type)
-                .forEach(layerData -> datalist.add(layerData));
+        data.forEach(layerData -> {
+            if(layerData.getType() == type)
+                datalist.add(layerData);
+        });
         this.type = type;
         this.mill_sec = mill_sec;
     }
@@ -40,13 +42,13 @@ public class Preview {
         animation = new Timeline(new KeyFrame(Duration.millis(mill_sec), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                now.Organize();
                 preview.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
                 int size = now.getDotSet().size();
+                ArrayList<Dot> dots = now.CreatePolygon();
                 double[] xPoints = new double[size];
                 double[] yPoints = new double[size];
                 int i = 0;
-                for(Dot dot : now.getDotSet()){
+                for(Dot dot : dots){
                     xPoints[i] = dot.getX();
                     yPoints[i] = dot.getY();
                     i++;

@@ -164,6 +164,8 @@ public class ConfigLayer {
             CurrentLayerData.DrawAllLines(lines);
 
             //消されていたドットを更新した座標に再描画
+            selecting_dot = update_dot;
+            selecting_dot.Select();
             update_dot.Draw(front, Color.RED);
         });
 

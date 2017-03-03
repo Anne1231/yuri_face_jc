@@ -48,9 +48,11 @@ public class SaveXML {
         Element image_path = document.createElement("ImagePath");
 
         String str = imageLayer.getImagePath();
-        System.out.println(str);
-        image_path.appendChild(document.createTextNode(str));
-
+        if(str == null){
+            image_path.appendChild(document.createTextNode("null"));
+        }else {
+            image_path.appendChild(document.createTextNode(str));
+        }
         // XML文書の作成
         Element catalog = document.createElement("catalog");
         document.appendChild(catalog);

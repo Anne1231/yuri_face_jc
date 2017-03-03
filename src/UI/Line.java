@@ -38,11 +38,21 @@ public class Line {
         }
     }
 
+    public Line clone(){
+        return new Line(this.begin.clone(), this.end.clone());
+    }
+
     public Point2i getBegin() {
         return begin;
     }
 
     public Point2i getEnd() {
         return end;
+    }
+
+    public boolean equals(Line line) {
+        return (line.getBegin().equals(this.getBegin()) && line.getBegin().equals(this.getEnd()))
+                ||
+                (line.getBegin().equals(this.getEnd()) && line.getBegin().equals(this.getBegin()));
     }
 }

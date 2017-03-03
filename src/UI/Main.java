@@ -236,7 +236,7 @@ public class Main extends Application {
         });
 
         front.getCanvas().setOnMouseMoved(event -> {
-            if(layersTree.getLayers_count() == 0){
+            if(layersTree.getLayers_count() == 0 || CurrentLayerData == null){
                 return;
             }
             for(final Dot p : CurrentLayerData.getDotSet()){
@@ -415,13 +415,13 @@ public class Main extends Application {
 
         dev.setOnAction(event -> {
             /*
-            CurrentLayerData.Organize();
             preview.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-            int size = CurrentLayerData.getDotList().size();
+            int size = CurrentLayerData.getDotSet().size();
             double[] xPoints = new double[size];
             double[] yPoints = new double[size];
+            ArrayList<Dot> dots = CurrentLayerData.CreatePolygon();
             int i = 0;
-            for(Dot dot : CurrentLayerData.getDotList()){
+            for(Dot dot : dots){
                 xPoints[i] = dot.getX();
                 yPoints[i] = dot.getY();
                 i++;
