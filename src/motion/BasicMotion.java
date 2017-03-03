@@ -19,33 +19,24 @@ import static UI.UIValues.WINDOW_WIDTH;
  */
 public class BasicMotion {
     private String motion_name;
-    private ArrayList<LayerData> motion_data;
-    private LayerData now;
+    private ArrayList<BasicMotionFrame> motion_data;
+    private BasicMotionFrame now;
     private Timeline motion;
     private int mill_sec;
 
-    public BasicMotion(String name){
+    public BasicMotion(String name, ArrayList<LayerData> layer_datas){
         motion_name = name;
         motion_data = new ArrayList<>();
+        layer_datas.forEach(layerData -> motion_data.add(new BasicMotionFrame(layerData)));
     }
 
     public void preview(Layer preview_layer){
         now = motion_data.get(0);
+
         motion = new Timeline(new KeyFrame(Duration.millis(mill_sec), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                preview_layer.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-                int size = now.getDotSet().size();
-                ArrayList<Dot> dots = now.CreatePolygon();
-                double[] xPoints = new double[size];
-                double[] yPoints = new double[size];
-                int i = 0;
-                for(Dot dot : dots){
-                    xPoints[i] = dot.getX();
-                    yPoints[i] = dot.getY();
-                    i++;
-                }
-                preview_layer.getGraphicsContext().fillPolygon(xPoints, yPoints, size);
+                now.Draw(preview_layer);
                 if(motion_data.indexOf(now) == motion_data.size() - 1){
                     motion.stop();
                 }else {
@@ -58,7 +49,7 @@ public class BasicMotion {
         motion.play();
     }
 
-    public ArrayList<LayerData> getMotion_data() {
+    public ArrayList<BasicMotionFrame> getMotion_data() {
         return motion_data;
     }
 
