@@ -17,11 +17,10 @@ public class UIValues {
 
     static final double LIST_TO_CANVAS_WIDTH = 10;
 
-    static final double LAYER_LABEL_HEIGHT = 20;
 
     static final double LAYER_LIST_WIDTH = 150.0;
-    static final double LAYER_LIST_HEIGHT = 450;
-    static final double LAYER_LIST_SCREEN_Y = MENU_HEIGHT + LAYER_LABEL_HEIGHT;
+    static final double LAYER_LIST_HEIGHT = 460;
+    static final double LAYER_LIST_SCREEN_Y = MENU_HEIGHT;
 
     static final int INIT_GRID_INTERVAL = 30;
 

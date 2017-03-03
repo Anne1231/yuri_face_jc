@@ -103,20 +103,13 @@ public class Main extends Application {
         ConfigImageLayer(image_layer);
         SettingAnchor(preview);
 
-        /*
-        * ラベルの設定
-         */
-        Label layer_label = new Label("レイヤー");
-        AnchorPane.setTopAnchor(layer_label, MENU_HEIGHT);
-        AnchorPane.setLeftAnchor(layer_label, UIValues.LAYER_LIST_WIDTH / 3);
-
         Label bairitsu_label = new Label("下敷き画像倍率");
         AnchorPane.setBottomAnchor(bairitsu_label, UIValues.FOOTER_HEIGHT + 30);
         AnchorPane.setLeftAnchor(bairitsu_label, UIValues.LAYER_LIST_WIDTH / 3);
 
         TextField image_bairitsu = new TextField("100.0%");
         image_bairitsu.setAlignment(Pos.BASELINE_RIGHT);
-        image_bairitsu.setPrefWidth(LAYER_LIST_WIDTH - 20);
+        image_bairitsu.setMaxWidth(LAYER_LIST_WIDTH);
         AnchorPane.setBottomAnchor(image_bairitsu, UIValues.FOOTER_HEIGHT + 5);
         AnchorPane.setLeftAnchor(image_bairitsu, 0.0);
 
@@ -138,7 +131,7 @@ public class Main extends Application {
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, layersTree.getTreeView(), motionTree.getTreeView(), layer_label, bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
+        root.getChildren().addAll(menubar, layersTree.getTreeView(), motionTree.getTreeView(),bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
 
         /*
         * レイヤーの順番をここで描画

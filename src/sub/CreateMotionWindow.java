@@ -78,7 +78,7 @@ public class CreateMotionWindow extends Stage {
 
         TextField motion_name = new TextField();
         motion_name.setText("モーション名を入力してください");
-        motion_name.setMaxWidth(300.0);
+        motion_name.setMaxWidth(330.0);
 
         motion_name_box.getChildren().addAll(motion_name_label, motion_name);
 
