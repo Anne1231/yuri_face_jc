@@ -8,10 +8,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -31,7 +28,7 @@ public class CreateMotionWindow extends Stage {
 
     private BasicMotion motion;
 
-    public CreateMotionWindow(Window window, LayersTree layersTree, LayerData.LayerDataType type){
+    public CreateMotionWindow(Window window, LayersTree layersTree, LayersTree motion_tree){
 
         setTitle("モーション作成");
         initStyle(StageStyle.UTILITY);
@@ -105,13 +102,14 @@ public class CreateMotionWindow extends Stage {
         create_button.setOnAction(event -> {
             ArrayList<LayerData> layerDatas = new ArrayList<>();
             including_layers.getItems().forEach(str -> {
-                Main.LayerDatas.stream().filter(layerData -> layerData.getType() == type).forEach(layerData -> {
+                Main.LayerDatas.stream().filter(layerData -> layerData.getType() == motion_tree.WhichType(motion_tree.getSelecting_tree())).forEach(layerData -> {
                     if(layerData.getName().equals(Main.MakeLayerdataName(str, layersTree.getMouth_tree()))){
                         layerDatas.add(layerData);
                     }
                 });
             });
             BasicMotion basicMotion = new BasicMotion(motion_name.getText(), layerDatas);
+            motion_tree.getSelecting_tree().getChildren().add(new TreeItem<>(basicMotion.getMotionName()));
             close();
         });
 

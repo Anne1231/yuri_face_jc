@@ -59,4 +59,7 @@ public class BasicMotion {
         this.mill_sec = mill_sec;
     }
 
+    public String getMotionName() {
+        return motion_name;
+    }
 }

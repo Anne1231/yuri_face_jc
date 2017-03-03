@@ -610,7 +610,7 @@ public class Main extends Application {
 
         motion_tree.setLayer_selecting(false);
 
-        create_layer.setOnAction(event -> CreateMotion(stage, layersTree, motion_tree.WhichType(motion_tree.getSelecting_tree())));
+        create_layer.setOnAction(event -> CreateMotion(stage, layersTree, motion_tree));
 
         motion_tree.getTreeView().setOnContextMenuRequested(event -> {
             if(motion_tree.getSelecting_tree() != null) {
@@ -726,9 +726,9 @@ public class Main extends Application {
     /*
     * モーションを新しく作成する関数
      */
-    private static void CreateMotion(Stage stage, LayersTree layersTree, LayerData.LayerDataType type){
+    private static void CreateMotion(Stage stage, LayersTree layersTree, LayersTree motion_tree){
         Window window = stage;
-        CreateMotionWindow createMotionWindow = new CreateMotionWindow(window, layersTree, type);
+        CreateMotionWindow createMotionWindow = new CreateMotionWindow(window, layersTree, motion_tree);
         createMotionWindow.showAndWait();
 
         /*
