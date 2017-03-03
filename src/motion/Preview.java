@@ -1,4 +1,4 @@
-package animation;
+package motion;
 
 import Layers.Layer;
 import UI.Dot;

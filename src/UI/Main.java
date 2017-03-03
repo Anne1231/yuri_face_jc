@@ -2,14 +2,8 @@ package UI;
 
 import FileIO.*;
 import Layers.*;
-import animation.Preview;
-import backend.face.Face;
-import backend.transform.TransformImage;
+import motion.Preview;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -19,10 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.omg.CORBA.SystemException;
 import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
-import sub.AskLayerType;
 import sub.CreateMotionWindow;
 
 import java.util.ArrayList;
