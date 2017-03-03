@@ -173,6 +173,20 @@ public class Main extends Application {
             if(layersTree.getLayers_count() == 0){
                 return;
             }
+            for(final Dot p : CurrentLayerData.getDotList()){
+                if(Math.abs(p.getX() - x) < 5){
+                    if(Math.abs(p.getY() - y) < 5){
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "ドットを配置しますか？", ButtonType.NO, ButtonType.YES);
+                        alert.setHeaderText("付近にドットがあります");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if(!result.isPresent() || result.get() == ButtonType.NO){
+                            return;
+                        }
+                        break;
+                    }
+                }
+            }
+
             Dot dot;
             if(gridLayer.isEnableComplete()) {
                 dot = new Dot(x, y, gridLayer.getInterval());
@@ -230,6 +244,7 @@ public class Main extends Application {
                 if(Math.abs(p.getX() - event.getX()) < 5){
                     if(Math.abs(p.getY() - event.getY()) < 5){
                         choose.setDisable(false);
+                        selecting_dot = p;
                         p.Draw(front, Color.RED);
                         break;
                     }else{
@@ -243,6 +258,48 @@ public class Main extends Application {
             }
             footer.PutText(String.valueOf((int)event.getX()) + ":" + String.valueOf((int)event.getY()), WINDOW_WIDTH - 80);
         });
+
+        front.getCanvas().setOnMouseDragged(event -> {
+            if(!ConfigLayer.dot_dragged)
+                return;
+            /*
+            * 新しい座標を決定
+             */
+            Dot update_dot;
+            if(gridLayer.isEnableComplete()) {
+                update_dot = new Dot((int)event.getX(), (int)event.getY(), gridLayer.getInterval());
+            }else{
+                update_dot = new Dot((int)event.getX(), (int)event.getY());
+            }
+
+            //現在のドットをレイヤーから消す（消しゴム）
+            selecting_dot.Erase(front);
+
+            //レイヤーデータ上で、現在地のデータを移動先の座標に変更
+            CurrentLayerData.MoveDot(selecting_dot, update_dot);
+
+            //線も移動するので一回削除
+            lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+            //さっき変更されたレイヤーデータを元に線を再描画
+            CurrentLayerData.DrawAllLines(lines);
+
+            //消されていたドットを更新した座標に再描画
+            update_dot.Draw(front, Color.RED);
+        });
+
+        front.getCanvas().setOnMousePressed(event -> {
+            if(selecting_dot == null)
+                return;
+            if(Math.abs(selecting_dot.getX() - event.getX()) < 5){
+                if(Math.abs(selecting_dot.getY() - event.getY()) < 5) {
+                    ConfigLayer.dot_dragged = true;
+                }
+            }
+        });
+
+        front.getCanvas().setOnMouseReleased(event -> ConfigLayer.dot_dragged = false);
+
 
         choose.setDisable(true);
     }

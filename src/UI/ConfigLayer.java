@@ -18,7 +18,7 @@ import static UI.UIValues.WINDOW_WIDTH;
  */
 public class ConfigLayer {
 
-    private static boolean dot_dragged = false;
+    public static boolean dot_dragged = false;
     public static void ConfigLinesLayer(LinesLayer lines, FrontDotLayer front, GridLayer gridLayer){
 
         SettingAnchor(lines);
