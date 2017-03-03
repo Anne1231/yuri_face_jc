@@ -23,6 +23,7 @@ import org.omg.CORBA.SystemException;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import sub.AskLayerType;
+import sub.CreateMotionWindow;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -615,7 +616,7 @@ public class Main extends Application {
         layersTree.getTreeView().setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
 
         ContextMenu popup_ll = new ContextMenu();
-        MenuItem create_layer = new MenuItem("新規レイヤー");
+        MenuItem create_layer = new MenuItem("新規モーション");
         MenuItem clone_item = new MenuItem("複製");
         popup_ll.getItems().addAll(create_layer, clone_item);
 
@@ -625,7 +626,7 @@ public class Main extends Application {
 
         layersTree.setLayer_selecting(false);
 
-        create_layer.setOnAction(event -> CreateLayer(stage, layersTree));
+        create_layer.setOnAction(event -> CreateMotion(stage, layersTree));
 
         layersTree.getTreeView().setOnContextMenuRequested(event -> {
             if(layersTree.getSelecting_tree() != null) {
@@ -640,10 +641,10 @@ public class Main extends Application {
         });
 
         clone_item.setOnAction(event -> {
-            TextInputDialog clone_layer = new TextInputDialog("レイヤー");
-            clone_layer.setTitle("レイヤー複製");
-            clone_layer.setHeaderText("レイヤーの複製");
-            clone_layer.setContentText("レイヤー名 :");
+            TextInputDialog clone_layer = new TextInputDialog("モーション");
+            clone_layer.setTitle("モーション複製");
+            clone_layer.setHeaderText("モーションの複製");
+            clone_layer.setContentText("モーション名 :");
             Optional<String> result = clone_layer.showAndWait();
 
             if(result.isPresent()) {
@@ -652,7 +653,7 @@ public class Main extends Application {
                 for (TreeItem<String> item : layersTree.getSelecting_tree().getChildren()) {
                     if (item.getValue().equals(result.get())) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setContentText("同名のレイヤーが存在します");
+                        alert.setContentText("同名のモーションが存在します");
                         alert.showAndWait();
                         return;
                     }
@@ -736,6 +737,31 @@ public class Main extends Application {
             }
             addLayer(result.get(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree);
         }
+    }
+
+    /*
+    * モーションを新しく作成する関数
+     */
+    private static void CreateMotion(Stage stage, LayersTree layersTree){
+        Window window = stage;
+        CreateMotionWindow createMotionWindow = new CreateMotionWindow(window);
+        createMotionWindow.showAndWait();
+
+        /*
+        if(result.isPresent()){
+            if(result.get().isEmpty())
+                return;
+            for(TreeItem<String> item : layersTree.getSelecting_tree().getChildren()){
+                if(item.getValue().equals(result.get())){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("同名のモーションが存在します");
+                    alert.showAndWait();
+                    return;
+                }
+            }
+            addLayer(result.get(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree);
+        }
+        */
     }
 
     /*
