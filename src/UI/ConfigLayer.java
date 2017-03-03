@@ -33,14 +33,11 @@ public class ConfigLayer {
         * ドット連結
          */
         cat_dot.setOnAction(event -> {
-            for(final Dot p : CurrentLayerData.getDotList()){
+            for(final Dot p : CurrentLayerData.getDotSet()){
                 if(Math.abs(p.getX() - x) < 5){
                     if(Math.abs(p.getY() - y) < 5){
                         if(!p.isSelected()){
-                            lines.getGraphicsContext().setLineWidth(0.5);
-                            lines.getGraphicsContext().setStroke(Color.BLACK);
-                            lines.getGraphicsContext().strokeLine(selecting_dot.getX(), selecting_dot.getY(), p.getX(), p.getY());
-                            selecting_dot.Connect(p);
+                            CurrentLayerData.connect(selecting_dot, p).Draw(lines, 0.5, Color.BLACK);
                             selecting_dot.UnSelect();
                             SwitchFrontLayer(front);
                             break;
@@ -121,7 +118,7 @@ public class ConfigLayer {
         });
 
         lines.getCanvas().setOnMouseMoved(event -> {
-            for(Dot p : CurrentLayerData.getDotList()){
+            for(Dot p : CurrentLayerData.getDotSet()){
                 if(p.isSelected())
                     continue;
                 if(Math.abs(p.getX() - event.getX()) < 5){

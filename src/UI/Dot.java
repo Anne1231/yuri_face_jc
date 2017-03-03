@@ -12,11 +12,9 @@ import java.util.ArrayList;
 public class Dot extends Point2i {
 
     private Boolean selected;
-    private ArrayList<Dot> connected_dots;
 
     public Dot(int x, int y){
         super(x, y);
-        connected_dots = new ArrayList<>();
         selected = false;
     }
 
@@ -34,8 +32,6 @@ public class Dot extends Point2i {
             this.y -= (y % interval);
         }
 
-
-        connected_dots = new ArrayList<>();
         selected = false;
     }
 
@@ -63,24 +59,14 @@ public class Dot extends Point2i {
         layer.getGraphicsContext().clearRect(this.x-3, this.y-3, 11, 11);
     }
 
-    public void Connect(Dot dot){
-        connected_dots.add(dot);
-    }
-
     public boolean equals(Dot dot){
         return (this.x == dot.getX() && this.y == dot.getY());
     }
 
-    public ArrayList<Dot> getConnected_dots() {
-        return connected_dots;
-    }
 
     public Dot clone(){
         Dot dot = new Dot(this.x, this.y);
         dot.selected = this.selected;
-        for(Dot connect : this.connected_dots){
-            dot.Connect(connect);
-        }
         return dot;
     }
 
@@ -91,5 +77,10 @@ public class Dot extends Point2i {
             System.out.println("選択状態");
         else
             System.out.println("未選択状態");
+    }
+
+    @Override
+    public int hashCode() {
+        return ((this.x << 16) | (this.getY()));
     }
 }

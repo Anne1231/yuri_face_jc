@@ -24,7 +24,7 @@ public class Face {
         original = src_image.clone();
         Rect rect;
         for(LayerData data : LayerDatas){
-            rect = Geometry.MakeBoundingBox(data.getDotList(), original.size());
+            rect = Geometry.MakeBoundingBox(data.getDotSet(), original.size());
             switch (data.getType()){
                 case FaceBase:
                     faceBase = new FaceBase(data, TransformImage.CutImage(original, rect), rect);

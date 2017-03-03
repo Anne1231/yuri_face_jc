@@ -4,13 +4,13 @@ import UI.Dot;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by Akihiro on 2017/03/01.
  */
 public class Geometry {
-    public static Rect MakeBoundingBox(ArrayList<Dot> dots, Size size){
+    public static Rect MakeBoundingBox(HashSet<Dot> dots, Size size){
         int start_x, start_y, end_x, end_y;
         start_x = (int)size.width;
         start_y = (int)size.height;

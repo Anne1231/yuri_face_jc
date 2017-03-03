@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import org.opencv.core.Point;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by Akihiro on 2017/02/26.
@@ -64,121 +66,92 @@ public class LayerData {
 
     private LayerDataType type;
     private String name;
-    private ArrayList<Dot> dots;
+    private HashSet<Dot> dot_set;
+    private ArrayList<Line> line_list;
 
     public LayerData(){
-        dots = new ArrayList<>();
+        dot_set = new HashSet<>();
+        line_list = new ArrayList<>();
         name = new String();
     }
 
     public LayerData(String layer_name, LayerDataType type){
-        dots = new ArrayList<>();
+        dot_set = new HashSet<>();
+        line_list = new ArrayList<>();
         name = layer_name;
         this.type = type;
     }
 
     public LayerData clone(){
         LayerData layerData = new LayerData(this.name, this.type);
-        for(Dot dot : this.dots){
-            layerData.dots.add(dot.clone());
-        }
+        dot_set.forEach(dot -> layerData.dot_set.add(dot.clone()));
+        line_list.forEach(line -> layerData.connect(line));
         return layerData;
     }
 
     public void AddDot(Dot dot){
-        dots.add(dot);
+        dot_set.add(dot);
     }
 
-    public ArrayList<Dot> getDotList(){
-        return dots;
-    }
+    public HashSet<Dot> getDotSet() { return dot_set; }
 
     public String getName() {
         return name;
     }
 
     public void AllDraw(Layer front, Layer lines){
-        for(Dot dot : dots){
-            dot.Draw(front, Color.BLACK);
-            for(Dot connected : dot.getConnected_dots()){
-                lines.getGraphicsContext().setLineWidth(0.5);
-                lines.getGraphicsContext().setStroke(Color.BLACK);
-                lines.getGraphicsContext().strokeLine(dot.getX(), dot.getY(), connected.getX(), connected.getY());
-            }
-        }
+        line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
+        dot_set.forEach(dot -> dot.Draw(front, Color.BLACK));
     }
 
     public void DrawAllLines(LinesLayer layer){
-        for(Dot dot : dots){
-            for(Dot connected : dot.getConnected_dots()){
-                layer.getGraphicsContext().setLineWidth(0.5);
-                layer.getGraphicsContext().setStroke(Color.BLACK);
-                layer.getGraphicsContext().strokeLine(dot.getX(), dot.getY(), connected.getX(), connected.getY());
-            }
-        }
+        line_list.forEach(line -> line.Draw(layer, 0.5, Color.BLACK));
     }
 
     public void RemoveDot(Dot select_dot){
-        Dot will_remove = new Dot(select_dot.getX(), select_dot.getY());
         short[] memo = new short[UIValues.MAX__CONNECTION];
         java.util.Arrays.fill(memo, (short)(-1));
 
-        short i = 0, index;
+        short i, index;
+        dot_set.remove(select_dot);
 
-        for(Dot dot : this.dots){
-            if(dot.equals(will_remove)){
-                memo[0] = i;
-                break;
+        memo[0] = -1;
+
+        i = 0;
+        index = 0;
+        for(Line line : line_list){
+            if(line.contains(select_dot)){
+                memo[index] = i;
+                index++;
             }
             i++;
         }
-
-        this.dots.remove(memo[0]);
-        memo[0] = -1;
-
-        for(Dot dot : this.dots){
-            i = 0;
-            index = 0;
-            for(Dot connected : dot.getConnected_dots()){
-                if(connected.equals(will_remove)){
-                    memo[index] = i;
-                    index++;
-                }
-                i++;
-            }
-            for(i = 0;memo[i] != -1;i++){
-                dot.getConnected_dots().remove(memo[i]);
-            }
-            java.util.Arrays.fill(memo, (short)(-1));
+        for(i = 0;memo[i] != -1;i++){
+            line_list.remove(memo[i]);
         }
+    }
+
+    public Line connect(Dot begin, Dot end){
+        Line line = new Line(begin, end);
+        line_list.add(line);
+        return line;
+    }
+
+    public void connect(Line line){
+        line_list.add(line);
     }
 
     public void MoveDot(Dot select_dot, Dot update_dot){
 
-        for(Dot dot : this.dots){
-            for(Dot connected : dot.getConnected_dots()){
-                if(connected.equals(select_dot)){
-                    connected.setX(update_dot.getX());
-                    connected.setY(update_dot.getY());
-                }
-            }
-        }
+        line_list.forEach(line -> line.exchange(select_dot, update_dot));
 
-        for(Dot dot : this.dots){
-            if(dot.equals(select_dot)){
-                dot.setX(update_dot.getX());
-                dot.setY(update_dot.getY());
-                break;
-            }
-        }
+        dot_set.remove(select_dot);
+        dot_set.add(update_dot);
+
     }
 
     public LayerDataType getType() {
         return type;
-    }
-
-    public ArrayList<Dot> getDots() {
-        return dots;
     }
 
     public void setName(String name) {
@@ -189,7 +162,13 @@ public class LayerData {
         this.type = type;
     }
 
+    public ArrayList<Line> getLineList() {
+        return line_list;
+    }
+
+
     public void Organize(){
+        /*
         ArrayList<Dot> new_dots = new ArrayList<>();
 
         int size = this.dots.size();
@@ -231,9 +210,11 @@ public class LayerData {
 
         this.dots = null;
         this.dots = new_dots;
+        */
     }
 
     public Dot[] organize_sub_find_conect(Dot finding){
+        /*
         char i = 0;
         Dot[] result = new Dot[2];
         result[0] = result[1] = null;
@@ -247,6 +228,9 @@ public class LayerData {
             }
         }
         return result;
+    */
+        return null;
     }
+
 
 }

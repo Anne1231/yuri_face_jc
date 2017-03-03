@@ -1,8 +1,10 @@
 package FileIO;
 
 import Layers.ImageLayer;
+import Layers.Layer;
 import UI.Dot;
 import UI.LayerData;
+import UI.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -38,7 +40,7 @@ public class Save {
                 printWriter.println("LayerName " + layerData.getName() + " " + LayerData.LayerDataType.ToString(layerData.getType()));
                 printWriter.println("{");
                 printWriter.println("dots");
-                for(Dot dot : layerData.getDotList()){
+                for(Dot dot : layerData.getDotSet()){
                     printWriter.println(
                             (int)(dot.getX() / imageLayer.getBairitsu())
                                     +
@@ -48,24 +50,22 @@ public class Save {
                     );
                 }
                 printWriter.println("lines");
-                for(Dot dot : layerData.getDotList()){
-                    for(Dot connected : dot.getConnected_dots()){
+                for(Line line : layerData.getLineList()){
                         printWriter.println(
-                                (int)(dot.getX() / imageLayer.getBairitsu())
+                                (int)(line.getBegin().getX() / imageLayer.getBairitsu())
                                         +
                                         " "
                                         +
-                                        (int)(dot.getY() / imageLayer.getBairitsu())
+                                        (int)(line.getBegin().getY() / imageLayer.getBairitsu())
                                         +
                                         " "
                                         +
-                                        (int)(connected.getX() / imageLayer.getBairitsu())
+                                        (int)(line.getEnd().getX() / imageLayer.getBairitsu())
                                         +
                                         " "
                                         +
-                                        (int)(connected.getY() / imageLayer.getBairitsu())
+                                        (int)(line.getEnd().getY() / imageLayer.getBairitsu())
                         );
-                    }
                 }
 
                 printWriter.println("}");

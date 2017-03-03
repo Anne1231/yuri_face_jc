@@ -93,9 +93,9 @@ public class LoadXML {
                                      */
                                     StringTokenizer tokenizer = new StringTokenizer(mouth_info.getTextContent());
                                     Dot dot = new Dot(Integer.valueOf(tokenizer.nextToken()), Integer.valueOf(tokenizer.nextToken()));
-                                    for(Dot finding : layerData.getDotList()){
+                                    for(Dot finding : layerData.getDotSet()){
                                         if(finding.equals(dot)){{
-                                            dot.getConnected_dots().add(finding);
+                                            layerData.connect(dot, finding);
                                         }}
                                     }
                                 }

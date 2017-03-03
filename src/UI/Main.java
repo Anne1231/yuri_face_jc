@@ -174,7 +174,7 @@ public class Main extends Application {
             if(layersTree.getLayers_count() == 0){
                 return;
             }
-            for(final Dot p : CurrentLayerData.getDotList()){
+            for(final Dot p : CurrentLayerData.getDotSet()){
                 if(Math.abs(p.getX() - x) < 5){
                     if(Math.abs(p.getY() - y) < 5){
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "ドットを配置しますか？", ButtonType.NO, ButtonType.YES);
@@ -202,7 +202,7 @@ public class Main extends Application {
         * ドット選択処理
          */
         choose.setOnAction(event -> {
-            for(final Dot p : CurrentLayerData.getDotList()){
+            for(final Dot p : CurrentLayerData.getDotSet()){
                 if(Math.abs(p.getX() - x) < 5){
                     if(Math.abs(p.getY() - y) < 5){
                         p.Select();
@@ -239,7 +239,7 @@ public class Main extends Application {
             if(layersTree.getLayers_count() == 0){
                 return;
             }
-            for(final Dot p : CurrentLayerData.getDotList()){
+            for(final Dot p : CurrentLayerData.getDotSet()){
                 if(p.isSelected())
                     continue;
                 if(Math.abs(p.getX() - event.getX()) < 5){
@@ -286,7 +286,8 @@ public class Main extends Application {
             CurrentLayerData.DrawAllLines(lines);
 
             //消されていたドットを更新した座標に再描画
-            update_dot.Draw(front, Color.RED);
+            selecting_dot = update_dot;
+            selecting_dot.Draw(front, Color.RED);
         });
 
         front.getCanvas().setOnMousePressed(event -> {

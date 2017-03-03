@@ -77,14 +77,14 @@ public class OpenYFML {
                                 while(!str.equals("}")){
                                     StringTokenizer lines_tokens = new StringTokenizer(str);
                                     Dot begin_dot = new Dot(Integer.valueOf(lines_tokens.nextToken()), Integer.valueOf(lines_tokens.nextToken()));
-                                    for(Dot dot : Main.CurrentLayerData.getDotList()){
+                                    for(Dot dot : Main.CurrentLayerData.getDotSet()){
                                         if(!dot.equals(begin_dot))
                                             continue;
 
                                         Dot end_dot = new Dot(Integer.valueOf(lines_tokens.nextToken()), Integer.valueOf(lines_tokens.nextToken()));
-                                        for(Dot finding_connected : Main.CurrentLayerData.getDotList()){
+                                        for(Dot finding_connected : Main.CurrentLayerData.getDotSet()){
                                             if(finding_connected.equals(end_dot)){
-                                                dot.Connect(finding_connected);
+                                                Main.CurrentLayerData.connect(dot, finding_connected);
                                                 break;
                                             }
                                         }

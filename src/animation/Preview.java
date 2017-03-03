@@ -42,11 +42,11 @@ public class Preview {
             public void handle(ActionEvent event) {
                 now.Organize();
                 preview.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-                int size = now.getDotList().size();
+                int size = now.getDotSet().size();
                 double[] xPoints = new double[size];
                 double[] yPoints = new double[size];
                 int i = 0;
-                for(Dot dot : now.getDotList()){
+                for(Dot dot : now.getDotSet()){
                     xPoints[i] = dot.getX();
                     yPoints[i] = dot.getY();
                     i++;

@@ -1,10 +1,8 @@
 package FileIO;
 
 import Layers.ImageLayer;
-import UI.Dot;
-import UI.LayerData;
-import UI.LayersTree;
-import UI.Main;
+import Layers.Layer;
+import UI.*;
 import javafx.scene.control.TreeItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -48,7 +46,6 @@ public class SaveXML {
 
 
         Element image_path = document.createElement("ImagePath");
-        Element image_name_value;
 
         String str = imageLayer.getImagePath();
         System.out.println(str);
@@ -87,7 +84,7 @@ public class SaveXML {
             layer.appendChild(layer_name);
 
             int index = 0;
-            for(Dot dot : ref.getDotList()){
+            for(Dot dot : ref.getDotSet()){
                 Element dot_element = document.createElement("dot");
                 dot_element.setAttribute("index", String.valueOf(index));
                 dot_element.appendChild(document.createTextNode(String.valueOf(dot.getX())));
@@ -98,20 +95,18 @@ public class SaveXML {
             }
 
             index = 0;
-            for(Dot dot : ref.getDotList()){
-                for(Dot connect : dot.getConnected_dots()) {
+            for(Line c_line : ref.getLineList()){
                     Element line = document.createElement("line");
                     line.setAttribute("index", String.valueOf(index));
-                    line.appendChild(document.createTextNode(String.valueOf(dot.getX())));
+                    line.appendChild(document.createTextNode(String.valueOf(c_line.getBegin().getX())));
                     line.appendChild(document.createTextNode(" "));
-                    line.appendChild(document.createTextNode(String.valueOf(dot.getY())));
+                    line.appendChild(document.createTextNode(String.valueOf(c_line.getBegin().getY())));
                     line.appendChild(document.createTextNode(" "));
-                    line.appendChild(document.createTextNode(String.valueOf(connect.getX())));
+                    line.appendChild(document.createTextNode(String.valueOf(c_line.getEnd().getX())));
                     line.appendChild(document.createTextNode(" "));
-                    line.appendChild(document.createTextNode(String.valueOf(connect.getY())));
+                    line.appendChild(document.createTextNode(String.valueOf(c_line.getEnd().getY())));
                     layer.appendChild(line);
                     index++;
-                }
             }
             mouth.appendChild(layer);
         }
