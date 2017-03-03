@@ -88,8 +88,10 @@ public class Main extends Application {
          */
         MenuBar menubar = new MenuBar();
 
-        LayersTree layersTree = new LayersTree();
+        LayersTree layersTree = new LayersTree("レイヤー");
         ConfigLayerList(stage, layersTree, front, lines);
+        LayersTree motionTree = new LayersTree("モーション");
+        ConfigMotionList(stage, motionTree, front, lines);
 
         /*
         * レイヤーの各種設定
@@ -135,7 +137,7 @@ public class Main extends Application {
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, /*layer_list*/layersTree.getTreeView(), layer_label, bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
+        root.getChildren().addAll(menubar, layersTree.getTreeView(), motionTree.getTreeView(), layer_label, bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
 
         /*
         * レイヤーの順番をここで描画
@@ -508,6 +510,106 @@ public class Main extends Application {
 
     private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer front, LinesLayer lines){
         AnchorPane.setTopAnchor(layersTree.getTreeView(), UIValues.LAYER_LIST_SCREEN_Y);
+        AnchorPane.setLeftAnchor(layersTree.getTreeView(), 0.0);
+        layersTree.getTreeView().setPrefWidth(UIValues.LAYER_LIST_WIDTH);
+        layersTree.getTreeView().setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
+
+        ContextMenu popup_ll = new ContextMenu();
+        MenuItem create_layer = new MenuItem("新規レイヤー");
+        MenuItem clone_item = new MenuItem("複製");
+        popup_ll.getItems().addAll(create_layer, clone_item);
+
+        ContextMenu copy_menu = new ContextMenu();
+        MenuItem copy_item = new MenuItem("コピー");
+        copy_menu.getItems().addAll(copy_item);
+
+        layersTree.setLayer_selecting(false);
+
+        create_layer.setOnAction(event -> CreateLayer(stage, layersTree));
+
+        layersTree.getTreeView().setOnContextMenuRequested(event -> {
+            if(layersTree.getSelecting_tree() != null) {
+                popup_ll.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
+            }else if(layersTree.isLayer_selecting()){
+                copy_menu.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
+            }
+        });
+
+        copy_item.setOnAction(event -> {
+            PinnedData = CurrentLayerData;
+        });
+
+        clone_item.setOnAction(event -> {
+            TextInputDialog clone_layer = new TextInputDialog("レイヤー");
+            clone_layer.setTitle("レイヤー複製");
+            clone_layer.setHeaderText("レイヤーの複製");
+            clone_layer.setContentText("レイヤー名 :");
+            Optional<String> result = clone_layer.showAndWait();
+
+            if(result.isPresent()) {
+                if (result.get().isEmpty())
+                    return;
+                for (TreeItem<String> item : layersTree.getSelecting_tree().getChildren()) {
+                    if (item.getValue().equals(result.get())) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("同名のレイヤーが存在します");
+                        alert.showAndWait();
+                        return;
+                    }
+                }
+                addCloneLayer(result.get(), PinnedData, layersTree);
+            }
+        });
+
+        layersTree.getTreeView().setOnMouseClicked(event -> {
+            if(event.getButton() == MouseButton.PRIMARY){
+                popup_ll.hide();
+                copy_menu.hide();
+            }
+            TreeItem<String> select = layersTree.getTreeView().getSelectionModel().selectedItemProperty().get();
+
+            int depth = 0;
+            TreeItem<String> ref = select;
+            while(true){
+                if(ref == null){
+                    break;
+                }
+                ref = ref.getParent();
+                depth++;
+            }
+
+            if(depth == 2) {
+                layersTree.setSelecting_tree(select);
+            }else if(depth == 3){
+                layersTree.setLayer_selecting(true);
+                for(LayerData layer_data : LayerDatas){
+                    //select.getParent()な理由
+                    /*
+                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
+                     */
+                    if(layer_data.getName().equals(MakeLayerdataName(select.getValue(), select.getParent()))){
+                        CurrentLayerData = layer_data;
+                        SwitchLayer(CurrentLayerData, front, lines);
+                        break;
+                    }
+                }
+                //新規レイヤーメニューは表示させない
+                //裏ではnullで判定してる
+                layersTree.setSelecting_tree(null);
+            }else{
+                //新規レイヤーメニューは表示させない
+                //裏ではnullで判定してる
+                layersTree.setSelecting_tree(null);
+            }
+        });
+
+        layersTree.getTreeView().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        layersTree.getTreeView().setEditable(true);
+
+    }
+
+    private static void ConfigMotionList(Stage stage, LayersTree layersTree, FrontDotLayer front, LinesLayer lines){
+        AnchorPane.setTopAnchor(layersTree.getTreeView(), UIValues.LAYER_LIST_SCREEN_Y + LAYER_LIST_HEIGHT);
         AnchorPane.setLeftAnchor(layersTree.getTreeView(), 0.0);
         layersTree.getTreeView().setPrefWidth(UIValues.LAYER_LIST_WIDTH);
         layersTree.getTreeView().setPrefHeight(UIValues.LAYER_LIST_HEIGHT);

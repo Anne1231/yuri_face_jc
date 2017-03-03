@@ -22,8 +22,8 @@ public class LayersTree {
 
     private boolean layer_selecting;
 
-    public LayersTree(){
-        layer_root = new TreeItem<>("レイヤー");
+    public LayersTree(String tree_name){
+        layer_root = new TreeItem<>(tree_name);
         layer_root.setExpanded(true);
         mouth_tree = new TreeItem<>("口");
         right_eye_tree = new TreeItem<>("右目");
