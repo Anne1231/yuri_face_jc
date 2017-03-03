@@ -18,12 +18,14 @@ import static UI.UIValues.WINDOW_WIDTH;
  * Created by Akihiro on 2017/03/03.
  */
 public class BasicMotion {
+    private String motion_name;
     private ArrayList<LayerData> motion_data;
     private LayerData now;
     private Timeline motion;
     private int mill_sec;
 
-    public BasicMotion(){
+    public BasicMotion(String name){
+        motion_name = name;
         motion_data = new ArrayList<>();
     }
 
