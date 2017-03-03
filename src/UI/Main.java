@@ -83,7 +83,7 @@ public class Main extends Application {
         LayersTree layersTree = new LayersTree("レイヤー");
         ConfigLayerList(stage, layersTree, front, lines);
         LayersTree motionTree = new LayersTree("モーション");
-        ConfigMotionList(stage, motionTree, front, lines);
+        ConfigMotionList(stage, motionTree, layersTree, front, lines);
 
         /*
         * レイヤーの各種設定
@@ -593,11 +593,11 @@ public class Main extends Application {
 
     }
 
-    private static void ConfigMotionList(Stage stage, LayersTree layersTree, FrontDotLayer front, LinesLayer lines){
-        AnchorPane.setTopAnchor(layersTree.getTreeView(), UIValues.LAYER_LIST_SCREEN_Y + LAYER_LIST_HEIGHT);
-        AnchorPane.setLeftAnchor(layersTree.getTreeView(), 0.0);
-        layersTree.getTreeView().setPrefWidth(UIValues.LAYER_LIST_WIDTH);
-        layersTree.getTreeView().setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
+    private static void ConfigMotionList(Stage stage, LayersTree motion_tree, LayersTree layersTree, FrontDotLayer front, LinesLayer lines){
+        AnchorPane.setTopAnchor(motion_tree.getTreeView(), UIValues.LAYER_LIST_SCREEN_Y + LAYER_LIST_HEIGHT);
+        AnchorPane.setLeftAnchor(motion_tree.getTreeView(), 0.0);
+        motion_tree.getTreeView().setPrefWidth(UIValues.LAYER_LIST_WIDTH);
+        motion_tree.getTreeView().setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
 
         ContextMenu popup_ll = new ContextMenu();
         MenuItem create_layer = new MenuItem("新規モーション");
@@ -608,15 +608,15 @@ public class Main extends Application {
         MenuItem copy_item = new MenuItem("コピー");
         copy_menu.getItems().addAll(copy_item);
 
-        layersTree.setLayer_selecting(false);
+        motion_tree.setLayer_selecting(false);
 
-        create_layer.setOnAction(event -> CreateMotion(stage, layersTree));
+        create_layer.setOnAction(event -> CreateMotion(stage, layersTree, motion_tree.WhichType(motion_tree.getSelecting_tree())));
 
-        layersTree.getTreeView().setOnContextMenuRequested(event -> {
-            if(layersTree.getSelecting_tree() != null) {
-                popup_ll.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
-            }else if(layersTree.isLayer_selecting()){
-                copy_menu.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
+        motion_tree.getTreeView().setOnContextMenuRequested(event -> {
+            if(motion_tree.getSelecting_tree() != null) {
+                popup_ll.show(motion_tree.getTreeView(), event.getScreenX(), event.getScreenY());
+            }else if(motion_tree.isLayer_selecting()){
+                copy_menu.show(motion_tree.getTreeView(), event.getScreenX(), event.getScreenY());
             }
         });
 
@@ -634,7 +634,7 @@ public class Main extends Application {
             if(result.isPresent()) {
                 if (result.get().isEmpty())
                     return;
-                for (TreeItem<String> item : layersTree.getSelecting_tree().getChildren()) {
+                for (TreeItem<String> item : motion_tree.getSelecting_tree().getChildren()) {
                     if (item.getValue().equals(result.get())) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setContentText("同名のモーションが存在します");
@@ -642,16 +642,16 @@ public class Main extends Application {
                         return;
                     }
                 }
-                addCloneLayer(result.get(), PinnedData, layersTree);
+                addCloneLayer(result.get(), PinnedData, motion_tree);
             }
         });
 
-        layersTree.getTreeView().setOnMouseClicked(event -> {
+        motion_tree.getTreeView().setOnMouseClicked(event -> {
             if(event.getButton() == MouseButton.PRIMARY){
                 popup_ll.hide();
                 copy_menu.hide();
             }
-            TreeItem<String> select = layersTree.getTreeView().getSelectionModel().selectedItemProperty().get();
+            TreeItem<String> select = motion_tree.getTreeView().getSelectionModel().selectedItemProperty().get();
 
             int depth = 0;
             TreeItem<String> ref = select;
@@ -664,9 +664,9 @@ public class Main extends Application {
             }
 
             if(depth == 2) {
-                layersTree.setSelecting_tree(select);
+                motion_tree.setSelecting_tree(select);
             }else if(depth == 3){
-                layersTree.setLayer_selecting(true);
+                motion_tree.setLayer_selecting(true);
                 for(LayerData layer_data : LayerDatas){
                     //select.getParent()な理由
                     /*
@@ -680,16 +680,16 @@ public class Main extends Application {
                 }
                 //新規レイヤーメニューは表示させない
                 //裏ではnullで判定してる
-                layersTree.setSelecting_tree(null);
+                motion_tree.setSelecting_tree(null);
             }else{
                 //新規レイヤーメニューは表示させない
                 //裏ではnullで判定してる
-                layersTree.setSelecting_tree(null);
+                motion_tree.setSelecting_tree(null);
             }
         });
 
-        layersTree.getTreeView().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        layersTree.getTreeView().setEditable(true);
+        motion_tree.getTreeView().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        motion_tree.getTreeView().setEditable(true);
 
     }
 
@@ -726,9 +726,9 @@ public class Main extends Application {
     /*
     * モーションを新しく作成する関数
      */
-    private static void CreateMotion(Stage stage, LayersTree layersTree){
+    private static void CreateMotion(Stage stage, LayersTree layersTree, LayerData.LayerDataType type){
         Window window = stage;
-        CreateMotionWindow createMotionWindow = new CreateMotionWindow(window);
+        CreateMotionWindow createMotionWindow = new CreateMotionWindow(window, layersTree, type);
         createMotionWindow.showAndWait();
 
         /*

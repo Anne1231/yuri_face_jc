@@ -11,8 +11,6 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-import static UI.UIValues.WINDOW_HEIGHT;
-import static UI.UIValues.WINDOW_WIDTH;
 
 /**
  * Created by Akihiro on 2017/03/03.

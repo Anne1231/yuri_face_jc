@@ -1,7 +1,11 @@
 package sub;
 
+import UI.LayerData;
+import UI.LayersTree;
+import UI.Main;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,20 +20,25 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import motion.BasicMotion;
+
+import java.util.ArrayList;
 
 /**
  * Created by Akihiro on 2017/03/03.
  */
 public class CreateMotionWindow extends Stage {
 
-    public CreateMotionWindow(Window window){
+    private BasicMotion motion;
+
+    public CreateMotionWindow(Window window, LayersTree layersTree, LayerData.LayerDataType type){
 
         setTitle("モーション作成");
         initStyle(StageStyle.UTILITY);
         initOwner(window);
         initModality(Modality.APPLICATION_MODAL);
         setWidth(600);
-        setHeight(700);
+        setHeight(750);
 
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
@@ -84,8 +93,29 @@ public class CreateMotionWindow extends Stage {
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        HBox create_button_box = new HBox();
+        Button create_button = new Button("モーション作成");
+        create_button.setPrefWidth(130);
+        create_button.setPrefHeight(130);
+        create_button_box.getChildren().addAll(create_button);
+        create_button_box.setAlignment(Pos.BOTTOM_RIGHT);
+        create_button_box.setSpacing(20.0);
+        create_button_box.setPadding(new Insets(10, 10, 10, 10));
 
-        root.getChildren().addAll(layer_for_motion, including_layers, add, motion_name_box);
+        create_button.setOnAction(event -> {
+            ArrayList<LayerData> layerDatas = new ArrayList<>();
+            including_layers.getItems().forEach(str -> {
+                Main.LayerDatas.stream().filter(layerData -> layerData.getType() == type).forEach(layerData -> {
+                    if(layerData.getName().equals(Main.MakeLayerdataName(str, layersTree.getMouth_tree()))){
+                        layerDatas.add(layerData);
+                    }
+                });
+            });
+            BasicMotion basicMotion = new BasicMotion(motion_name.getText(), layerDatas);
+            close();
+        });
+
+        root.getChildren().addAll(layer_for_motion, including_layers, add, motion_name_box, create_button_box);
 
         setScene(new Scene(root));
 
