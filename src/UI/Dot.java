@@ -79,7 +79,7 @@ public class Dot extends Point2i {
         Dot dot = new Dot(this.x, this.y);
         dot.selected = this.selected;
         for(Dot connect : this.connected_dots){
-            dot.Connect(new Dot(connect.getX(), connect.getY()));
+            dot.Connect(connect);
         }
         return dot;
     }

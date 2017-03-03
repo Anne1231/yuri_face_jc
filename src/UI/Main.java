@@ -2,6 +2,7 @@ package UI;
 
 import FileIO.*;
 import Layers.*;
+import animation.Preview;
 import backend.face.Face;
 import backend.transform.TransformImage;
 import javafx.application.Application;
@@ -412,6 +413,7 @@ public class Main extends Application {
         });
 
         dev.setOnAction(event -> {
+            /*
             CurrentLayerData.Organize();
             preview.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
             int size = CurrentLayerData.getDotList().size();
@@ -424,6 +426,11 @@ public class Main extends Application {
                 i++;
             }
             preview.getGraphicsContext().fillPolygon(xPoints, yPoints, size);
+            */
+
+            Preview preview1 = new Preview(LayerDatas, LayerData.LayerDataType.Mouth, 100);
+            preview1.show(preview);
+
         });
 
         file.getItems().addAll(open_yfml, open, save, quit);
