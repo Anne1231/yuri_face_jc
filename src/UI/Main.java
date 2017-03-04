@@ -96,8 +96,7 @@ public class Main extends Application {
         * アルファ
         */
         VBox box = new VBox();
-        Button test = new Button("test");
-        box.getChildren().addAll(layersTree.getTreeView(), test);
+        box.getChildren().addAll(layersTree.getTreeView());
         Tab layer_tab = new Tab("レイヤー");
         Tab motion_tab = new Tab("モーション");
         TabPane tabs = new TabPane();
@@ -119,19 +118,16 @@ public class Main extends Application {
         ConfigImageLayer(image_layer);
         SettingAnchor(preview);
 
-        Label bairitsu_label = new Label("下敷き画像倍率");
-        AnchorPane.setBottomAnchor(bairitsu_label, UIValues.FOOTER_HEIGHT + 30);
-        AnchorPane.setLeftAnchor(bairitsu_label, UIValues.LAYER_LIST_WIDTH / 3);
+        /*
+        *下敷き画像関係
+         */
+        BackGroundImageUI backGroundImageUI = new BackGroundImageUI();
+        AnchorPane.setBottomAnchor(backGroundImageUI.getRoot(), UIValues.FOOTER_HEIGHT + 5);
+        AnchorPane.setLeftAnchor(backGroundImageUI.getRoot(), 0.0);
 
-        TextField image_bairitsu = new TextField("100.0%");
-        image_bairitsu.setAlignment(Pos.BASELINE_RIGHT);
-        image_bairitsu.setMaxWidth(LAYER_LIST_WIDTH);
-        AnchorPane.setBottomAnchor(image_bairitsu, UIValues.FOOTER_HEIGHT + 5);
-        AnchorPane.setLeftAnchor(image_bairitsu, 0.0);
-
-        image_bairitsu.setOnAction(event -> {
-            double result = Double.parseDouble(image_bairitsu.getText().replaceAll("[^.0-9]",""));
-            image_bairitsu.setText(result + "%");
+        backGroundImageUI.getImage_bairitsu_field().setOnAction(event -> {
+            double result = Double.parseDouble(backGroundImageUI.getImage_bairitsu_field().getText().replaceAll("[^.0-9]",""));
+            backGroundImageUI.getImage_bairitsu_field().setText(result + "%");
             result /= 100.0;
             Image image = image_layer.getImage();
             image_layer.clear();
@@ -141,13 +137,13 @@ public class Main extends Application {
         /*
         * メニューバーの設定
          */
-        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, image_bairitsu, layersTree);
+        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, backGroundImageUI.getImage_bairitsu_field(), layersTree);
 
 
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, tabs, bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
+        root.getChildren().addAll(menubar, tabs, backGroundImageUI.getRoot(), front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
 
         /*
         * レイヤーの順番をここで描画

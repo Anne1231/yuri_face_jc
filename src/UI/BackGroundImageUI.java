@@ -4,13 +4,17 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Created by Akihiro on 2017/03/04.
  */
 public class BackGroundImageUI {
-    private VBox root;
+    private StackPane root;
     private CheckBox display;
     private Label bairitsu_label;
     private Label image_place;
@@ -21,7 +25,9 @@ public class BackGroundImageUI {
     private TextField image_y;
 
     public BackGroundImageUI(){
-        root = new VBox();
+        root = new StackPane();
+
+        VBox base = new VBox();
 
         display = new CheckBox("下敷き画像を表示");
         display.setDisable(false);
@@ -34,9 +40,12 @@ public class BackGroundImageUI {
         y_label = new Label("Y位置");
 
         image_bairitsu = new TextField("100.0%");
+        image_bairitsu.setMaxWidth(UIValues.LAYER_LIST_WIDTH);
 
         image_x = new TextField("0");
         image_y = new TextField("0");
+        image_x.setMaxWidth(UIValues.LAYER_LIST_WIDTH / 2);
+        image_y.setMaxWidth(UIValues.LAYER_LIST_WIDTH / 2);
 
         VBox x_box = new VBox();
         x_box.getChildren().addAll(x_label, image_x);
@@ -53,11 +62,17 @@ public class BackGroundImageUI {
         VBox image_bairitsu_box = new VBox();
         image_bairitsu_box.getChildren().addAll(bairitsu_label, image_bairitsu);
 
-        root.getChildren().addAll(display, place_box, image_bairitsu_box);
+        Rectangle rect = new Rectangle(0, 1000, UIValues.LAYER_LIST_WIDTH, 200);
+        rect.setFill(Color.WHITE);
+
+        base.getChildren().addAll(rect, display, place_box, image_bairitsu_box);
+        base.setSpacing(10);
+
+        root.getChildren().addAll(rect, base);
 
     }
 
-    public VBox getRoot() {
+    public StackPane getRoot() {
         return root;
     }
 
@@ -85,7 +100,7 @@ public class BackGroundImageUI {
         this.bairitsu_label = bairitsu_label;
     }
 
-    public TextField getImage_bairitsu() {
+    public TextField getImage_bairitsu_field() {
         return image_bairitsu;
     }
 
