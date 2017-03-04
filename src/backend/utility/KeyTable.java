@@ -1,26 +1,26 @@
 package backend.utility;
 
-import java.util.HashSet;
+import javafx.scene.input.KeyCode;
 
 /**
  * Created by Akihiro on 2017/03/04.
  */
 public class KeyTable {
-    private HashSet<Character> key_hashset;
+    private KeyCode current;
 
     public KeyTable(){
-        key_hashset = new HashSet<>();
+        current = null;
     }
 
-    public void press(Character character){
-        key_hashset.add(character);
+    public void press(KeyCode code){
+        current = code;
     }
 
-    public void release(Character character){
-        key_hashset.remove(character);
+    public void release(KeyCode code){
+        current = null;
     }
 
-    private boolean isPressed(Character character){
-        return key_hashset.contains(character);
+    public boolean isPressed(KeyCode code){
+        return current == code;
     }
 }

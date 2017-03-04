@@ -2,6 +2,8 @@ package UI;
 
 import FileIO.*;
 import Layers.*;
+import backend.utility.KeyTable;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import motion.BasicMotion;
 import motion.Preview;
@@ -36,6 +38,7 @@ public class Main extends Application {
     public static ArrayList<BasicMotion> basicMotions = new ArrayList<>();
     public static ArrayList<LayerData> LayerDatas = new ArrayList<>();
     public static Footer footer;
+    private static KeyTable keyTable = new KeyTable();
 
     @Override
     public void start(Stage stage){
@@ -160,9 +163,46 @@ public class Main extends Application {
          */
         Scene scene = new Scene(root);
 
+        scene.setOnKeyPressed(event -> {
+            System.out.println("PRESS");
+            keyTable.press(event.getCode());
+        });
+        scene.setOnKeyReleased(event -> {
+            System.out.println("RELEASE");
+            keyTable.release(event.getCode());
+        });
+
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    private static void putDot(LayersTree layersTree, GridLayer gridLayer, Layer put_layer){
+        if(layersTree.getLayers_count() == 0){
+            return;
+        }
+        for(final Dot p : CurrentLayerData.getDotSet()){
+            if(Math.abs(p.getX() - x) < 5){
+                if(Math.abs(p.getY() - y) < 5){
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "ドットを配置しますか？", ButtonType.NO, ButtonType.YES);
+                    alert.setHeaderText("付近にドットがあります");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if(!result.isPresent() || result.get() == ButtonType.NO){
+                        return;
+                    }
+                    break;
+                }
+            }
+        }
+
+        Dot dot;
+        if(gridLayer.isEnableComplete()) {
+            dot = new Dot(x, y, gridLayer.getInterval());
+        }else{
+            dot = new Dot(x, y);
+        }
+        dot.Draw(put_layer, Color.BLACK);
+        CurrentLayerData.AddDot(dot);
     }
 
     /*
@@ -180,31 +220,7 @@ public class Main extends Application {
         * ドット配置処理
          */
         put.setOnAction(event -> {
-            if(layersTree.getLayers_count() == 0){
-                return;
-            }
-            for(final Dot p : CurrentLayerData.getDotSet()){
-                if(Math.abs(p.getX() - x) < 5){
-                    if(Math.abs(p.getY() - y) < 5){
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "ドットを配置しますか？", ButtonType.NO, ButtonType.YES);
-                        alert.setHeaderText("付近にドットがあります");
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if(!result.isPresent() || result.get() == ButtonType.NO){
-                            return;
-                        }
-                        break;
-                    }
-                }
-            }
-
-            Dot dot;
-            if(gridLayer.isEnableComplete()) {
-                dot = new Dot(x, y, gridLayer.getInterval());
-            }else{
-                dot = new Dot(x, y);
-            }
-            dot.Draw(front, Color.BLACK);
-            CurrentLayerData.AddDot(dot);
+            putDot(layersTree, gridLayer, front);
         });
 
         /*
@@ -226,11 +242,6 @@ public class Main extends Application {
         });
         popup.getItems().addAll(put, choose);
 
-        front.getCanvas().setOnMouseClicked(event -> {
-            x = (int)event.getX();
-            y = (int)event.getY();
-        });
-
         front.getCanvas().setOnContextMenuRequested(event -> {
             if(layersTree.getLayers_count() == 0){
                 return;
@@ -242,6 +253,9 @@ public class Main extends Application {
             popup.hide();
             x = (int)event.getX();
             y = (int)event.getY();
+            if(keyTable.isPressed(KeyCode.D)){
+                putDot(layersTree, gridLayer, front);
+            }
         });
 
         front.getCanvas().setOnMouseMoved(event -> {
