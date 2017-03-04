@@ -1,5 +1,7 @@
 package UI;
 
+import javax.swing.*;
+
 /**
  * Created by Akihiro on 2017/02/25.
  */
@@ -21,6 +23,9 @@ public class UIValues {
     static final double LAYER_LIST_WIDTH = 150.0;
     static final double LAYER_LIST_HEIGHT = 460;
     static final double LAYER_LIST_SCREEN_Y = MENU_HEIGHT;
+
+    static final double LAYER_WIDTH = WINDOW_WIDTH - (LAYER_LIST_WIDTH * 2) - 20;
+    static final double LAYER_HEIGHT = WINDOW_HEIGHT - MENU_HEIGHT - FOOTER_HEIGHT - 45;
 
     static final int INIT_GRID_INTERVAL = 30;
 

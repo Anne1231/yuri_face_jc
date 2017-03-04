@@ -9,19 +9,19 @@ import javafx.scene.layout.AnchorPane;
  */
 public class LayersTree {
 
-    private TreeItem<String> layer_root;
-    private TreeItem<String> mouth_tree;
-    private TreeItem<String> right_eye_tree;
-    private TreeItem<String> left_eye_tree;
-    private TreeItem<String> right_eyebrows_tree;
-    private TreeItem<String> left_eyebrows_tree;
-    private TreeView<String> treeView;
-    private TreeItem<String> selecting_tree;
-    private String selecting;
-    private int layers_count;
-    private char selecting_depth;
+    protected TreeItem<String> layer_root;
+    protected TreeItem<String> mouth_tree;
+    protected TreeItem<String> right_eye_tree;
+    protected TreeItem<String> left_eye_tree;
+    protected TreeItem<String> right_eyebrows_tree;
+    protected TreeItem<String> left_eyebrows_tree;
+    protected TreeView<String> treeView;
+    protected TreeItem<String> selecting_tree;
+    protected String selecting;
+    protected int layers_count;
+    protected char selecting_depth;
 
-    private boolean layer_selecting;
+    protected boolean layer_selecting;
 
     public LayersTree(String tree_name){
         layer_root = new TreeItem<>(tree_name);

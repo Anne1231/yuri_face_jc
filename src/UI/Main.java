@@ -68,11 +68,11 @@ public class Main extends Application {
         /*
         * 重要なグラフィックレイヤーたち
          */
-        FrontDotLayer front = new FrontDotLayer(WINDOW_WIDTH, WINDOW_HEIGHT);       //ドットを描画するレイヤー
-        LinesLayer lines = new LinesLayer(WINDOW_WIDTH, WINDOW_HEIGHT);       //線を描画するレイヤー
-        GridLayer grid  = new GridLayer(WINDOW_WIDTH, WINDOW_HEIGHT, INIT_GRID_INTERVAL);       //グリッドを描画するレイヤー
-        ImageLayer image_layer = new ImageLayer(WINDOW_WIDTH, WINDOW_HEIGHT); //下敷き画像を描画するレイヤー
-        Layer preview = new Layer(WINDOW_WIDTH, WINDOW_HEIGHT);     //プレビューを描画するレイヤー
+        FrontDotLayer front = new FrontDotLayer(LAYER_WIDTH, LAYER_HEIGHT);       //ドットを描画するレイヤー
+        LinesLayer lines = new LinesLayer(LAYER_LIST_WIDTH, LAYER_HEIGHT);       //線を描画するレイヤー
+        GridLayer grid  = new GridLayer(LAYER_WIDTH, LAYER_HEIGHT, INIT_GRID_INTERVAL);       //グリッドを描画するレイヤー
+        ImageLayer image_layer = new ImageLayer(LAYER_WIDTH, LAYER_HEIGHT); //下敷き画像を描画するレイヤー
+        Layer preview = new Layer(LAYER_WIDTH, LAYER_HEIGHT);     //プレビューを描画するレイヤー
 
         /*
         * グリッドのレイヤーとフッターだけはここでアンカーペインの設定を行う
@@ -108,6 +108,13 @@ public class Main extends Application {
         tabs.setPrefWidth(UIValues.LAYER_LIST_WIDTH);
         tabs.setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
 
+        /*
+        *参照画像のツリー
+         */
+        ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("画像パーツ");
+        AnchorPane.setLeftAnchor(referenceImagesUI.getTreeView(), WINDOW_WIDTH - LAYER_LIST_WIDTH);
+        AnchorPane.setRightAnchor(referenceImagesUI.getTreeView(), 0.0);
+        AnchorPane.setTopAnchor(referenceImagesUI.getTreeView(), UIValues.MENU_HEIGHT);
 
         /*
         * レイヤーの各種設定
@@ -168,7 +175,7 @@ public class Main extends Application {
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, tabs, backGroundImageUI.getRoot(), front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
+        root.getChildren().addAll(menubar, tabs, backGroundImageUI.getRoot(), front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas(), referenceImagesUI.getTreeView());
 
         /*
         * レイヤーの順番をここで描画
@@ -528,6 +535,10 @@ public class Main extends Application {
             grid_layer.getGraphicsContext().strokeLine(0, i, WINDOW_WIDTH, i);
         }
         grid_layer.getCanvas().toBack();
+
+        grid_layer.getGraphicsContext().setLineWidth(2);
+        grid_layer.getGraphicsContext().setFill(Color.BLACK);
+        grid_layer.getGraphicsContext().strokeRect(0, 0, LAYER_WIDTH, LAYER_HEIGHT);
     }
 
     /*
