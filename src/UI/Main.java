@@ -69,7 +69,7 @@ public class Main extends Application {
         * 重要なグラフィックレイヤーたち
          */
         FrontDotLayer front = new FrontDotLayer(LAYER_WIDTH, LAYER_HEIGHT);       //ドットを描画するレイヤー
-        LinesLayer lines = new LinesLayer(LAYER_LIST_WIDTH, LAYER_HEIGHT);       //線を描画するレイヤー
+        LinesLayer lines = new LinesLayer(LAYER_WIDTH, LAYER_HEIGHT);       //線を描画するレイヤー
         GridLayer grid  = new GridLayer(LAYER_WIDTH, LAYER_HEIGHT, INIT_GRID_INTERVAL);       //グリッドを描画するレイヤー
         ImageLayer image_layer = new ImageLayer(LAYER_WIDTH, LAYER_HEIGHT); //下敷き画像を描画するレイヤー
         Layer preview = new Layer(LAYER_WIDTH, LAYER_HEIGHT);     //プレビューを描画するレイヤー
@@ -646,7 +646,7 @@ public class Main extends Application {
                      */
                     if(layer_data.getName().equals(MakeLayerdataName(select.getValue(), select.getParent()))){
                         CurrentLayerData = layer_data;
-                        SwitchLayer(CurrentLayerData, front, lines);
+                        SwitchUsersLayer(CurrentLayerData, front, lines);
                         break;
                     }
                 }
@@ -886,7 +886,7 @@ public class Main extends Application {
     * レイヤーデータの差し替えを行う関数
     * リストビューをクリックして変更する方
      */
-    private static void SwitchLayer(LayerData new_layer_data, FrontDotLayer front, Layer lines){
+    private static void SwitchUsersLayer(LayerData new_layer_data, FrontDotLayer front, Layer lines){
         AllEraseLayer(front);
         AllEraseLayer(lines);
         new_layer_data.AllDraw(front, lines);
