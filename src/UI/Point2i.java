@@ -40,4 +40,8 @@ public class Point2i {
     public Point2i clone(){
         return new Point2i(this.x, this.y);
     }
+
+    public double distance(Point2i p){
+        return Math.sqrt(Math.pow(this.x - p.getX(), 2) + Math.pow(this.y - p.getY(), 2));
+    }
 }
