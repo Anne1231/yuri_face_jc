@@ -164,11 +164,9 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         scene.setOnKeyPressed(event -> {
-            System.out.println("PRESS");
             keyTable.press(event.getCode());
         });
         scene.setOnKeyReleased(event -> {
-            System.out.println("RELEASE");
             keyTable.release(event.getCode());
         });
 
