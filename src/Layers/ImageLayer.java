@@ -34,14 +34,24 @@ public class ImageLayer extends Layer {
     public void DrawImageNormal(final Image image, double x, double y){
         this.image = image;
         graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        graphicsContext.drawImage(image, 0, 0);
+        graphicsContext.drawImage(image, x, y);
     }
 
     public void DrawImageWithResize(final Image image, double x, double y, double width, double height, double bairitsu){
         this.image = image;
         this.bairitsu = bairitsu;
         graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        graphicsContext.drawImage(image, 0, 0, width * bairitsu, height * bairitsu);
+        graphicsContext.drawImage(image, x, y, x + (width * bairitsu), y + (height * bairitsu));
+    }
+
+    public void MoveImage(double x, double y){
+        graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        graphicsContext.drawImage(image, x, y, x + (image.getWidth() * bairitsu), y + (image.getHeight() * bairitsu));
+    }
+
+    public void Redraw(double x, double y){
+        graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        graphicsContext.drawImage(image, x, y);
     }
 
     public void setImagePath(String path){

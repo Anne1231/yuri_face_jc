@@ -35,6 +35,8 @@ public class LoadXML {
         boolean flag = false;
 
         String path = GetFilePath(stage);
+        if(path.isEmpty())
+            return;
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = factory.newDocumentBuilder();

@@ -131,13 +131,38 @@ public class Main extends Application {
             result /= 100.0;
             Image image = image_layer.getImage();
             image_layer.clear();
-            image_layer.DrawImageWithResize(image, 0, 0, image.getWidth(), image.getHeight(), result);
+            image_layer.DrawImageWithResize(image,
+                    Integer.valueOf(backGroundImageUI.getImage_x().getText()),
+                    Integer.valueOf(backGroundImageUI.getImage_y().getText()),
+                    image.getWidth(), image.getHeight(), result);
+        });
+        backGroundImageUI.getImage_x().setOnAction(event -> {
+            image_layer.MoveImage(
+                    Integer.valueOf(backGroundImageUI.getImage_x().getText()),
+                    Integer.valueOf(backGroundImageUI.getImage_y().getText())
+            );
+        });
+        backGroundImageUI.getImage_y().setOnAction(event -> {
+            image_layer.MoveImage(
+                    Integer.valueOf(backGroundImageUI.getImage_x().getText()),
+                    Integer.valueOf(backGroundImageUI.getImage_y().getText())
+            );
+        });
+        backGroundImageUI.getDisplay().setOnAction(event -> {
+            if(backGroundImageUI.getDisplay().isSelected()){
+                image_layer.Redraw(
+                        Integer.valueOf(backGroundImageUI.getImage_x().getText()),
+                        Integer.valueOf(backGroundImageUI.getImage_y().getText())
+                );
+            }else{
+                image_layer.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+            }
         });
 
         /*
         * メニューバーの設定
          */
-        ConfigMenuBar(menubar, stage, front, lines, grid, image_layer, preview, backGroundImageUI.getImage_bairitsu_field(), layersTree);
+        ConfigMenuBar(menubar, stage, grid, image_layer, preview, backGroundImageUI.getImage_bairitsu_field(), layersTree, backGroundImageUI);
 
 
         /*
@@ -339,7 +364,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, Layer front, Layer lines, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree, BackGroundImageUI backGroundImageUI){
         Menu help = new Menu("ヘルプ");
         MenuItem dev = new MenuItem("DEVELOPERS");
         help.getItems().addAll(dev);
@@ -421,7 +446,9 @@ public class Main extends Application {
                 return;
             }
             image_b.setText("100.0%");
-            image_layer.DrawImageNormal(img, 0, 0);
+            System.out.println( Integer.valueOf(backGroundImageUI.getImage_x().getText()));
+            image_layer.DrawImageNormal(img, Integer.valueOf(backGroundImageUI.getImage_x().getText()), Integer.valueOf(backGroundImageUI.getImage_y().getText()));
+            backGroundImageUI.getDisplay().setSelected(true);
         });
 
         open_yfml.setOnAction(event -> {
