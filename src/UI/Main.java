@@ -2,6 +2,7 @@ package UI;
 
 import FileIO.*;
 import Layers.*;
+import javafx.scene.layout.VBox;
 import motion.BasicMotion;
 import motion.Preview;
 import javafx.application.Application;
@@ -91,10 +92,13 @@ public class Main extends Application {
         /*
         * アルファ
         */
+        VBox box = new VBox();
+        Button test = new Button("test");
+        box.getChildren().addAll(layersTree.getTreeView(), test);
         Tab layer_tab = new Tab("レイヤー");
         Tab motion_tab = new Tab("モーション");
         TabPane tabs = new TabPane();
-        layer_tab.setContent(layersTree.getTreeView());
+        layer_tab.setContent(box);
         tabs.getTabs().addAll(layer_tab, motion_tab);
         motion_tab.setContent(motionTree.getTreeView());
         AnchorPane.setTopAnchor(tabs, UIValues.LAYER_LIST_SCREEN_Y);
