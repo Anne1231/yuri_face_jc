@@ -87,6 +87,22 @@ public class Main extends Application {
         LayersTree motionTree = new LayersTree("モーション");
         ConfigMotionList(stage, motionTree, layersTree, preview);
 
+
+        /*
+        * アルファ
+        */
+        Tab layer_tab = new Tab("レイヤー");
+        Tab motion_tab = new Tab("モーション");
+        TabPane tabs = new TabPane();
+        layer_tab.setContent(layersTree.getTreeView());
+        tabs.getTabs().addAll(layer_tab, motion_tab);
+        motion_tab.setContent(motionTree.getTreeView());
+        AnchorPane.setTopAnchor(tabs, UIValues.LAYER_LIST_SCREEN_Y);
+        AnchorPane.setLeftAnchor(tabs, 0.0);
+        tabs.setPrefWidth(UIValues.LAYER_LIST_WIDTH);
+        tabs.setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
+
+
         /*
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
@@ -124,7 +140,7 @@ public class Main extends Application {
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, layersTree.getTreeView(), motionTree.getTreeView(),bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
+        root.getChildren().addAll(menubar, tabs, bairitsu_label, image_bairitsu, front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas());
 
         /*
         * レイヤーの順番をここで描画
@@ -496,10 +512,6 @@ public class Main extends Application {
 
 
     private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer front, LinesLayer lines){
-        AnchorPane.setTopAnchor(layersTree.getTreeView(), UIValues.LAYER_LIST_SCREEN_Y);
-        AnchorPane.setLeftAnchor(layersTree.getTreeView(), 0.0);
-        layersTree.getTreeView().setPrefWidth(UIValues.LAYER_LIST_WIDTH);
-        layersTree.getTreeView().setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
 
         ContextMenu popup_ll = new ContextMenu();
         MenuItem create_layer = new MenuItem("新規レイヤー");
@@ -596,10 +608,6 @@ public class Main extends Application {
     }
 
     private static void ConfigMotionList(Stage stage, LayersTree motion_tree, LayersTree layersTree, Layer preview_layer){
-        AnchorPane.setTopAnchor(motion_tree.getTreeView(), UIValues.LAYER_LIST_SCREEN_Y + LAYER_LIST_HEIGHT);
-        AnchorPane.setLeftAnchor(motion_tree.getTreeView(), 0.0);
-        motion_tree.getTreeView().setPrefWidth(UIValues.LAYER_LIST_WIDTH);
-        motion_tree.getTreeView().setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
 
         ContextMenu popup_ll = new ContextMenu();
         MenuItem create_layer = new MenuItem("新規モーション");
