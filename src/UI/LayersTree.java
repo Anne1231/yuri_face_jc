@@ -19,6 +19,7 @@ public class LayersTree {
     private TreeItem<String> selecting_tree;
     private String selecting;
     private int layers_count;
+    private char selecting_depth;
 
     private boolean layer_selecting;
 
@@ -41,6 +42,7 @@ public class LayersTree {
 
         selecting = new String();
         layers_count = 0;
+        selecting_depth = 0;
     }
 
     public TreeItem<String> getLayer_root() {
@@ -120,5 +122,13 @@ public class LayersTree {
 
     public boolean isLayer_selecting(){
         return layer_selecting;
+    }
+
+    public void setSelectingDepth(char selecting_depth) {
+        this.selecting_depth = selecting_depth;
+    }
+
+    public char getSelectingDepth() {
+        return selecting_depth;
     }
 }

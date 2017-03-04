@@ -2,6 +2,7 @@ package UI;
 
 import FileIO.*;
 import Layers.*;
+import motion.BasicMotion;
 import motion.Preview;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -31,6 +32,7 @@ public class Main extends Application {
 
     public static LayerData CurrentLayerData;
     private static LayerData PinnedData;
+    public static ArrayList<BasicMotion> basicMotions = new ArrayList<>();
     public static ArrayList<LayerData> LayerDatas = new ArrayList<>();
     public static Footer footer;
 
@@ -83,7 +85,7 @@ public class Main extends Application {
         LayersTree layersTree = new LayersTree("レイヤー");
         ConfigLayerList(stage, layersTree, front, lines);
         LayersTree motionTree = new LayersTree("モーション");
-        ConfigMotionList(stage, motionTree, layersTree, front, lines);
+        ConfigMotionList(stage, motionTree, layersTree, preview);
 
         /*
         * レイヤーの各種設定
@@ -593,7 +595,7 @@ public class Main extends Application {
 
     }
 
-    private static void ConfigMotionList(Stage stage, LayersTree motion_tree, LayersTree layersTree, FrontDotLayer front, LinesLayer lines){
+    private static void ConfigMotionList(Stage stage, LayersTree motion_tree, LayersTree layersTree, Layer preview_layer){
         AnchorPane.setTopAnchor(motion_tree.getTreeView(), UIValues.LAYER_LIST_SCREEN_Y + LAYER_LIST_HEIGHT);
         AnchorPane.setLeftAnchor(motion_tree.getTreeView(), 0.0);
         motion_tree.getTreeView().setPrefWidth(UIValues.LAYER_LIST_WIDTH);
@@ -606,22 +608,37 @@ public class Main extends Application {
 
         ContextMenu copy_menu = new ContextMenu();
         MenuItem copy_item = new MenuItem("コピー");
-        copy_menu.getItems().addAll(copy_item);
+        MenuItem preview = new MenuItem("プレビュー");
+        copy_menu.getItems().addAll(copy_item, preview);
 
         motion_tree.setLayer_selecting(false);
 
         create_layer.setOnAction(event -> CreateMotion(stage, layersTree, motion_tree));
 
         motion_tree.getTreeView().setOnContextMenuRequested(event -> {
-            if(motion_tree.getSelecting_tree() != null) {
+            if(motion_tree.getSelectingDepth() == 2) {
                 popup_ll.show(motion_tree.getTreeView(), event.getScreenX(), event.getScreenY());
-            }else if(motion_tree.isLayer_selecting()){
+            }else if(motion_tree.getSelectingDepth() == 3){
                 copy_menu.show(motion_tree.getTreeView(), event.getScreenX(), event.getScreenY());
             }
         });
 
         copy_item.setOnAction(event -> {
             PinnedData = CurrentLayerData;
+        });
+
+        preview.setOnAction(event -> {
+            for(BasicMotion basicMotion : basicMotions){
+                //select.getParent()な理由
+                    /*
+                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
+                     */
+                if(basicMotion.getMotionName().equals(MakeLayerdataName(motion_tree.getSelecting(), motion_tree.getSelecting_tree()))){
+                    basicMotion.setMill_sec(100);
+                    basicMotion.preview(preview_layer);
+                    break;
+                }
+            }
         });
 
         clone_item.setOnAction(event -> {
@@ -665,26 +682,17 @@ public class Main extends Application {
 
             if(depth == 2) {
                 motion_tree.setSelecting_tree(select);
+                motion_tree.setSelectingDepth((char)2);
             }else if(depth == 3){
                 motion_tree.setLayer_selecting(true);
-                for(LayerData layer_data : LayerDatas){
-                    //select.getParent()な理由
-                    /*
-                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
-                     */
-                    if(layer_data.getName().equals(MakeLayerdataName(select.getValue(), select.getParent()))){
-                        CurrentLayerData = layer_data;
-                        SwitchLayer(CurrentLayerData, front, lines);
-                        break;
-                    }
-                }
                 //新規レイヤーメニューは表示させない
-                //裏ではnullで判定してる
-                motion_tree.setSelecting_tree(null);
+                //選択中のdepthで判定
+                motion_tree.setSelecting(select.getValue());
+                motion_tree.setSelectingDepth((char)3);
             }else{
                 //新規レイヤーメニューは表示させない
-                //裏ではnullで判定してる
-                motion_tree.setSelecting_tree(null);
+                //選択中のdepthで判定
+                motion_tree.setSelectingDepth((char)1);
             }
         });
 

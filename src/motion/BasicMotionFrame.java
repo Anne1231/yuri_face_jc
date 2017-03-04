@@ -8,11 +8,6 @@ import UI.UIValues;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static UI.UIValues.WINDOW_HEIGHT;
-import static UI.UIValues.WINDOW_WIDTH;
 
 /**
  * Created by Akihiro on 2017/03/03.
@@ -29,8 +24,8 @@ public class BasicMotionFrame {
     public BasicMotionFrame(LayerData layerData){
         int size = layerData.getDotSet().size();
         ArrayList<Dot> dots = layerData.CreatePolygon();
-        double[] xPoints = new double[size];
-        double[] yPoints = new double[size];
+        xPoints = new double[size];
+        yPoints = new double[size];
         int i = 0;
         for(Dot dot : dots){
             xPoints[i] = dot.getX();

@@ -108,8 +108,9 @@ public class CreateMotionWindow extends Stage {
                     }
                 });
             });
-            BasicMotion basicMotion = new BasicMotion(motion_name.getText(), layerDatas);
-            motion_tree.getSelecting_tree().getChildren().add(new TreeItem<>(basicMotion.getMotionName()));
+            BasicMotion basicMotion = new BasicMotion(Main.MakeLayerdataName(motion_name.getText(), motion_tree.getSelecting_tree()), layerDatas);
+            Main.basicMotions.add(basicMotion);
+            motion_tree.getSelecting_tree().getChildren().add(new TreeItem<>(motion_name.getText()));
             close();
         });
 
