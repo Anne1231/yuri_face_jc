@@ -177,7 +177,7 @@ public class Main extends Application {
 
     }
 
-    private static void putDot(LayersTree layersTree, GridLayer gridLayer, Layer put_layer){
+    private static void putDot(LayersTree layersTree, GridLayer gridLayer, FrontDotLayer put_layer){
         if(layersTree.getLayers_count() == 0){
             return;
         }
@@ -203,6 +203,8 @@ public class Main extends Application {
         }
         dot.Draw(put_layer, Color.BLACK);
         CurrentLayerData.AddDot(dot);
+
+        put_layer.setLast(dot);
     }
 
     /*
@@ -255,6 +257,12 @@ public class Main extends Application {
             y = (int)event.getY();
             if(keyTable.isPressed(KeyCode.D)){
                 putDot(layersTree, gridLayer, front);
+            }else if(keyTable.isPressed(KeyCode.C)){
+                if(!front.isLastEmpty()) {
+                    Dot dot = front.getLast();
+                    putDot(layersTree, gridLayer, front);
+                    CurrentLayerData.connect(dot, front.getLast()).Draw(lines, 0.5, Color.BLACK);
+                }
             }
         });
 
