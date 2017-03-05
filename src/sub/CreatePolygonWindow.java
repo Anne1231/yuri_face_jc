@@ -1,6 +1,8 @@
 package sub;
 
 import UI.Dot;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -38,11 +40,13 @@ public class CreatePolygonWindow extends Stage {
         Label pn_label = new Label("グループ名 :");
         TextField polygon_name_tf = new TextField("グループ名");
         polygon_name_box.getChildren().addAll(pn_label, polygon_name_tf);
+        polygon_name_box.setAlignment(Pos.CENTER);
 
         HBox color_select_box = new HBox();
-        Label color_label = new Label("ドットの色を選択");
+        Label color_label = new Label("ドットの色を選択 : ");
         ColorPicker colorPicker = new ColorPicker();
         color_select_box.getChildren().addAll(color_label, colorPicker);
+        color_select_box.setAlignment(Pos.CENTER);
 
         Button create_button = new Button("グループを作成");
         create_button.setOnAction(event -> {
@@ -53,6 +57,8 @@ public class CreatePolygonWindow extends Stage {
 
         root.getChildren().addAll(polygon_name_box, color_select_box, create_button);
         root.setSpacing(30);
+        root.setPadding(new Insets(30, 30, 30, 30));
+        root.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(root);
 
