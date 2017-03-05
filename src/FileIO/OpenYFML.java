@@ -94,7 +94,7 @@ public class OpenYFML {
                                     str = bufferedReader.readLine();
                                 }
 
-                                Main.CurrentLayerData.AllDraw(front, lines);
+                                Main.CurrentLayerData.AllDraw4N(front, lines);
                                 section_count--;
                             }
                         }

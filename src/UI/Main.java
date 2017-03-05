@@ -37,7 +37,7 @@ public class Main extends Application {
     public static ArrayList<BasicMotion> basicMotions = new ArrayList<>();
     public static ArrayList<LayerData> LayerDatas = new ArrayList<>();
     public static Footer footer;
-    private static KeyTable keyTable = new KeyTable();
+    public static KeyTable keyTable = new KeyTable();
 
     @Override
     public void start(Stage stage){
@@ -68,6 +68,7 @@ public class Main extends Application {
         * 重要なグラフィックレイヤーたち
          */
         FrontDotLayer front = new FrontDotLayer(LAYER_WIDTH, LAYER_HEIGHT);       //ドットを描画するレイヤー
+        FrontDotLayer normal_front = new FrontDotLayer(LAYER_WIDTH, LAYER_HEIGHT);       //ドットを描画するレイヤー2
         LinesLayer lines = new LinesLayer(LAYER_WIDTH, LAYER_HEIGHT);       //線を描画するレイヤー
         GridLayer grid  = new GridLayer(LAYER_WIDTH, LAYER_HEIGHT, INIT_GRID_INTERVAL);       //グリッドを描画するレイヤー
         ImageLayer image_layer = new ImageLayer(LAYER_WIDTH, LAYER_HEIGHT); //下敷き画像を描画するレイヤー
@@ -98,7 +99,7 @@ public class Main extends Application {
             TreeItem<String> select = referenceImagesUI.getTreeView().getSelectionModel().selectedItemProperty().get();
             if(select.getValue().equals("輪郭")){
                 CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getF_b_rinkaku();
-                Main.SwitchUsersLayer(
+                Main.SwitchPartLayer(
                         referenceImagesUI.getCorePartLayerDatas().getLayerData("f_b_rinkaku"),
                         front,
                         lines
@@ -106,14 +107,14 @@ public class Main extends Application {
             }else if(select.getValue().equals("黒目")){
                 if(select.getParent().getValue().equals("右目")){
                     CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getR_e_kurome();
-                    Main.SwitchUsersLayer(
+                    Main.SwitchPartLayer(
                             referenceImagesUI.getCorePartLayerDatas().getLayerData("r_e_kurome"),
                             front,
                             lines
                     );
                 }else if(select.getParent().getValue().equals("左目")){
                     CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getL_e_kurome();
-                    Main.SwitchUsersLayer(
+                    Main.SwitchPartLayer(
                             referenceImagesUI.getCorePartLayerDatas().getLayerData("l_e_kurome"),
                             front,
                             lines
@@ -122,14 +123,14 @@ public class Main extends Application {
             }else if(select.getValue().equals("まぶた")){
                 if(select.getParent().getValue().equals("右目")){
                     CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta();
-                    Main.SwitchUsersLayer(
+                    Main.SwitchPartLayer(
                             referenceImagesUI.getCorePartLayerDatas().getLayerData("r_e_mabuta"),
                             front,
                             lines
                     );
                 }else if(select.getParent().getValue().equals("左目")){
                     CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta();
-                    Main.SwitchUsersLayer(
+                    Main.SwitchPartLayer(
                             referenceImagesUI.getCorePartLayerDatas().getLayerData("l_e_mabuta"),
                             front,
                             lines
@@ -138,14 +139,14 @@ public class Main extends Application {
             }else if(select.getValue().equals("眉")){
                 if(select.getParent().getValue().equals("右眉")){
                     CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getR_e_b_mayu();
-                    Main.SwitchUsersLayer(
+                    Main.SwitchPartLayer(
                             referenceImagesUI.getCorePartLayerDatas().getLayerData("r_e_b_mayu"),
                             front,
                             lines
                     );
                 }else if(select.getParent().getValue().equals("左眉")){
                     CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getL_e_b_mayu();
-                    Main.SwitchUsersLayer(
+                    Main.SwitchPartLayer(
                             referenceImagesUI.getCorePartLayerDatas().getLayerData("l_e_b_mayu"),
                             front,
                             lines
@@ -153,17 +154,18 @@ public class Main extends Application {
                 }
             }else if(select.getValue().equals("口")){
                 CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getM_mouth();
-                Main.SwitchUsersLayer(
+                Main.SwitchPartLayer(
                         referenceImagesUI.getCorePartLayerDatas().getLayerData("m_mouth"),
                         front,
                         lines
                 );
             }
+            AllEraseLayer(normal_front);
         });
 
 
         LayersTree layersTree = new LayersTree("レイヤー");
-        ConfigLayerList(stage, layersTree, front, lines, referenceImagesUI);
+        ConfigLayerList(stage, layersTree, normal_front, front, lines, referenceImagesUI);
         LayersTree motionTree = new LayersTree("モーション");
         ConfigMotionList(stage, motionTree, layersTree, preview);
 
@@ -190,6 +192,7 @@ public class Main extends Application {
         * この中でアンカーペインの設定も行う
          */
         ConfigFrontLayer(front, lines, grid, layersTree);
+        ConfigLayer.ConfigNormalFrontLayer(normal_front, lines, grid, layersTree);
         ConfigLayer.ConfigLinesLayer(lines, front, grid);
         ConfigImageLayer(image_layer);
         SettingAnchor(preview);
@@ -244,12 +247,13 @@ public class Main extends Application {
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, tabs, backGroundImageUI.getRoot(), front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), selecting_rect.getCanvas(), footer.getCanvas(), referenceImagesUI.getTreeView());
+        root.getChildren().addAll(menubar, tabs, backGroundImageUI.getRoot(), front.getCanvas(), normal_front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), selecting_rect.getCanvas(), footer.getCanvas(), referenceImagesUI.getTreeView());
 
         /*
         * レイヤーの順番をここで設定
          */
         lines.getCanvas().toFront();
+        normal_front.getCanvas().toFront();
         front.getCanvas().toFront();
         grid.getCanvas().toBack();
         image_layer.getCanvas().toBack();
@@ -273,7 +277,7 @@ public class Main extends Application {
 
     }
 
-    private static void putDot(LayersTree layersTree, GridLayer gridLayer, FrontDotLayer put_layer){
+    public static void putDot(LayersTree layersTree, GridLayer gridLayer, FrontDotLayer put_layer){
         if(CurrentLayerData == null){
             return;
         }
@@ -384,6 +388,7 @@ public class Main extends Application {
                     p.Draw(front, Color.BLACK);
                 }
             }
+
             footer.PutText(String.valueOf((int)event.getX()) + ":" + String.valueOf((int)event.getY()), WINDOW_WIDTH - 80);
         });
 
@@ -414,6 +419,7 @@ public class Main extends Application {
 
             //消されていたドットを更新した座標に再描画
             selecting_dot = update_dot;
+            front.setLast(update_dot);
             selecting_dot.Draw(front, Color.RED);
         });
 
@@ -649,7 +655,7 @@ public class Main extends Application {
     }
 
 
-    private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer front, LinesLayer lines, ReferenceImagesUI referenceImagesUI){
+    private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer normal_front, FrontDotLayer front, LinesLayer lines, ReferenceImagesUI referenceImagesUI){
 
         ContextMenu popup_ll = new ContextMenu();
         MenuItem create_layer = new MenuItem("新規レイヤー");
@@ -726,7 +732,8 @@ public class Main extends Application {
                      */
                     if(layer_data.getName().equals(MakeLayerdataName(select.getValue(), select.getParent()))){
                         CurrentLayerData = layer_data;
-                        SwitchUsersLayer(CurrentLayerData, front, lines);
+                        SwitchUsersLayer(CurrentLayerData, normal_front, lines);
+                        AllEraseLayer(front);
                         break;
                     }
                 }
@@ -1046,7 +1053,15 @@ public class Main extends Application {
     public static void SwitchUsersLayer(LayerData new_layer_data, FrontDotLayer front, Layer lines){
         AllEraseLayer(front);
         AllEraseLayer(lines);
-        new_layer_data.AllDraw(front, lines);
+        new_layer_data.AllDraw4N(front, lines);
+        lines.getCanvas().toFront();
+        front.getCanvas().toFront();
+    }
+
+    public static void SwitchPartLayer(LayerData new_layer_data, FrontDotLayer front, Layer lines){
+        AllEraseLayer(front);
+        AllEraseLayer(lines);
+        new_layer_data.AllDraw4PR(front, lines);
         lines.getCanvas().toFront();
         front.getCanvas().toFront();
     }
@@ -1066,7 +1081,7 @@ public class Main extends Application {
     private static void Preview(Layer layer){
         layer.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         for(LayerData layer_data : LayerDatas){
-            layer_data.AllDraw(layer, layer);
+            //layer_data.AllDraw(layer, layer);
         }
 
         layer.getCanvas().toFront();

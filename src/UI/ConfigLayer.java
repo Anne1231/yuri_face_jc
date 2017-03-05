@@ -6,6 +6,7 @@ import Layers.Layer;
 import Layers.LinesLayer;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 
@@ -180,5 +181,128 @@ public class ConfigLayer {
         lines.getCanvas().setOnMouseReleased(event -> dot_dragged = false);
 
 
+    }
+
+    public static void ConfigNormalFrontLayer(FrontDotLayer front, LinesLayer lines, GridLayer gridLayer, LayersTree layersTree){
+        SettingAnchor(front);
+
+        ContextMenu popup = new ContextMenu();
+        MenuItem choose = new MenuItem("ドットを選択");
+        MenuItem put = new MenuItem("ドットを配置");
+
+        /*
+        * ドット配置処理
+         */
+        put.setOnAction(event -> {
+            putDot(layersTree, gridLayer, front);
+        });
+
+        /*
+        * ドット選択処理
+         */
+        choose.setOnAction(event -> {
+            for(final Dot p : CurrentLayerData.getDotSet()){
+                if(Math.abs(p.getX() - x) < 5){
+                    if(Math.abs(p.getY() - y) < 5){
+                        p.Select();
+                        selecting_dot = p;
+                        selecting_dot.Select();
+                        selecting_dot.Draw(front, Color.RED);
+                        SwitchFrontLayer(lines);
+                        break;
+                    }
+                }
+            }
+        });
+        popup.getItems().addAll(put, choose);
+
+        front.getCanvas().setOnContextMenuRequested(event -> {
+            if(CurrentLayerData == null){
+                return;
+            }
+            popup.show(front.getCanvas(), event.getScreenX(), event.getScreenY());
+        });
+
+        front.getCanvas().setOnMouseClicked(event -> {
+            popup.hide();
+            x = (int)event.getX();
+            y = (int)event.getY();
+            if(keyTable.isPressed(KeyCode.D)){
+                putDot(layersTree, gridLayer, front);
+            }else if(keyTable.isPressed(KeyCode.C)){
+                if(!front.isLastEmpty()) {
+                    Dot dot = front.getLast();
+                    putDot(layersTree, gridLayer, front);
+                    CurrentLayerData.connect(dot, front.getLast()).Draw(lines, 0.5, Color.BLACK);
+                }
+            }
+        });
+
+        front.getCanvas().setOnMouseMoved(event -> {
+            if(CurrentLayerData == null){
+                return;
+            }
+
+            CurrentLayerData.getPolygons().forEach(polygon -> {
+                polygon.DrawDots(front);
+            });
+
+            Dot dot;
+            for(Polygon polygon : CurrentLayerData.getPolygons()){
+                if((dot = polygon.isOverlaps(new Point2i((int)event.getX(), (int)event.getY()))) != null){
+                    selecting_dot = dot;
+                    break;
+                }
+            }
+
+            footer.PutText(String.valueOf((int)event.getX()) + ":" + String.valueOf((int)event.getY()), WINDOW_WIDTH - 80);
+        });
+
+        front.getCanvas().setOnMouseDragged(event -> {
+            if(!ConfigLayer.dot_dragged)
+                return;
+            /*
+            * 新しい座標を決定
+             */
+            Dot update_dot;
+            if(gridLayer.isEnableComplete()) {
+                update_dot = new Dot((int)event.getX(), (int)event.getY(), gridLayer.getInterval());
+            }else{
+                update_dot = new Dot((int)event.getX(), (int)event.getY());
+            }
+
+            //現在のドットをレイヤーから消す（消しゴム）
+            selecting_dot.Erase(front);
+
+            for(Polygon polygon : CurrentLayerData.getPolygons()){
+                polygon.MoveDot(selecting_dot, update_dot);
+            }
+            CurrentLayerData.getLineList().forEach(line -> line.exchange(selecting_dot, update_dot));
+
+            //線も移動するので一回削除
+            lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+            //さっき変更されたレイヤーデータを元に線を再描画
+            CurrentLayerData.DrawAllLines(lines);
+
+            //消されていたドットを更新した座標に再描画
+            selecting_dot = update_dot;
+            selecting_dot.Draw(front, Color.RED);
+        });
+
+        front.getCanvas().setOnMousePressed(event -> {
+
+            for(Polygon polygon : CurrentLayerData.getPolygons()){
+                if(polygon.isOverlaps(new Point2i((int)event.getX(), (int)event.getY())) != null){
+                    ConfigLayer.dot_dragged = true;
+                    break;
+                }
+            }
+        });
+
+        front.getCanvas().setOnMouseReleased(event -> ConfigLayer.dot_dragged = false);
+
+
+        choose.setDisable(true);
     }
 }

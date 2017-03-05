@@ -103,9 +103,15 @@ public class LayerData {
         return name;
     }
 
-    public void AllDraw(Layer front, Layer lines){
+    public void AllDraw4PR(Layer front, Layer lines){
         line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
         dot_set.forEach(dot -> dot.Draw(front, Color.BLACK));
+    }
+
+    public void AllDraw4N(Layer front, Layer lines){
+        line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
+        dot_set.forEach(dot -> dot.Draw(front, Color.BLACK));
+
         polygons.forEach(polygon -> {
             for(int i = 0;i < polygon.size();i++){
                 front.getGraphicsContext().clearRect(polygon.getX(i) - 3, polygon.getY(i) - 3, 11, 11);
@@ -118,6 +124,7 @@ public class LayerData {
                 }
             }
         });
+
     }
 
     public void DrawAllLines(LinesLayer layer){
