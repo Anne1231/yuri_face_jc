@@ -8,7 +8,6 @@ import javafx.scene.layout.VBox;
 import motion.BasicMotion;
 import motion.Preview;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -73,6 +72,8 @@ public class Main extends Application {
         GridLayer grid  = new GridLayer(LAYER_WIDTH, LAYER_HEIGHT, INIT_GRID_INTERVAL);       //グリッドを描画するレイヤー
         ImageLayer image_layer = new ImageLayer(LAYER_WIDTH, LAYER_HEIGHT); //下敷き画像を描画するレイヤー
         Layer preview = new Layer(LAYER_WIDTH, LAYER_HEIGHT);     //プレビューを描画するレイヤー
+        SelectAreaLayer selecting_rect = new SelectAreaLayer(LAYER_WIDTH, LAYER_HEIGHT);
+        SettingAnchor(selecting_rect);
 
         /*
         * グリッドのレイヤーとフッターだけはここでアンカーペインの設定を行う
@@ -242,16 +243,18 @@ public class Main extends Application {
         /*
         * ノードを登録
          */
-        root.getChildren().addAll(menubar, tabs, backGroundImageUI.getRoot(), front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), footer.getCanvas(), referenceImagesUI.getTreeView());
+        root.getChildren().addAll(menubar, tabs, backGroundImageUI.getRoot(), front.getCanvas(), lines.getCanvas(), grid.getCanvas(), image_layer.getCanvas(), preview.getCanvas(), selecting_rect.getCanvas(), footer.getCanvas(), referenceImagesUI.getTreeView());
 
         /*
-        * レイヤーの順番をここで描画
+        * レイヤーの順番をここで設定
          */
+        lines.getCanvas().toFront();
         front.getCanvas().toFront();
         grid.getCanvas().toBack();
         image_layer.getCanvas().toBack();
         footer.getCanvas().toFront();
         preview.getCanvas().toBack();
+        selecting_rect.getCanvas().toFront();
 
         /*
         * 表示

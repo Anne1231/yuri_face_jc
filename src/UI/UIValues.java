@@ -20,7 +20,7 @@ public class UIValues {
     static final double LIST_TO_CANVAS_WIDTH = 10;
 
 
-    static final double LAYER_LIST_WIDTH = 150.0;
+    public static final double LAYER_LIST_WIDTH = 150.0;
     static final double LAYER_LIST_HEIGHT = 460;
     static final double LAYER_LIST_SCREEN_Y = MENU_HEIGHT;
 
