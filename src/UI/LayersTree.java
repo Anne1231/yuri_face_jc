@@ -109,7 +109,7 @@ public class LayersTree {
         }else if(right_eye_tree.equals(item)){
             return LayerData.LayerDataType.RightEye;
         }else if(left_eye_tree.equals(item)){
-            return LayerData.LayerDataType.RightEye;
+            return LayerData.LayerDataType.LeftEye;
         }else if(mouth_tree.equals(item)){
             return LayerData.LayerDataType.Mouth;
         }
