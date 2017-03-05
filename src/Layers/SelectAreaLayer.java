@@ -80,7 +80,7 @@ public class SelectAreaLayer extends Layer {
                 this.graphicsContext.clearRect(0, 0, UIValues.LAYER_WIDTH, UIValues.LAYER_HEIGHT);
                 this.canvas.toBack();
             }
-
+            this.graphicsContext.clearRect(0, 0, UIValues.LAYER_WIDTH, UIValues.LAYER_HEIGHT);
         });
     }
 
