@@ -7,6 +7,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import sub.CreatePolygonWindow;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -19,7 +22,7 @@ public class SelectAreaLayer extends Layer {
     private int y;
     private Rectangle2D rectangle2D;
 
-    public SelectAreaLayer(double width, double height){
+    public SelectAreaLayer(Stage stage, double width, double height){
         super(width, height);
         x = y = 0;
 
@@ -68,7 +71,10 @@ public class SelectAreaLayer extends Layer {
             alert.setHeaderText("グループ作成の確認");
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.YES){
-                Main.CurrentLayerData.addPolygon(new Polygon(Main.CurrentLayerData.CreateSubPolygon(rectangle2D)));
+                Window window = stage;
+                CreatePolygonWindow createPolygonWindow = new CreatePolygonWindow(window);
+                createPolygonWindow.showAndWait();
+                Main.CurrentLayerData.addPolygon(new Polygon(Main.CurrentLayerData.CreateSubPolygon(rectangle2D), createPolygonWindow.getAnsName(), createPolygonWindow.getSelectedColor()));
                 ColorPicker colorPicker = new ColorPicker();
                 colorPicker.getCustomColors();
             }
@@ -76,12 +82,4 @@ public class SelectAreaLayer extends Layer {
         });
     }
 
-    public Polygon CreatePolygon(LayerData layerData){
-        ArrayList<Dot> dots = new ArrayList<>();
-        layerData.getDotSet().stream().parallel().filter(dot -> rectangle2D.contains(new Point2D(dot.getX(), dot.getY()))).forEach(dot -> {
-            dots.add(dot);
-            dot.Draw(this, Color.BLUE);
-        });
-        return new Polygon(dots);
-    }
 }

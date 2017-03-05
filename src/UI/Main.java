@@ -72,7 +72,7 @@ public class Main extends Application {
         GridLayer grid  = new GridLayer(LAYER_WIDTH, LAYER_HEIGHT, INIT_GRID_INTERVAL);       //グリッドを描画するレイヤー
         ImageLayer image_layer = new ImageLayer(LAYER_WIDTH, LAYER_HEIGHT); //下敷き画像を描画するレイヤー
         Layer preview = new Layer(LAYER_WIDTH, LAYER_HEIGHT);     //プレビューを描画するレイヤー
-        SelectAreaLayer selecting_rect = new SelectAreaLayer(LAYER_WIDTH, LAYER_HEIGHT);
+        SelectAreaLayer selecting_rect = new SelectAreaLayer(stage, LAYER_WIDTH, LAYER_HEIGHT);
         SettingAnchor(selecting_rect);
 
         /*
