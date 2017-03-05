@@ -3,6 +3,7 @@ package Layers;
 import UI.*;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
@@ -82,6 +83,9 @@ public class SelectAreaLayer extends Layer {
             }
             this.graphicsContext.clearRect(0, 0, UIValues.LAYER_WIDTH, UIValues.LAYER_HEIGHT);
         });
+
+        canvas.setCursor(Cursor.CROSSHAIR);
+
     }
 
 }
