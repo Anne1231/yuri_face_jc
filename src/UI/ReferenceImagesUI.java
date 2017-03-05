@@ -7,9 +7,13 @@ import javafx.scene.control.TreeItem;
  */
 public class ReferenceImagesUI extends LayersTree {
     private TreeItem<String> face_base;
+    private CorePartLayerDatas corePartLayerDatas;
 
     public ReferenceImagesUI(String tree_name){
         super(tree_name);
+
+        corePartLayerDatas = new CorePartLayerDatas();
+
         face_base = new TreeItem<>("顔面");
         face_base.getChildren().add(new TreeItem<>("輪郭"));
         face_base.setExpanded(true);
@@ -53,5 +57,10 @@ public class ReferenceImagesUI extends LayersTree {
         layer_root.expandedProperty().addListener((observable, oldValue, newValue) -> {
             layer_root.setExpanded(true);
         });
+
+    }
+
+    public CorePartLayerDatas getCorePartLayerDatas() {
+        return corePartLayerDatas;
     }
 }

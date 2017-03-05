@@ -47,4 +47,35 @@ public class CorePartLayerDatas {
         }
     }
 
+    public LayerDataEx getF_b_rinkaku() {
+        return f_b_rinkaku;
+    }
+
+    public LayerDataEx getL_e_kurome() {
+        return l_e_kurome;
+    }
+
+    public LayerDataEx getL_e_mabuta() {
+        return l_e_mabuta;
+    }
+
+    public LayerDataEx getL_e_b_mayu() {
+        return l_e_b_mayu;
+    }
+
+    public LayerDataEx getR_e_b_mayu() {
+        return r_e_b_mayu;
+    }
+
+    public LayerDataEx getM_mouth() {
+        return m_mouth;
+    }
+
+    public LayerDataEx getR_e_kurome() {
+        return r_e_kurome;
+    }
+
+    public LayerDataEx getR_e_mabuta() {
+        return r_e_mabuta;
+    }
 }
