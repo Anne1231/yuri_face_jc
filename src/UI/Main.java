@@ -87,28 +87,6 @@ public class Main extends Application {
          */
         MenuBar menubar = new MenuBar();
 
-        LayersTree layersTree = new LayersTree("レイヤー");
-        ConfigLayerList(stage, layersTree, front, lines);
-        LayersTree motionTree = new LayersTree("モーション");
-        ConfigMotionList(stage, motionTree, layersTree, preview);
-
-
-        /*
-        * アルファ
-        */
-        VBox box = new VBox();
-        box.getChildren().addAll(layersTree.getTreeView());
-        Tab layer_tab = new Tab("レイヤー");
-        Tab motion_tab = new Tab("モーション");
-        TabPane tabs = new TabPane();
-        layer_tab.setContent(box);
-        tabs.getTabs().addAll(layer_tab, motion_tab);
-        motion_tab.setContent(motionTree.getTreeView());
-        AnchorPane.setTopAnchor(tabs, UIValues.LAYER_LIST_SCREEN_Y);
-        AnchorPane.setLeftAnchor(tabs, 0.0);
-        tabs.setPrefWidth(UIValues.LAYER_LIST_WIDTH);
-        tabs.setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
-
         /*
         *参照画像のツリー
          */
@@ -182,6 +160,29 @@ public class Main extends Application {
                 );
             }
         });
+
+
+        LayersTree layersTree = new LayersTree("レイヤー");
+        ConfigLayerList(stage, layersTree, front, lines, referenceImagesUI);
+        LayersTree motionTree = new LayersTree("モーション");
+        ConfigMotionList(stage, motionTree, layersTree, preview);
+
+
+        /*
+        * アルファ
+        */
+        VBox box = new VBox();
+        box.getChildren().addAll(layersTree.getTreeView());
+        Tab layer_tab = new Tab("レイヤー");
+        Tab motion_tab = new Tab("モーション");
+        TabPane tabs = new TabPane();
+        layer_tab.setContent(box);
+        tabs.getTabs().addAll(layer_tab, motion_tab);
+        motion_tab.setContent(motionTree.getTreeView());
+        AnchorPane.setTopAnchor(tabs, UIValues.LAYER_LIST_SCREEN_Y);
+        AnchorPane.setLeftAnchor(tabs, 0.0);
+        tabs.setPrefWidth(UIValues.LAYER_LIST_WIDTH);
+        tabs.setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
 
 
         /*
@@ -648,7 +649,7 @@ public class Main extends Application {
     }
 
 
-    private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer front, LinesLayer lines){
+    private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer front, LinesLayer lines, ReferenceImagesUI referenceImagesUI){
 
         ContextMenu popup_ll = new ContextMenu();
         MenuItem create_layer = new MenuItem("新規レイヤー");
@@ -661,7 +662,7 @@ public class Main extends Application {
 
         layersTree.setLayer_selecting(false);
 
-        create_layer.setOnAction(event -> CreateLayer(stage, layersTree));
+        create_layer.setOnAction(event -> CreateLayer(stage, layersTree, referenceImagesUI));
 
         layersTree.getTreeView().setOnContextMenuRequested(event -> {
             if(layersTree.getSelecting_tree() != null) {
@@ -849,7 +850,7 @@ public class Main extends Application {
     /*
     * レイヤーを新しく作成する関数
      */
-    private static void CreateLayer(Stage stage, LayersTree layersTree){
+    private static void CreateLayer(Stage stage, LayersTree layersTree, ReferenceImagesUI referenceImagesUI){
         /*
         Window window = stage;
         Stage select_window = new AskLayerType(window);
@@ -872,7 +873,7 @@ public class Main extends Application {
                     return;
                 }
             }
-            addLayer(result.get(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree);
+            addLayer(result.get(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree, referenceImagesUI);
         }
     }
 
@@ -914,7 +915,7 @@ public class Main extends Application {
     /*
    * 新しいレイヤーを追加する関数
     */
-    public static void addLayer(String layer_name, LayerData.LayerDataType type, LayersTree layersTree){
+    public static void addLayer(String layer_name, LayerData.LayerDataType type, LayersTree layersTree, ReferenceImagesUI referenceImagesUI){
 
         CurrentLayerData = new LayerData(MakeLayerdataName(layer_name, layersTree.getSelecting_tree()), type);
         LayerDatas.add(CurrentLayerData);
@@ -925,26 +926,103 @@ public class Main extends Application {
             case FaceBase:
                 break;
             case LeftEye:
+                referenceImagesUI.getCorePartLayerDatas().getL_e_kurome().getPolygons().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size();i++){
+                        CurrentLayerData.addPolygon(polygon.clone());
+                    }
+                });
+                referenceImagesUI.getCorePartLayerDatas().getL_e_kurome().getPolygons().stream().parallel().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size() - 1;i++) {
+                        CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
+                    }
+                    CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
+                });
+                referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta().getPolygons().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size();i++){
+                        CurrentLayerData.addPolygon(polygon.clone());
+                    }
+                });
+                referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta().getPolygons().stream().parallel().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size() - 1;i++) {
+                        CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
+                    }
+                    CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
+                });
                 layersTree.getLeft_eye_tree().getChildren().add(new TreeItem<>(layer_name));
                 layersTree.getLeft_eye_tree().setExpanded(true);
                 layersTree.increase_layers_count();
                 break;
             case RightEye:
+                referenceImagesUI.getCorePartLayerDatas().getR_e_kurome().getPolygons().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size();i++){
+                        CurrentLayerData.addPolygon(polygon.clone());
+                    }
+                });
+                referenceImagesUI.getCorePartLayerDatas().getR_e_kurome().getPolygons().stream().parallel().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size() - 1;i++) {
+                        CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
+                    }
+                    CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
+                });
+                referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta().getPolygons().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size();i++){
+                        CurrentLayerData.addPolygon(polygon.clone());
+                    }
+                });
+                referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta().getPolygons().stream().parallel().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size() - 1;i++) {
+                        CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
+                    }
+                    CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
+                });
                 layersTree.getRight_eye_tree().getChildren().add(new TreeItem<>(layer_name));
                 layersTree.getRight_eye_tree().setExpanded(true);
                 layersTree.increase_layers_count();
                 break;
             case LeftEyebrows:
+                referenceImagesUI.getCorePartLayerDatas().getL_e_b_mayu().getPolygons().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size();i++){
+                        CurrentLayerData.addPolygon(polygon.clone());
+                    }
+                });
+                referenceImagesUI.getCorePartLayerDatas().getL_e_b_mayu().getPolygons().stream().parallel().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size() - 1;i++) {
+                        CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
+                    }
+                    CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
+                });
                 layersTree.getLeft_eyebrows_tree().getChildren().add(new TreeItem<>(layer_name));
                 layersTree.getLeft_eyebrows_tree().setExpanded(true);
                 layersTree.increase_layers_count();
                 break;
             case RightEyebrows:
+                referenceImagesUI.getCorePartLayerDatas().getR_e_b_mayu().getPolygons().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size();i++){
+                        CurrentLayerData.addPolygon(polygon.clone());
+                    }
+                });
+                referenceImagesUI.getCorePartLayerDatas().getR_e_b_mayu().getPolygons().stream().parallel().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size() - 1;i++) {
+                        CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
+                    }
+                    CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
+                });
                 layersTree.getRight_eyebrows_tree().getChildren().add(new TreeItem<>(layer_name));
                 layersTree.getRight_eyebrows_tree().setExpanded(true);
                 layersTree.increase_layers_count();
                 break;
             case Mouth:
+                referenceImagesUI.getCorePartLayerDatas().getM_mouth().getPolygons().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size();i++){
+                        CurrentLayerData.addPolygon(polygon.clone());
+                    }
+                });
+                referenceImagesUI.getCorePartLayerDatas().getM_mouth().getPolygons().stream().parallel().forEach(polygon -> {
+                    for(int i = 0;i < polygon.size() - 1;i++) {
+                        CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
+                    }
+                    CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
+                });
                 layersTree.getMouth_tree().getChildren().add(new TreeItem<>(layer_name));
                 layersTree.getMouth_tree().setExpanded(true);
                 layersTree.increase_layers_count();

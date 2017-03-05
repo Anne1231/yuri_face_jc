@@ -27,4 +27,39 @@ public class Polygon {
 
     }
 
+    public Polygon(int size, String polygon_name, Color color){
+        xPoints = new double[size];
+        yPoints = new double[size];
+        this.polygon_name = polygon_name;
+        this.dot_color = color;
+    }
+
+    public double getX(int index){
+        return xPoints[index];
+    }
+
+    public double getY(int index){
+        return yPoints[index];
+    }
+
+    public String getPolygonName() {
+        return polygon_name;
+    }
+
+    public Color getDotColor() {
+        return dot_color;
+    }
+
+    public int size(){
+        return xPoints.length;
+    }
+
+    public Polygon clone(){
+        Polygon clone = new Polygon(this.xPoints.length, this.polygon_name, this.dot_color);
+        for(int i = 0;i < this.xPoints.length;i++){
+            clone.xPoints[i] = this.xPoints[i];
+            clone.yPoints[i] = this.yPoints[i];
+        }
+        return clone;
+    }
 }

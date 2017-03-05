@@ -77,6 +77,8 @@ public class SelectAreaLayer extends Layer {
                 Main.CurrentLayerData.addPolygon(new Polygon(Main.CurrentLayerData.CreateSubPolygon(rectangle2D), createPolygonWindow.getAnsName(), createPolygonWindow.getSelectedColor()));
                 ColorPicker colorPicker = new ColorPicker();
                 colorPicker.getCustomColors();
+                this.graphicsContext.clearRect(0, 0, UIValues.LAYER_WIDTH, UIValues.LAYER_HEIGHT);
+                this.canvas.toBack();
             }
 
         });

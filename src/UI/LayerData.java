@@ -106,6 +106,18 @@ public class LayerData {
     public void AllDraw(Layer front, Layer lines){
         line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
         dot_set.forEach(dot -> dot.Draw(front, Color.BLACK));
+        polygons.forEach(polygon -> {
+            for(int i = 0;i < polygon.size();i++){
+                front.getGraphicsContext().clearRect(polygon.getX(i) - 3, polygon.getY(i) - 3, 11, 11);
+                {
+                    front.getGraphicsContext().setFill(polygon.getDotColor());
+                    front.getGraphicsContext().setStroke(polygon.getDotColor());
+                    front.getGraphicsContext().setLineWidth(UIValues.DOT_CIRCLE_WIDTH);
+                    front.getGraphicsContext().fillOval(polygon.getX(i), polygon.getY(i), 4, 4);
+                    front.getGraphicsContext().strokeOval(polygon.getX(i) - 3, polygon.getY(i) - 3, 10, 10);
+                }
+            }
+        });
     }
 
     public void DrawAllLines(LinesLayer layer){
@@ -239,5 +251,7 @@ public class LayerData {
         polygons.add(polygon);
     }
 
-
+    public ArrayList<Polygon> getPolygons() {
+        return polygons;
+    }
 }
