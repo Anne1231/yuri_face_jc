@@ -237,7 +237,7 @@ public class Main extends Application {
         /*
         * メニューバーの設定
          */
-        ConfigMenuBar(menubar, stage, grid, image_layer, preview, backGroundImageUI.getImage_bairitsu_field(), layersTree, backGroundImageUI);
+        ConfigMenuBar(menubar, stage, grid, image_layer, preview, backGroundImageUI.getImage_bairitsu_field(), layersTree, backGroundImageUI, selecting_rect);
 
 
         /*
@@ -254,7 +254,6 @@ public class Main extends Application {
         image_layer.getCanvas().toBack();
         footer.getCanvas().toFront();
         preview.getCanvas().toBack();
-        selecting_rect.getCanvas().toFront();
 
         /*
         * 表示
@@ -441,7 +440,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree, BackGroundImageUI backGroundImageUI){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree, BackGroundImageUI backGroundImageUI, SelectAreaLayer selectAreaLayer){
         Menu help = new Menu("ヘルプ");
         MenuItem dev = new MenuItem("DEVELOPERS");
         help.getItems().addAll(dev);
@@ -449,6 +448,16 @@ public class Main extends Application {
         CheckMenuItem grid_config = new CheckMenuItem("グリッド");
         CheckMenuItem grid_complete = new CheckMenuItem("グリッドによる補完");
         CheckMenuItem preview_menu = new CheckMenuItem("プレビュー");
+
+        Menu selecting_area = new Menu("範囲選択");
+        MenuItem make_group = new MenuItem("グループを作る");
+
+        make_group.setOnAction(event -> {
+            selectAreaLayer.getCanvas().toFront();
+
+        });
+
+        selecting_area.getItems().addAll(make_group);
 
         grid_config.setOnAction(event -> {
             int interval;
@@ -564,7 +573,7 @@ public class Main extends Application {
         });
 
         file.getItems().addAll(open_yfml, open, save, quit);
-        menu.getMenus().addAll(file, display, help);
+        menu.getMenus().addAll(file, display, selecting_area, help);
 
         menu.setPrefWidth(WINDOW_WIDTH);
     }

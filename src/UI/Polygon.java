@@ -9,7 +9,7 @@ public class Polygon {
     private double[] xPoints;
     private double[] yPoints;
 
-    public Polygon(ArrayList<Point2i> points){
+    public Polygon(ArrayList<Dot> points){
         xPoints = new double[points.size()];
         yPoints = new double[points.size()];
 

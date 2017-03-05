@@ -3,6 +3,8 @@ package UI;
 import Layers.FrontDotLayer;
 import Layers.Layer;
 import Layers.LinesLayer;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -67,11 +69,13 @@ public class LayerData {
     private String name;
     private HashSet<Dot> dot_set;
     private ArrayList<Line> line_list;
+    private ArrayList<Polygon> polygons;
 
     public LayerData(){
         dot_set = new HashSet<>();
         line_list = new ArrayList<>();
         name = new String();
+        polygons = new ArrayList<>();
     }
 
     public LayerData(String layer_name, LayerDataType type){
@@ -79,6 +83,7 @@ public class LayerData {
         line_list = new ArrayList<>();
         name = layer_name;
         this.type = type;
+        polygons = new ArrayList<>();
     }
 
     public LayerData clone(){
@@ -99,7 +104,6 @@ public class LayerData {
     }
 
     public void AllDraw(Layer front, Layer lines){
-        System.out.println(line_list.size());
         line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
         dot_set.forEach(dot -> dot.Draw(front, Color.BLACK));
     }
@@ -193,6 +197,46 @@ public class LayerData {
         }
 
         return polygon;
+    }
+
+    public ArrayList<Dot> CreateSubPolygon(Rectangle2D rectangle2D){
+        ArrayList<Line> memo = new ArrayList<>();
+        this.line_list
+                .stream()
+                .parallel()
+                .filter(line ->
+                        rectangle2D.contains(new Point2D(line.getBegin().getX(), line.getBegin().getY()))
+                        || rectangle2D.contains(new Point2D(line.getEnd().getX(), line.getEnd().getY()))
+                )
+                .forEach(line -> memo.add(line));
+
+        ArrayList<Dot> polygon = new ArrayList<>();
+        Line line = memo.get(0);
+        Point2i next;
+        int index;
+
+
+        for(int i = 0;i < line_list.size();i++){
+
+            polygon.add(new Dot(line.getBegin().getX(), line.getBegin().getY()));
+            next = line.getEnd();
+
+            index = memo.indexOf(line);
+            if(index != -1)
+                memo.remove(index);
+
+            for(Line loop_line : memo){
+                if(loop_line.contains(next)){
+                    line = loop_line;
+                }
+            }
+        }
+
+        return polygon;
+    }
+
+    public void addPolygon(Polygon polygon){
+        polygons.add(polygon);
     }
 
 
