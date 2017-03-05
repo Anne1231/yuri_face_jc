@@ -90,6 +90,7 @@ public class LayerData {
         LayerData layerData = new LayerData(this.name, this.type);
         dot_set.forEach(dot -> layerData.dot_set.add(dot.clone()));
         line_list.forEach(line -> layerData.connect(line.clone()));
+        polygons.forEach(polygon -> layerData.getPolygons().add(polygon.clone()));
         return layerData;
     }
 
