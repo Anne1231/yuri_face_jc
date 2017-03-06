@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import motion.SynchronizableBasicMotion;
 import org.opencv.core.*;
 import sub.CreateMotionWindow;
 
@@ -241,7 +242,7 @@ public class Main extends Application {
         /*
         * メニューバーの設定
          */
-        ConfigMenuBar(menubar, stage, grid, image_layer, preview, backGroundImageUI.getImage_bairitsu_field(), layersTree, backGroundImageUI, selecting_rect);
+        ConfigMenuBar(menubar, stage, grid, image_layer, preview, backGroundImageUI.getImage_bairitsu_field(), layersTree, motionTree, backGroundImageUI, selecting_rect);
 
 
         /*
@@ -447,7 +448,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree, BackGroundImageUI backGroundImageUI, SelectAreaLayer selectAreaLayer){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree, LayersTree motion_tree, BackGroundImageUI backGroundImageUI, SelectAreaLayer selectAreaLayer){
         Menu help = new Menu("ヘルプ");
         MenuItem dev = new MenuItem("DEVELOPERS");
         help.getItems().addAll(dev);
@@ -559,24 +560,38 @@ public class Main extends Application {
         });
 
         dev.setOnAction(event -> {
-            /*
-            preview.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-            int size = CurrentLayerData.getDotSet().size();
-            double[] xPoints = new double[size];
-            double[] yPoints = new double[size];
-            ArrayList<Dot> dots = CurrentLayerData.CreatePolygon();
-            int i = 0;
-            for(Dot dot : dots){
-                xPoints[i] = dot.getX();
-                yPoints[i] = dot.getY();
-                i++;
+            BasicMotion re, rb, le, lb, m;
+            re = rb = le = lb = m = null;
+            for(BasicMotion basicMotion : basicMotions){
+                //select.getParent()な理由
+                    /*
+                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
+                     */
+                if(basicMotion.getMotionName().equals(MakeLayerdataName("m", motion_tree.getMouth_tree()))){
+                    basicMotion.setMill_sec(100);
+                    //basicMotion.preview(preview);
+                    m = basicMotion;
+                }else if(basicMotion.getMotionName().equals(MakeLayerdataName("re", motion_tree.getRight_eye_tree()))){
+                    basicMotion.setMill_sec(100);
+                    //basicMotion.preview(preview);
+                    re = basicMotion;
+                }else if(basicMotion.getMotionName().equals(MakeLayerdataName("le", motion_tree.getLeft_eye_tree()))){
+                    basicMotion.setMill_sec(100);
+                    //basicMotion.preview(preview);
+                    le = basicMotion;
+                }else if(basicMotion.getMotionName().equals(MakeLayerdataName("lb", motion_tree.getLeft_eyebrows_tree()))){
+                    basicMotion.setMill_sec(100);
+                    //basicMotion.preview(preview);
+                    lb = basicMotion;
+                }else if(basicMotion.getMotionName().equals(MakeLayerdataName("rb", motion_tree.getRight_eyebrows_tree()))){
+                    basicMotion.setMill_sec(100);
+                    //basicMotion.preview(preview);
+                    rb = basicMotion;
+                }
+
             }
-            preview.getGraphicsContext().fillPolygon(xPoints, yPoints, size);
-            */
-
-            Preview preview1 = new Preview(LayerDatas, LayerData.LayerDataType.Mouth, 100);
-            preview1.show(preview);
-
+            SynchronizableBasicMotion  synchronizableBasicMotion = new SynchronizableBasicMotion(re, le, rb, lb, m, null);
+            synchronizableBasicMotion.preview(preview);
         });
 
         file.getItems().addAll(open_yfml, open, save, quit);

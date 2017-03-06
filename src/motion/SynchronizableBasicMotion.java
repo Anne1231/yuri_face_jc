@@ -2,6 +2,7 @@ package motion;
 
 import Layers.Layer;
 import UI.LayerDataEx;
+import UI.UIValues;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -49,6 +50,7 @@ public class SynchronizableBasicMotion {
         Timeline motion = new Timeline(new KeyFrame(Duration.millis(30), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                layer.getGraphicsContext().clearRect(0, 0, UIValues.WINDOW_WIDTH, UIValues.WINDOW_HEIGHT);
                 if(re_ms > right_eye.getMill_sec()){
                     right_eye.getNow().Draw(layer);
                     targeted[0] = true;
@@ -73,30 +75,35 @@ public class SynchronizableBasicMotion {
                 if(targeted[0]){
                     right_eye.next();
                     re_ms = 0;
+                    targeted[0] = false;
                 }else{
                     re_ms += 30;
                 }
                 if(targeted[1]){
                     left_eye.next();
                     le_ms = 0;
+                    targeted[1] = false;
                 }else{
                     le_ms += 30;
                 }
                 if(targeted[2]){
                     right_eyebrows.next();
                     reb_ms = 0;
+                    targeted[2] = false;
                 }else{
                     reb_ms += 30;
                 }
                 if(targeted[3]){
                     left_eyebrows.next();
                     leb_ms = 0;
+                    targeted[3] = false;
                 }else{
                     leb_ms += 30;
                 }
                 if(targeted[4]){
                     mouth.next();
                     m_ms = 0;
+                    targeted[4] = false;
                 }else{
                     m_ms += 30;
                 }

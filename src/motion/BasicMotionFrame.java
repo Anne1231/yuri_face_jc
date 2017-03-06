@@ -44,7 +44,6 @@ public class BasicMotionFrame {
     * 渡されたレイヤーに自らを描画する関数
      */
     public void Draw(Layer layer){
-        layer.getGraphicsContext().clearRect(0, 0, UIValues.WINDOW_WIDTH, UIValues.WINDOW_HEIGHT);
         layer.getGraphicsContext().setFill(this.color);
         polygons.forEach(polygon -> {
             layer.getGraphicsContext().fillPolygon(polygon.getxPoints(), polygon.getyPoints(), polygon.size());

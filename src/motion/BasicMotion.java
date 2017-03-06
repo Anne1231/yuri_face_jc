@@ -26,6 +26,7 @@ public class BasicMotion {
         motion_name = name;
         motion_data = new ArrayList<>();
         layer_datas.forEach(layerData -> motion_data.add(new BasicMotionFrame(layerData)));
+        now = motion_data.get(0);
     }
 
     public void preview(Layer preview_layer){
