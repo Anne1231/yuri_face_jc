@@ -43,34 +43,62 @@ public class SynchronizableBasicMotion {
         reb_ms = 0;
         leb_ms = 0;
         m_ms = 0;
+        boolean[] targeted = new boolean[5];
+        java.util.Arrays.fill(targeted, false);
 
         Timeline motion = new Timeline(new KeyFrame(Duration.millis(30), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if(re_ms > right_eye.getMill_sec()){
                     right_eye.getNow().Draw(layer);
-                    right_eye.next();
-                    re_ms = 0;
+                    targeted[0] = true;
                 }
                 if(le_ms > left_eye.getMill_sec()){
                     left_eye.getNow().Draw(layer);
-                    left_eye.next();
-                    le_ms = 0;
+                    targeted[1] = true;
                 }
                 if(reb_ms > right_eyebrows.getMill_sec()){
                     right_eyebrows.getNow().Draw(layer);
-                    left_eye.next();
-                    reb_ms = 0;
+                    targeted[2] = true;
                 }
                 if(leb_ms > left_eyebrows.getMill_sec()){
                     left_eyebrows.getNow().Draw(layer);
-                    left_eye.next();
-                    leb_ms = 0;
+                    targeted[3] = true;
                 }
                 if(m_ms > mouth.getMill_sec()){
                     mouth.getNow().Draw(layer);
+                    targeted[4] = true;
+                }
+
+                if(targeted[0]){
+                    right_eye.next();
+                    re_ms = 0;
+                }else{
+                    re_ms += 30;
+                }
+                if(targeted[1]){
                     left_eye.next();
+                    le_ms = 0;
+                }else{
+                    le_ms += 30;
+                }
+                if(targeted[2]){
+                    right_eyebrows.next();
+                    reb_ms = 0;
+                }else{
+                    reb_ms += 30;
+                }
+                if(targeted[3]){
+                    left_eyebrows.next();
+                    leb_ms = 0;
+                }else{
+                    leb_ms += 30;
+                }
+                if(targeted[4]){
+                    mouth.next();
                     m_ms = 0;
+                }else{
+                    m_ms += 30;
                 }
             }
         }));
