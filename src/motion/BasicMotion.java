@@ -51,7 +51,7 @@ public class BasicMotion {
         return motion_data;
     }
 
-    public int getMill_sec() {
+    public final int getMill_sec() {
         return mill_sec;
     }
 
@@ -61,5 +61,18 @@ public class BasicMotion {
 
     public String getMotionName() {
         return motion_name;
+    }
+
+    public final BasicMotionFrame getNow() {
+        return now;
+    }
+
+    public final void next(){
+        int index = motion_data.indexOf(now);
+        if(index  != motion_data.size() - 1){
+            now = motion_data.get(index + 1);
+        }else{
+            now = motion_data.get(0);
+        }
     }
 }

@@ -1,10 +1,7 @@
 package motion;
 
 import Layers.Layer;
-import UI.Dot;
-import UI.LayerData;
-import UI.Point2i;
-import UI.UIValues;
+import UI.*;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -13,25 +10,18 @@ import java.util.ArrayList;
  * Created by Akihiro on 2017/03/03.
  */
 public class BasicMotionFrame {
-    private double[] xPoints;
-    private double[] yPoints;
-    Color color;
+    private ArrayList<Polygon> polygons;
+    private Color color;
 
     /*
     * コンストラクタたち
      */
 
     public BasicMotionFrame(LayerData layerData){
-        int size = layerData.getDotSet().size();
-        ArrayList<Dot> dots = layerData.CreatePolygon();
-        xPoints = new double[size];
-        yPoints = new double[size];
-        int i = 0;
-        for(Dot dot : dots){
-            xPoints[i] = dot.getX();
-            yPoints[i] = dot.getY();
-            i++;
-        }
+        polygons = new ArrayList<>();
+        layerData.getPolygons().stream().parallel().forEach(polygon -> {
+            polygons.add(polygon.clone());
+        });
     }
 
     //オブジェクト生成時に色指定バージョン
@@ -56,7 +46,9 @@ public class BasicMotionFrame {
     public void Draw(Layer layer){
         layer.getGraphicsContext().clearRect(0, 0, UIValues.WINDOW_WIDTH, UIValues.WINDOW_HEIGHT);
         layer.getGraphicsContext().setFill(this.color);
-        layer.getGraphicsContext().fillPolygon(xPoints, yPoints, yPoints.length);
+        polygons.forEach(polygon -> {
+            layer.getGraphicsContext().fillPolygon(polygon.getxPoints(), polygon.getyPoints(), polygon.size());
+        });
     }
 
     public void setColor(Color color) {
