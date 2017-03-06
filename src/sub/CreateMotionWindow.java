@@ -103,7 +103,7 @@ public class CreateMotionWindow extends Stage {
             ArrayList<LayerData> layerDatas = new ArrayList<>();
             including_layers.getItems().forEach(str -> {
                 Main.LayerDatas.stream().filter(layerData -> layerData.getType() == motion_tree.WhichType(motion_tree.getSelecting_tree())).forEach(layerData -> {
-                    if(layerData.getName().equals(Main.MakeLayerdataName(str, layersTree.getMouth_tree()))){
+                    if(layerData.getName().equals(Main.MakeLayerdataName(str, layersTree.getTree(layerData.getType())))){
                         layerDatas.add(layerData);
                     }
                 });

@@ -116,6 +116,23 @@ public class LayersTree {
         return LayerData.LayerDataType.NullNull;
     }
 
+    public TreeItem<String> getTree(LayerData.LayerDataType type){
+        switch (type){
+            case Mouth:
+                return mouth_tree;
+            case LeftEye:
+                return left_eye_tree;
+            case RightEye:
+                return right_eye_tree;
+            case LeftEyebrows:
+                return left_eyebrows_tree;
+            case RightEyebrows:
+                return right_eyebrows_tree;
+                default:
+                    return null;
+        }
+    }
+
     public void setLayer_selecting(boolean status){
         layer_selecting = status;
     }

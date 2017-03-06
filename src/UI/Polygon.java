@@ -95,4 +95,12 @@ public class Polygon {
             layer.getGraphicsContext().strokeOval(xPoints[i] - 3, yPoints[i] - 3, 10, 10);
         }
     }
+
+    public double[] getxPoints() {
+        return xPoints;
+    }
+
+    public double[] getyPoints() {
+        return yPoints;
+    }
 }
