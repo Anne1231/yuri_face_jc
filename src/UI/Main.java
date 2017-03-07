@@ -787,9 +787,12 @@ public class Main extends Application {
         });
 
         preview.setOnAction(event -> {
+
             BasicMotion basicMotion = SearchAndGetMotion(motion_tree.getSelecting(), motion_tree.WhichType(motion_tree.getSelecting_tree()));
-            basicMotion.setMill_sec(100);
-            basicMotion.preview(preview_layer);
+            basicMotion.setMill_sec(200);
+            basicMotion.setPreviewLayer(preview_layer);
+            basicMotion.usingFxPreview();
+            //basicMotion.preview(preview_layer);
         });
 
         clone_item.setOnAction(event -> {

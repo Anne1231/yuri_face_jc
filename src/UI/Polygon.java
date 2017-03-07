@@ -43,6 +43,14 @@ public class Polygon {
         return yPoints[index];
     }
 
+    public void setX(int index, double value){
+        xPoints[index] = value;
+    }
+
+    public void setY(int index, double value){
+        yPoints[index] = value;
+    }
+
     public String getPolygonName() {
         return polygon_name;
     }

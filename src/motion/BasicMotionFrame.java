@@ -24,6 +24,10 @@ public class BasicMotionFrame {
         });
     }
 
+    public BasicMotionFrame(){
+        polygons = new ArrayList<>();
+    }
+
     //オブジェクト生成時に色指定バージョン
     public BasicMotionFrame(LayerData layerData, Color color){
         int size = layerData.getDotSet().size();
@@ -59,6 +63,19 @@ public class BasicMotionFrame {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public BasicMotionFrame CreateMid(BasicMotionFrame target, double rate){
+        BasicMotionFrame frame = new BasicMotionFrame();
+        for(int i = 0;i < polygons.size();i++){
+            Polygon polygon = new Polygon(polygons.get(i).size(), "", polygons.get(i).getDotColor());
+            for(int j = 0;j < polygon.size();j++){
+                polygon.setX(j, this.polygons.get(i).getX(j) * (1 - rate) + target.polygons.get(i).getX(j) * rate);
+                polygon.setY(j, this.polygons.get(i).getY(j) * (1 - rate) + target.polygons.get(i).getY(j) * rate);
+            }
+            frame.polygons.add(polygon);
+        }
+        return frame;
     }
 
 }
