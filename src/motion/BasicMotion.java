@@ -7,6 +7,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -36,20 +39,31 @@ public class BasicMotion {
     public void preview(Layer preview_layer){
         now = motion_data.get(0);
 
+        preview_layer.getGraphicsContext().setFill(Color.WHITE);
+        preview_layer.getGraphicsContext().fillRect(0, 0, preview_layer.getCanvas().getWidth(), preview_layer.getCanvas().getHeight());
+        preview_layer.getCanvas().toFront();
+
         motion = new Timeline(new KeyFrame(Duration.millis(mill_sec), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                before.fillWhite(preview_layer);
                 now.Draw(preview_layer);
-                if(motion_data.indexOf(now) == motion_data.size() - 1){
-                    motion.stop();
-                }else {
-                    now = motion_data.get(motion_data.indexOf(now) + 1);
-                }
+                next();
             }
         }));
 
         motion.setCycleCount(Timeline.INDEFINITE);
         motion.play();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.FINISH);
+        alert.setHeaderText("プレビュー中です");
+        alert.setTitle("プレビュー");
+        alert.showAndWait();
+
+        motion.stop();
+        preview_layer.getGraphicsContext().clearRect(0, 0, preview_layer.getCanvas().getWidth(), preview_layer.getCanvas().getHeight());
+        preview_layer.getCanvas().toBack();
+
     }
 
     public ArrayList<BasicMotionFrame> getMotion_data() {
