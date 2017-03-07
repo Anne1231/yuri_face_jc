@@ -61,17 +61,8 @@ public class SaveXML {
 
 
         for(TreeItem<String> item : layersTree.getMouth_tree().getChildren()){
-            LayerData ref = null;
-            for(LayerData layer_data : data){
-                //select.getParent()な理由
-                    /*
-                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
-                     */
-                if(layer_data.getName().equals(Main.MakeLayerdataName(item.getValue(), item.getParent()))){
-                    ref = layer_data;
-                    break;
-                }
-            }
+            LayerData ref = Main.SearchAndGetLayer(item.getValue(), LayerData.LayerDataType.Mouth);
+
             //なんも取れなかったらエラー
             if(ref == null) {
                 System.out.println("ERROR");

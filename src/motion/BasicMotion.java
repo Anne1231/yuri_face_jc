@@ -22,13 +22,15 @@ public class BasicMotion {
     private BasicMotionFrame before;
     private Timeline motion;
     private int mill_sec;
+    private LayerData.LayerDataType type;
 
-    public BasicMotion(String name, ArrayList<LayerData> layer_datas){
+    public BasicMotion(String name, ArrayList<LayerData> layer_datas, LayerData.LayerDataType type){
         motion_name = name;
         motion_data = new ArrayList<>();
         layer_datas.forEach(layerData -> motion_data.add(new BasicMotionFrame(layerData)));
         now = motion_data.get(0);
         before = now;
+        this.type = type;
     }
 
     public void preview(Layer preview_layer){
@@ -82,5 +84,13 @@ public class BasicMotion {
         }else{
             now = motion_data.get(0);
         }
+    }
+
+    public LayerData.LayerDataType getType() {
+        return type;
+    }
+
+    public String getName() {
+        return motion_name;
     }
 }

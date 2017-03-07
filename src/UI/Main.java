@@ -561,35 +561,17 @@ public class Main extends Application {
 
         dev.setOnAction(event -> {
             BasicMotion re, rb, le, lb, m;
-            re = rb = le = lb = m = null;
-            for(BasicMotion basicMotion : basicMotions){
-                //select.getParent()な理由
-                    /*
-                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
-                     */
-                if(basicMotion.getMotionName().equals(MakeLayerdataName("m", motion_tree.getMouth_tree()))){
-                    basicMotion.setMill_sec(100);
-                    //basicMotion.preview(preview);
-                    m = basicMotion;
-                }else if(basicMotion.getMotionName().equals(MakeLayerdataName("re", motion_tree.getRight_eye_tree()))){
-                    basicMotion.setMill_sec(100);
-                    //basicMotion.preview(preview);
-                    re = basicMotion;
-                }else if(basicMotion.getMotionName().equals(MakeLayerdataName("le", motion_tree.getLeft_eye_tree()))){
-                    basicMotion.setMill_sec(100);
-                    //basicMotion.preview(preview);
-                    le = basicMotion;
-                }else if(basicMotion.getMotionName().equals(MakeLayerdataName("lb", motion_tree.getLeft_eyebrows_tree()))){
-                    basicMotion.setMill_sec(100);
-                    //basicMotion.preview(preview);
-                    lb = basicMotion;
-                }else if(basicMotion.getMotionName().equals(MakeLayerdataName("rb", motion_tree.getRight_eyebrows_tree()))){
-                    basicMotion.setMill_sec(100);
-                    //basicMotion.preview(preview);
-                    rb = basicMotion;
-                }
 
-            }
+            m = SearchAndGetMotion("m", LayerData.LayerDataType.Mouth);
+            m.setMill_sec(100);
+            re = SearchAndGetMotion("re", LayerData.LayerDataType.RightEye);
+            re.setMill_sec(100);
+            le = SearchAndGetMotion("le", LayerData.LayerDataType.LeftEye);
+            le.setMill_sec(100);
+            lb = SearchAndGetMotion("lb", LayerData.LayerDataType.LeftEyebrows);
+            lb.setMill_sec(100);
+            rb = SearchAndGetMotion("rb", LayerData.LayerDataType.RightEyebrows);
+
             SynchronizableBasicMotion  synchronizableBasicMotion = new SynchronizableBasicMotion(re, le, rb, lb, m, null);
             synchronizableBasicMotion.preview(preview);
         });
@@ -740,18 +722,10 @@ public class Main extends Application {
                 layersTree.setSelecting_tree(select);
             }else if(depth == 3){
                 layersTree.setLayer_selecting(true);
-                for(LayerData layer_data : LayerDatas){
-                    //select.getParent()な理由
-                    /*
-                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
-                     */
-                    if(layer_data.getName().equals(MakeLayerdataName(select.getValue(), select.getParent()))){
-                        CurrentLayerData = layer_data;
-                        SwitchUsersLayer(CurrentLayerData, normal_front, lines);
-                        AllEraseLayer(front);
-                        break;
-                    }
-                }
+
+                CurrentLayerData = SearchAndGetLayer(select.getValue(), layersTree.WhichType(select.getParent()));
+                SwitchUsersLayer(CurrentLayerData, normal_front, lines);
+                //AllEraseLayer(front);
                 //新規レイヤーメニューは表示させない
                 //裏ではnullで判定してる
                 layersTree.setSelecting_tree(null);
@@ -796,17 +770,9 @@ public class Main extends Application {
         });
 
         preview.setOnAction(event -> {
-            for(BasicMotion basicMotion : basicMotions){
-                //select.getParent()な理由
-                    /*
-                    * select.getValue()で自分の名前、select.getParentで親の絶対パスになるからちょうどよい
-                     */
-                if(basicMotion.getMotionName().equals(MakeLayerdataName(motion_tree.getSelecting(), motion_tree.getSelecting_tree()))){
-                    basicMotion.setMill_sec(100);
-                    basicMotion.preview(preview_layer);
-                    break;
-                }
-            }
+            BasicMotion basicMotion = SearchAndGetMotion(motion_tree.getSelecting(), motion_tree.WhichType(motion_tree.getSelecting_tree()));
+            basicMotion.setMill_sec(100);
+            basicMotion.preview(preview_layer);
         });
 
         clone_item.setOnAction(event -> {
@@ -873,11 +839,6 @@ public class Main extends Application {
     * レイヤーを新しく作成する関数
      */
     private static void CreateLayer(Stage stage, LayersTree layersTree, ReferenceImagesUI referenceImagesUI){
-        /*
-        Window window = stage;
-        Stage select_window = new AskLayerType(window);
-        select_window.showAndWait();
-        */
         TextInputDialog create_layer = new TextInputDialog("レイヤー");
         create_layer.setTitle("新規レイヤー");
         create_layer.setHeaderText("新規レイヤーの作成");
@@ -939,7 +900,7 @@ public class Main extends Application {
     */
     public static void addLayer(String layer_name, LayerData.LayerDataType type, LayersTree layersTree, ReferenceImagesUI referenceImagesUI){
 
-        CurrentLayerData = new LayerData(MakeLayerdataName(layer_name, layersTree.getSelecting_tree()), type);
+        CurrentLayerData = new LayerData(layer_name, type);
         LayerDatas.add(CurrentLayerData);
 
         switch (type){
@@ -1101,29 +1062,14 @@ public class Main extends Application {
 
         layer.getCanvas().toFront();
     }
-
-    public static String MakeLayerdataName(String tail, TreeItem<String> item){
-        /*
-            * 固有の名称を生成
-             */
-        StringBuilder builder = new StringBuilder();
-        TreeItem<String> ref = item;
-        builder.append(tail);
-        while(ref != null){
-            builder.append(ref.getValue());
-            ref = ref.getParent();
-        }
-
-        return builder.toString();
-    }
-
+    
     /*
     * データのみをコピーして新しくレイヤーを作成する関数
      */
     public static void addCloneLayer(String clone_name, LayerData original, LayersTree layersTree){
         CurrentLayerData = original.clone();
         CurrentLayerData.setType(layersTree.WhichType(layersTree.getSelecting_tree()));
-        CurrentLayerData.setName(MakeLayerdataName(clone_name, layersTree.getSelecting_tree()));
+        CurrentLayerData.setName(clone_name);
         LayerDatas.add(CurrentLayerData);
         switch (layersTree.WhichType(layersTree.getSelecting_tree())){
             case NullNull:
@@ -1157,6 +1103,28 @@ public class Main extends Application {
             default:
                 break;
         }
+    }
+
+    public static LayerData SearchAndGetLayer(String layer_name, LayerData.LayerDataType type){
+        for(LayerData layerData : LayerDatas){
+            if(layerData.getType() == type){
+                if(layerData.getName().equals(layer_name)){
+                    return layerData;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static BasicMotion SearchAndGetMotion(String motion_name, LayerData.LayerDataType type){
+        for(BasicMotion motion : basicMotions){
+            if(motion.getType() == type){
+                if(motion.getName().equals(motion_name)){
+                    return motion;
+                }
+            }
+        }
+        return null;
     }
 
 }
