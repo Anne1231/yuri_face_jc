@@ -250,7 +250,19 @@ public class Main extends Application {
                 systemLayers.getPreview().getCanvas(),
                 systemLayers.getSelectingRect().getCanvas(),
                 footer.getCanvas(),
-                referenceImagesUI.getTreeView());
+                referenceImagesUI.getTreeView(),
+                referenceImagesUI.getPreviewBox()
+        );
+
+        referenceImagesUI.getPreviewBox().setOnAction(event -> {
+            systemLayers.getPreview().getGraphicsContext().clearRect(0, 0, systemLayers.getPreview().getCanvas().getWidth(), systemLayers.getPreview().getCanvas().getHeight());
+            if(referenceImagesUI.getPreviewBox().isSelected()){
+                referenceImagesUI.DrawAllData(systemLayers.getPreview(), systemLayers.getPreview());
+            }
+        });
+
+        AnchorPane.setLeftAnchor(referenceImagesUI.getPreviewBox(), LAYER_LIST_WIDTH + LAYER_WIDTH + 20);
+        AnchorPane.setTopAnchor(referenceImagesUI.getPreviewBox(), LAYER_LIST_HEIGHT + 50);
 
         /*
         * レイヤーの順番をここで設定

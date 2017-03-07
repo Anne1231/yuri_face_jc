@@ -1,5 +1,7 @@
 package UI;
 
+import Layers.Layer;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TreeItem;
 
 /**
@@ -8,6 +10,7 @@ import javafx.scene.control.TreeItem;
 public class ReferenceImagesUI extends LayersTree {
     private TreeItem<String> face_base;
     private CorePartLayerDatas corePartLayerDatas;
+    private CheckBox preview;
 
     public ReferenceImagesUI(String tree_name){
         super(tree_name);
@@ -58,9 +61,26 @@ public class ReferenceImagesUI extends LayersTree {
             layer_root.setExpanded(true);
         });
 
+        preview = new CheckBox("他パーツを裏に表示");
+
+    }
+
+    public void DrawAllData(Layer front, Layer lines){
+        corePartLayerDatas.getM_mouth().AllDraw4PR(front, lines);
+        corePartLayerDatas.getR_e_mabuta().AllDraw4PR(front, lines);
+        corePartLayerDatas.getR_e_kurome().AllDraw4PR(front, lines);
+        corePartLayerDatas.getL_e_mabuta().AllDraw4PR(front, lines);
+        corePartLayerDatas.getL_e_kurome().AllDraw4PR(front, lines);
+        corePartLayerDatas.getR_e_b_mayu().AllDraw4PR(front, lines);
+        corePartLayerDatas.getL_e_b_mayu().AllDraw4PR(front, lines);
+        corePartLayerDatas.getM_mouth().AllDraw4PR(front, lines);
     }
 
     public CorePartLayerDatas getCorePartLayerDatas() {
         return corePartLayerDatas;
+    }
+
+    public CheckBox getPreviewBox() {
+        return preview;
     }
 }
