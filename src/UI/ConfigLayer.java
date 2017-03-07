@@ -188,14 +188,6 @@ public class ConfigLayer {
 
         ContextMenu popup = new ContextMenu();
         MenuItem choose = new MenuItem("ドットを選択");
-        MenuItem put = new MenuItem("ドットを配置");
-
-        /*
-        * ドット配置処理
-         */
-        put.setOnAction(event -> {
-            putDot(layersTree, gridLayer, front);
-        });
 
         /*
         * ドット選択処理
@@ -214,7 +206,7 @@ public class ConfigLayer {
                 }
             }
         });
-        popup.getItems().addAll(put, choose);
+        popup.getItems().addAll(choose);
 
         front.getCanvas().setOnContextMenuRequested(event -> {
             if(CurrentLayerData == null){
