@@ -123,11 +123,11 @@ public class Main extends Application {
                 }
             }else if(select.getValue().equals("まぶた")){
                 if(select.getParent().getValue().equals("右目")){
-                    CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta();
-                    Main.SwitchPartLayer(
-                            referenceImagesUI.getCorePartLayerDatas().getLayerData("r_e_mabuta"),
-                            front,
-                            lines
+                        CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta();
+                        Main.SwitchPartLayer(
+                                referenceImagesUI.getCorePartLayerDatas().getLayerData("r_e_mabuta"),
+                                front,
+                                lines
                     );
                 }else if(select.getParent().getValue().equals("左目")){
                     CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta();

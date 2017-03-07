@@ -7,6 +7,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -46,28 +47,35 @@ public class SynchronizableBasicMotion {
         m_ms = 0;
         boolean[] targeted = new boolean[5];
         java.util.Arrays.fill(targeted, false);
+        layer.getGraphicsContext().setFill(Color.WHITE);
+        layer.getGraphicsContext().fillRect(0, 0, UIValues.WINDOW_WIDTH, UIValues.WINDOW_HEIGHT);
+
 
         Timeline motion = new Timeline(new KeyFrame(Duration.millis(30), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                layer.getGraphicsContext().clearRect(0, 0, UIValues.WINDOW_WIDTH, UIValues.WINDOW_HEIGHT);
                 if(re_ms > right_eye.getMill_sec()){
+                    right_eye.getBefore().fillWhite(layer);
                     right_eye.getNow().Draw(layer);
                     targeted[0] = true;
                 }
                 if(le_ms > left_eye.getMill_sec()){
+                    left_eye.getBefore().fillWhite(layer);
                     left_eye.getNow().Draw(layer);
                     targeted[1] = true;
                 }
                 if(reb_ms > right_eyebrows.getMill_sec()){
+                    right_eyebrows.getBefore().fillWhite(layer);
                     right_eyebrows.getNow().Draw(layer);
                     targeted[2] = true;
                 }
                 if(leb_ms > left_eyebrows.getMill_sec()){
+                    left_eyebrows.getBefore().fillWhite(layer);
                     left_eyebrows.getNow().Draw(layer);
                     targeted[3] = true;
                 }
                 if(m_ms > mouth.getMill_sec()){
+                    mouth.getBefore().fillWhite(layer);
                     mouth.getNow().Draw(layer);
                     targeted[4] = true;
                 }

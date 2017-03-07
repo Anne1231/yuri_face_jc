@@ -19,6 +19,7 @@ public class BasicMotion {
     private String motion_name;
     private ArrayList<BasicMotionFrame> motion_data;
     private BasicMotionFrame now;
+    private BasicMotionFrame before;
     private Timeline motion;
     private int mill_sec;
 
@@ -27,6 +28,7 @@ public class BasicMotion {
         motion_data = new ArrayList<>();
         layer_datas.forEach(layerData -> motion_data.add(new BasicMotionFrame(layerData)));
         now = motion_data.get(0);
+        before = now;
     }
 
     public void preview(Layer preview_layer){
@@ -68,7 +70,12 @@ public class BasicMotion {
         return now;
     }
 
+    public final BasicMotionFrame getBefore(){
+        return before;
+    }
+
     public final void next(){
+        before = now;
         int index = motion_data.indexOf(now);
         if(index  != motion_data.size() - 1){
             now = motion_data.get(index + 1);
