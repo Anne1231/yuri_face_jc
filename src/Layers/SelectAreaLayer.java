@@ -75,7 +75,7 @@ public class SelectAreaLayer extends Layer {
                 Window window = stage;
                 CreatePolygonWindow createPolygonWindow = new CreatePolygonWindow(window);
                 createPolygonWindow.showAndWait();
-                Main.CurrentLayerData.addPolygon(new Polygon(Main.CurrentLayerData.CreateSubPolygon(rectangle2D), createPolygonWindow.getAnsName(), createPolygonWindow.getSelectedColor()));
+                Main.CurrentLayerData.addPolygon(new Polygon(Main.CurrentLayerData.CreateSubPolygon2(rectangle2D), createPolygonWindow.getAnsName(), createPolygonWindow.getSelectedColor()));
                 ColorPicker colorPicker = new ColorPicker();
                 colorPicker.getCustomColors();
                 this.graphicsContext.clearRect(0, 0, UIValues.LAYER_WIDTH, UIValues.LAYER_HEIGHT);

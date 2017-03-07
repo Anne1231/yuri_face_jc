@@ -58,7 +58,10 @@ public class BasicMotion extends Transition {
 
     @Override
     protected void interpolate(double frac){
-        before.fillWhite(this.preview_layer);
+        //before.fillWhite(this.preview_layer);
+        preview_layer.getGraphicsContext().setFill(Color.WHITE);
+        preview_layer.getGraphicsContext().setFill(Color.WHITE);
+        preview_layer.getGraphicsContext().fillRect(0, 0, preview_layer.getCanvas().getWidth(), preview_layer.getCanvas().getHeight());
         before = now.CreateMid(next, frac);
         before.Draw(this.preview_layer);
     }
