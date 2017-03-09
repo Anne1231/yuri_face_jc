@@ -19,7 +19,7 @@ public class BasicMotionFrame {
 
     public BasicMotionFrame(LayerData layerData){
         polygons = new ArrayList<>();
-        layerData.getPolygons().stream().parallel().forEach(polygon -> {
+        layerData.getPolygons().forEach(polygon -> {
             polygons.add(polygon.clone());
         });
     }
@@ -67,8 +67,8 @@ public class BasicMotionFrame {
 
     public BasicMotionFrame CreateMid(BasicMotionFrame target, double rate){
         BasicMotionFrame frame = new BasicMotionFrame();
-        for(int i = 0;i < polygons.size();i++){
-            Polygon polygon = new Polygon(polygons.get(i).size(), "", polygons.get(i).getDotColor());
+        for(int i = 0;i < this.polygons.size();i++){
+            Polygon polygon = new Polygon(this.polygons.get(i).size(), "", this.polygons.get(i).getDotColor());
             for(int j = 0;j < polygon.size();j++){
                 polygon.setX(j, this.polygons.get(i).getX(j) * (1 - rate) + target.polygons.get(i).getX(j) * rate);
                 polygon.setY(j, this.polygons.get(i).getY(j) * (1 - rate) + target.polygons.get(i).getY(j) * rate);

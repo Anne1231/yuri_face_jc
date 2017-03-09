@@ -930,9 +930,7 @@ public class Main extends Application {
                 break;
             case LeftEye:
                 referenceImagesUI.getCorePartLayerDatas().getL_e_kurome().getPolygons().forEach(polygon -> {
-                    for(int i = 0;i < polygon.size();i++){
                         CurrentLayerData.addPolygon(polygon.clone());
-                    }
                 });
                 referenceImagesUI.getCorePartLayerDatas().getL_e_kurome().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {
@@ -941,9 +939,7 @@ public class Main extends Application {
                     CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
                 });
                 referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta().getPolygons().forEach(polygon -> {
-                    for(int i = 0;i < polygon.size();i++){
-                        CurrentLayerData.addPolygon(polygon.clone());
-                    }
+                    CurrentLayerData.addPolygon(polygon.clone());
                 });
                 referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {
@@ -957,9 +953,7 @@ public class Main extends Application {
                 break;
             case RightEye:
                 referenceImagesUI.getCorePartLayerDatas().getR_e_kurome().getPolygons().forEach(polygon -> {
-                    for(int i = 0;i < polygon.size();i++){
-                        CurrentLayerData.addPolygon(polygon.clone());
-                    }
+                    CurrentLayerData.addPolygon(polygon.clone());
                 });
                 referenceImagesUI.getCorePartLayerDatas().getR_e_kurome().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {
@@ -968,9 +962,7 @@ public class Main extends Application {
                     CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
                 });
                 referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta().getPolygons().forEach(polygon -> {
-                    for(int i = 0;i < polygon.size();i++){
-                        CurrentLayerData.addPolygon(polygon.clone());
-                    }
+                    CurrentLayerData.addPolygon(polygon.clone());
                 });
                 referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {
@@ -984,9 +976,7 @@ public class Main extends Application {
                 break;
             case LeftEyebrows:
                 referenceImagesUI.getCorePartLayerDatas().getL_e_b_mayu().getPolygons().forEach(polygon -> {
-                    for(int i = 0;i < polygon.size();i++){
-                        CurrentLayerData.addPolygon(polygon.clone());
-                    }
+                    CurrentLayerData.addPolygon(polygon.clone());
                 });
                 referenceImagesUI.getCorePartLayerDatas().getL_e_b_mayu().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {
@@ -1000,9 +990,7 @@ public class Main extends Application {
                 break;
             case RightEyebrows:
                 referenceImagesUI.getCorePartLayerDatas().getR_e_b_mayu().getPolygons().forEach(polygon -> {
-                    for(int i = 0;i < polygon.size();i++){
-                        CurrentLayerData.addPolygon(polygon.clone());
-                    }
+                    CurrentLayerData.addPolygon(polygon.clone());
                 });
                 referenceImagesUI.getCorePartLayerDatas().getR_e_b_mayu().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {
@@ -1016,9 +1004,7 @@ public class Main extends Application {
                 break;
             case Mouth:
                 referenceImagesUI.getCorePartLayerDatas().getM_mouth().getPolygons().forEach(polygon -> {
-                    for(int i = 0;i < polygon.size();i++){
-                        CurrentLayerData.addPolygon(polygon.clone());
-                    }
+                    CurrentLayerData.addPolygon(polygon.clone());
                 });
                 referenceImagesUI.getCorePartLayerDatas().getM_mouth().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {

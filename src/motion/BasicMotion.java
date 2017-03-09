@@ -25,7 +25,6 @@ public class BasicMotion extends Transition {
     private BasicMotionFrame now;
     private BasicMotionFrame before;
     private BasicMotionFrame next;
-    private BasicMotionFrame draw;
     private Timeline motion;
     private int mill_sec;
     private LayerData.LayerDataType type;
@@ -144,8 +143,6 @@ public class BasicMotion extends Transition {
     }
 
     public void usingFxPreview(){
-
-        draw = new BasicMotionFrame();
 
         now = motion_data.get(0);
         before = now;

@@ -104,6 +104,7 @@ public class CreateMotionWindow extends Stage {
             including_layers.getItems().forEach(str -> {
                 Main.LayerDatas.stream().filter(layerData -> layerData.getType() == motion_tree.WhichType(motion_tree.getSelecting_tree()))
                         .forEach(layerData -> {
+                            System.out.println(str);
                             if(layerData.getName().equals(str)){
                                 layerDatas.add(layerData);
                             }

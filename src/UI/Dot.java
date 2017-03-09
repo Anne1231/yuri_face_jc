@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class Dot extends Point2i {
 
-    private Boolean selected;
+    private boolean selected;
 
     public Dot(int x, int y){
         super(x, y);
@@ -83,4 +83,5 @@ public class Dot extends Point2i {
     public int hashCode() {
         return ((this.x << 16) | (this.getY()));
     }
+
 }
