@@ -59,10 +59,10 @@ public class BasicMotion extends Transition {
     protected void interpolate(double frac){
         //before.fillWhite(this.preview_layer);
         preview_layer.getGraphicsContext().setFill(Color.WHITE);
-        preview_layer.getGraphicsContext().setFill(Color.WHITE);
         preview_layer.getGraphicsContext().fillRect(0, 0, preview_layer.getCanvas().getWidth(), preview_layer.getCanvas().getHeight());
         before = now.CreateMid(next, frac);
         before.Draw(this.preview_layer);
+        System.out.println("playing");
     }
 
     public void preview(Layer preview_layer){
@@ -152,21 +152,24 @@ public class BasicMotion extends Transition {
         preview_layer.getGraphicsContext().fillRect(0, 0, preview_layer.getCanvas().getWidth(), preview_layer.getCanvas().getHeight());
         preview_layer.getCanvas().toFront();
 
+        playing = true;
+
         motion = new Timeline(new KeyFrame(Duration.millis(mill_sec), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(playing){
-                    stop();
-                    now = next;
-                    int index = motion_data.indexOf(next);
-                    if(index  != motion_data.size() - 1){
-                        next = motion_data.get(index + 1);
-                    }else{
-                        next = motion_data.get(0);
-                    }
-                    playing = true;
-                }
+
                 play();
+
+                now = next;
+                int index = motion_data.indexOf(next);
+                if (index != motion_data.size() - 1) {
+                    next = motion_data.get(index + 1);
+                    System.out.println("index(true) = " + index);
+                } else {
+                    System.out.println("index(false) = " + index);
+                    next = motion_data.get(0);
+                }
+                playing = true;
             }
         }));
 
