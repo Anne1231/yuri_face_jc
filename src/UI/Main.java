@@ -367,7 +367,8 @@ public class Main extends Application {
         });
 
         front.getCanvas().setOnMouseClicked(event -> {
-            popup.hide();
+            if(event.getButton() == MouseButton.PRIMARY)
+                popup.hide();
             x = (int)event.getX();
             y = (int)event.getY();
             if(keyTable.isPressed(KeyCode.D)){
