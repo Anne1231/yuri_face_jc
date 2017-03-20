@@ -695,6 +695,14 @@ public class Main extends Application {
         });
 
         clone_item.setOnAction(event -> {
+
+            if(PinnedData == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("コピーされたレイヤーが存在しません");
+                alert.showAndWait();
+                return;
+            }
+
             TextInputDialog clone_layer = new TextInputDialog("レイヤー");
             clone_layer.setTitle("レイヤー複製");
             clone_layer.setHeaderText("レイヤーの複製");
