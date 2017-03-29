@@ -3,7 +3,6 @@ package UI;
 import FileIO.*;
 import Layers.*;
 import backend.utility.KeyTable;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import motion.BasicMotion;
 import javafx.application.Application;
@@ -65,12 +64,10 @@ public class Main extends Application {
         AnchorPane root = new AnchorPane();
 
         SystemLayers systemLayers = new SystemLayers(stage);
-        SettingAnchor(systemLayers.getSelectingRect());
 
         /*
         * グリッドのレイヤーとフッターだけはここでアンカーペインの設定を行う
          */
-        SettingAnchor(systemLayers.getGrid());
         AnchorPane.setBottomAnchor(footer.getCanvas(), 0.0);
         AnchorPane.setLeftAnchor(footer.getCanvas(), 0.0);
 
@@ -151,12 +148,12 @@ public class Main extends Application {
                         systemLayers.getLines()
                 );
             }
-            AllEraseLayer(systemLayers.getNormalFront());
+            AllEraseLayer(systemLayers.getCreateLL());
         });
 
 
         LayersTree layersTree = new LayersTree("レイヤー");
-        ConfigLayerList(stage, layersTree, systemLayers.getNormalFront(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
+        ConfigLayerList(stage, layersTree, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
         LayersTree motionTree = new LayersTree("モーション");
         ConfigMotionList(stage, motionTree, layersTree, systemLayers.getPreview());
 
@@ -182,11 +179,7 @@ public class Main extends Application {
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
          */
-        ConfigFrontLayer(systemLayers.getFront(), systemLayers.getLines(), systemLayers.getGrid(), layersTree);
-        ConfigLayer.ConfigNormalFrontLayer(systemLayers.getNormalFront(), systemLayers.getLines(), systemLayers.getGrid(), layersTree);
-        ConfigLayer.ConfigLinesLayer(systemLayers.getLines(), systemLayers.getFront(), systemLayers.getGrid());
-        ConfigImageLayer(systemLayers.getImageLayer());
-        SettingAnchor(systemLayers.getPreview());
+        systemLayers.ConfigLayers(layersTree);
 
         /*
         *下敷き画像関係
@@ -243,7 +236,7 @@ public class Main extends Application {
                 tabs,
                 backGroundImageUI.getRoot(),
                 systemLayers.getFront().getCanvas(),
-                systemLayers.getNormalFront().getCanvas(),
+                systemLayers.getCreateLL().getCanvas(),
                 systemLayers.getLines().getCanvas(),
                 systemLayers.getGrid().getCanvas(),
                 systemLayers.getImageLayer().getCanvas(),
@@ -268,7 +261,7 @@ public class Main extends Application {
         * レイヤーの順番をここで設定
          */
         systemLayers.getLines().getCanvas().toFront();
-        systemLayers.getNormalFront().getCanvas().toFront();
+        systemLayers.getCreateLL().getCanvas().toFront();
         systemLayers.getFront().getCanvas().toFront();
         systemLayers.getGrid().getCanvas().toBack();
         systemLayers.getImageLayer().getCanvas().toBack();
@@ -320,139 +313,6 @@ public class Main extends Application {
         CurrentLayerData.AddDot(dot);
 
         put_layer.setLast(dot);
-    }
-
-    /*
-    * ドットを描画するレイヤーの初期設定
-     */
-    private static void ConfigFrontLayer(FrontDotLayer front, LinesLayer lines, GridLayer gridLayer, LayersTree layersTree){
-
-        SettingAnchor(front);
-
-        ContextMenu popup = new ContextMenu();
-        MenuItem choose = new MenuItem("ドットを選択");
-        MenuItem put = new MenuItem("ドットを配置");
-
-        /*
-        * ドット配置処理
-         */
-        put.setOnAction(event -> {
-            putDot(layersTree, gridLayer, front);
-        });
-
-        /*
-        * ドット選択処理
-         */
-        choose.setOnAction(event -> {
-            for(final Dot p : CurrentLayerData.getDotSet()){
-                if(Math.abs(p.getX() - x) < 5){
-                    if(Math.abs(p.getY() - y) < 5){
-                        p.Select();
-                        selecting_dot = p;
-                        selecting_dot.Select();
-                        selecting_dot.Draw(front, Color.RED);
-                        SwitchFrontLayer(lines);
-                        break;
-                    }
-                }
-            }
-        });
-        popup.getItems().addAll(put, choose);
-
-        front.getCanvas().setOnContextMenuRequested(event -> {
-            if(CurrentLayerData == null){
-                return;
-            }
-            popup.show(front.getCanvas(), event.getScreenX(), event.getScreenY());
-        });
-
-        front.getCanvas().setOnMouseClicked(event -> {
-            if(event.getButton() == MouseButton.PRIMARY)
-                popup.hide();
-            x = (int)event.getX();
-            y = (int)event.getY();
-            if(keyTable.isPressed(KeyCode.D)){
-                putDot(layersTree, gridLayer, front);
-            }else if(keyTable.isPressed(KeyCode.C)){
-                if(!front.isLastEmpty()) {
-                    Dot dot = front.getLast();
-                    putDot(layersTree, gridLayer, front);
-                    CurrentLayerData.connect(dot, front.getLast()).Draw(lines, 0.5, Color.BLACK);
-                }
-            }
-        });
-
-        front.getCanvas().setOnMouseMoved(event -> {
-            if(CurrentLayerData == null){
-                return;
-            }
-            for(final Dot p : CurrentLayerData.getDotSet()){
-                if(p.isSelected())
-                    continue;
-                if(Math.abs(p.getX() - event.getX()) < 5){
-                    if(Math.abs(p.getY() - event.getY()) < 5){
-                        choose.setDisable(false);
-                        selecting_dot = p;
-                        p.Draw(front, Color.RED);
-                        break;
-                    }else{
-                        choose.setDisable(true);
-                        p.Draw(front, Color.BLACK);
-                    }
-                }else{
-                    choose.setDisable(true);
-                    p.Draw(front, Color.BLACK);
-                }
-            }
-
-            footer.PutText(String.valueOf((int)event.getX()) + ":" + String.valueOf((int)event.getY()), WINDOW_WIDTH - 80);
-        });
-
-        front.getCanvas().setOnMouseDragged(event -> {
-            if(!ConfigLayer.dot_dragged)
-                return;
-            /*
-            * 新しい座標を決定
-             */
-            Dot update_dot;
-            if(gridLayer.isEnableComplete()) {
-                update_dot = new Dot((int)event.getX(), (int)event.getY(), gridLayer.getInterval());
-            }else{
-                update_dot = new Dot((int)event.getX(), (int)event.getY());
-            }
-
-            //現在のドットをレイヤーから消す（消しゴム）
-            selecting_dot.Erase(front);
-
-            //レイヤーデータ上で、現在地のデータを移動先の座標に変更
-            CurrentLayerData.MoveDot(selecting_dot, update_dot);
-
-            //線も移動するので一回削除
-            lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-            //さっき変更されたレイヤーデータを元に線を再描画
-            CurrentLayerData.DrawAllLines(lines);
-
-            //消されていたドットを更新した座標に再描画
-            selecting_dot = update_dot;
-            front.setLast(update_dot);
-            selecting_dot.Draw(front, Color.RED);
-        });
-
-        front.getCanvas().setOnMousePressed(event -> {
-            if(selecting_dot == null)
-                return;
-            if(Math.abs(selecting_dot.getX() - event.getX()) < 5){
-                if(Math.abs(selecting_dot.getY() - event.getY()) < 5) {
-                    ConfigLayer.dot_dragged = true;
-                }
-            }
-        });
-
-        front.getCanvas().setOnMouseReleased(event -> ConfigLayer.dot_dragged = false);
-
-
-        choose.setDisable(true);
     }
 
     /*
@@ -649,21 +509,6 @@ public class Main extends Application {
         grid_layer.getGraphicsContext().fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         grid_layer.getCanvas().toBack();
-    }
-
-    /*
-    * 下敷き画像を描画するレイヤーの初期設定
-     */
-    private static void ConfigImageLayer(Layer layer){
-        SettingAnchor(layer);
-    }
-
-    /*
-    * グラフィックレイヤーにおけるアンカーペインの設定を一般化した関数
-     */
-    public static void SettingAnchor(Layer layer){
-        AnchorPane.setTopAnchor(layer.getCanvas(), UIValues.MENU_HEIGHT);
-        AnchorPane.setLeftAnchor(layer.getCanvas(), UIValues.LAYER_LIST_WIDTH + UIValues.LIST_TO_CANVAS_WIDTH);
     }
 
 

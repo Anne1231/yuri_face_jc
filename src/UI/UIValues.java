@@ -13,9 +13,9 @@ public class UIValues {
     static final double FOOTER_WIDTH = WINDOW_WIDTH;
     static final double FOOTER_HEIGHT = 20;
 
-    static final double MENU_HEIGHT = 25;
+    public static final double MENU_HEIGHT = 25;
 
-    static final double LIST_TO_CANVAS_WIDTH = 10;
+    public static final double LIST_TO_CANVAS_WIDTH = 10;
 
 
     public static final double LAYER_LIST_WIDTH = 150.0;

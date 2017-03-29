@@ -185,5 +185,6 @@ public class BasicMotion extends Transition {
         preview_layer.getCanvas().toBack();
         playing = false;
     }
+    
 
 }
