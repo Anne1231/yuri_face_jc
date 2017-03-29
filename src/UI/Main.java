@@ -741,23 +741,11 @@ public class Main extends Application {
     private static void CreateMotion(Stage stage, LayersTree layersTree, LayersTree motion_tree){
         Window window = stage;
         CreateMotionWindow createMotionWindow = new CreateMotionWindow(window, layersTree, motion_tree);
-        createMotionWindow.showAndWait();
 
         /*
-        if(result.isPresent()){
-            if(result.get().isEmpty())
-                return;
-            for(TreeItem<String> item : layersTree.getSelecting_tree().getChildren()){
-                if(item.getValue().equals(result.get())){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("同名のモーションが存在します");
-                    alert.showAndWait();
-                    return;
-                }
-            }
-            addLayer(result.get(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree);
-        }
-        */
+        * ウィンドウクラス中にモーションを追加しているのでこちら側からは何もしない
+         */
+        createMotionWindow.showAndWait();
     }
 
     /*

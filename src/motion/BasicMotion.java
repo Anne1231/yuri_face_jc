@@ -181,8 +181,11 @@ public class BasicMotion extends Transition {
         alert.showAndWait();
 
         motion.stop();
-        preview_layer.getGraphicsContext().clearRect(0, 0, preview_layer.getCanvas().getWidth(), preview_layer.getCanvas().getHeight());
-        preview_layer.getCanvas().toBack();
+        stop();
+
+        System.out.println("Erase!!");
+        this.preview_layer.getGraphicsContext().clearRect(0, 0, preview_layer.getCanvas().getWidth(), preview_layer.getCanvas().getHeight());
+        this.preview_layer.getCanvas().toBack();
         playing = false;
     }
     
