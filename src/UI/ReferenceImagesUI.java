@@ -68,6 +68,7 @@ public class ReferenceImagesUI extends LayersTree {
 
         preview = new CheckBox("他パーツを裏に表示");
 
+
     }
 
     public void DrawAllData(Layer front, Layer lines){

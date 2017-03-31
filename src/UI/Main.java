@@ -30,7 +30,6 @@ public class Main extends Application {
 
     public static int x, y;
     public static Dot selecting_dot;
-
     public static LayerData CurrentLayerData = null;
     private static LayerData PinnedData;
     public static ArrayList<BasicMotion> basicMotions = new ArrayList<>();
@@ -165,43 +164,9 @@ public class Main extends Application {
         /*
         *下敷き画像関係
          */
-        BackGroundImageUI backGroundImageUI = new BackGroundImageUI();
+        BackGroundImageUI backGroundImageUI = new BackGroundImageUI(systemLayers);
         AnchorPane.setBottomAnchor(backGroundImageUI.getRoot(), UIValues.FOOTER_HEIGHT + 5);
         AnchorPane.setLeftAnchor(backGroundImageUI.getRoot(), 0.0);
-
-        backGroundImageUI.getImage_bairitsu_field().setOnAction(event -> {
-            double result = Double.parseDouble(backGroundImageUI.getImage_bairitsu_field().getText().replaceAll("[^.0-9]",""));
-            backGroundImageUI.getImage_bairitsu_field().setText(result + "%");
-            result /= 100.0;
-            Image image = systemLayers.getImageLayer().getImage();
-            systemLayers.getImageLayer().clear();
-            systemLayers.getImageLayer().DrawImageWithResize(image,
-                    Integer.valueOf(backGroundImageUI.getImage_x().getText()),
-                    Integer.valueOf(backGroundImageUI.getImage_y().getText()),
-                    image.getWidth(), image.getHeight(), result);
-        });
-        backGroundImageUI.getImage_x().setOnAction(event -> {
-            systemLayers.getImageLayer().MoveImage(
-                    Integer.valueOf(backGroundImageUI.getImage_x().getText()),
-                    Integer.valueOf(backGroundImageUI.getImage_y().getText())
-            );
-        });
-        backGroundImageUI.getImage_y().setOnAction(event -> {
-            systemLayers.getImageLayer().MoveImage(
-                    Integer.valueOf(backGroundImageUI.getImage_x().getText()),
-                    Integer.valueOf(backGroundImageUI.getImage_y().getText())
-            );
-        });
-        backGroundImageUI.getDisplay().setOnAction(event -> {
-            if(backGroundImageUI.getDisplay().isSelected()){
-                systemLayers.getImageLayer().Redraw(
-                        Integer.valueOf(backGroundImageUI.getImage_x().getText()),
-                        Integer.valueOf(backGroundImageUI.getImage_y().getText())
-                );
-            }else{
-                systemLayers.getImageLayer().getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-            }
-        });
 
         /*
         * メニューバーの設定
