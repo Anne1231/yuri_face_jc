@@ -31,7 +31,7 @@ public class Main extends Application {
     public static int x, y;
     public static Dot selecting_dot;
     public static LayerData CurrentLayerData = null;
-    private static LayerData PinnedData;
+    public static LayerData PinnedData;
     public static ArrayList<BasicMotion> basicMotions = new ArrayList<>();
     public static ArrayList<LayerData> LayerDatas = new ArrayList<>();
     public static KeyTable keyTable = new KeyTable();
@@ -134,9 +134,7 @@ public class Main extends Application {
 
         LayersTree layersTree = new LayersTree("レイヤー");
         ConfigLayerList(stage, layersTree, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
-        LayersTree motionTree = new LayersTree("モーション");
-        ConfigMotionList(stage, motionTree, layersTree, systemLayers.getPreview());
-
+        MotionTree motionTree = new MotionTree("モーション", stage, layersTree, systemLayers.getPreview());
 
         /*
         * アルファ
@@ -203,9 +201,9 @@ public class Main extends Application {
         //referenceImageUIのアンカーペイン上の位置を設定
         referenceImagesUI.SettingAnchor();
 
-        /*
-        * 表示
-         */
+        //システムレイヤーの順番を調整
+        systemLayers.InitSort();
+
         Scene scene = new Scene(root);
 
         scene.setOnKeyPressed(event -> {
@@ -214,11 +212,6 @@ public class Main extends Application {
         scene.setOnKeyReleased(event -> {
             keyTable.release(event.getCode());
         });
-
-        /*
-        * システムレイヤーの順番を調整
-         */
-        systemLayers.InitSort();
 
         stage.setScene(scene);
         stage.show();
@@ -479,103 +472,6 @@ public class Main extends Application {
 
     }
 
-    private static void ConfigMotionList(Stage stage, LayersTree motion_tree, LayersTree layersTree, Layer preview_layer){
-
-        ContextMenu popup_ll = new ContextMenu();
-        MenuItem create_layer = new MenuItem("新規モーション");
-        MenuItem clone_item = new MenuItem("複製");
-        popup_ll.getItems().addAll(create_layer, clone_item);
-
-        ContextMenu copy_menu = new ContextMenu();
-        MenuItem copy_item = new MenuItem("コピー");
-        MenuItem preview = new MenuItem("プレビュー");
-        copy_menu.getItems().addAll(copy_item, preview);
-
-        motion_tree.setLayer_selecting(false);
-
-        create_layer.setOnAction(event -> CreateMotion(stage, layersTree, motion_tree));
-
-        motion_tree.getTreeView().setOnContextMenuRequested(event -> {
-            if(motion_tree.getSelectingDepth() == 2) {
-                popup_ll.show(motion_tree.getTreeView(), event.getScreenX(), event.getScreenY());
-            }else if(motion_tree.getSelectingDepth() == 3){
-                copy_menu.show(motion_tree.getTreeView(), event.getScreenX(), event.getScreenY());
-            }
-        });
-
-        copy_item.setOnAction(event -> {
-            PinnedData = CurrentLayerData;
-        });
-
-        preview.setOnAction(event -> {
-
-            BasicMotion basicMotion = SearchAndGetMotion(motion_tree.getSelecting(), motion_tree.WhichType(motion_tree.getSelecting_tree()));
-            basicMotion.setMill_sec(1000);
-            basicMotion.setPreviewLayer(preview_layer);
-            basicMotion.usingFxPreview();
-            System.out.println(basicMotion.getMotion_data().size());
-            //basicMotion.preview(preview_layer);
-        });
-
-        clone_item.setOnAction(event -> {
-            TextInputDialog clone_layer = new TextInputDialog("モーション");
-            clone_layer.setTitle("モーション複製");
-            clone_layer.setHeaderText("モーションの複製");
-            clone_layer.setContentText("モーション名 :");
-            Optional<String> result = clone_layer.showAndWait();
-
-            if(result.isPresent()) {
-                if (result.get().isEmpty())
-                    return;
-                for (TreeItem<String> item : motion_tree.getSelecting_tree().getChildren()) {
-                    if (item.getValue().equals(result.get())) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setContentText("同名のモーションが存在します");
-                        alert.showAndWait();
-                        return;
-                    }
-                }
-                addCloneLayer(result.get(), PinnedData, motion_tree);
-            }
-        });
-
-        motion_tree.getTreeView().setOnMouseClicked(event -> {
-            if(event.getButton() == MouseButton.PRIMARY){
-                popup_ll.hide();
-                copy_menu.hide();
-            }
-            TreeItem<String> select = motion_tree.getTreeView().getSelectionModel().selectedItemProperty().get();
-
-            int depth = 0;
-            TreeItem<String> ref = select;
-            while(true){
-                if(ref == null){
-                    break;
-                }
-                ref = ref.getParent();
-                depth++;
-            }
-
-            if(depth == 2) {
-                motion_tree.setSelecting_tree(select);
-                motion_tree.setSelectingDepth((char)2);
-            }else if(depth == 3){
-                motion_tree.setLayer_selecting(true);
-                //新規レイヤーメニューは表示させない
-                //選択中のdepthで判定
-                motion_tree.setSelecting(select.getValue());
-                motion_tree.setSelectingDepth((char)3);
-            }else{
-                //新規レイヤーメニューは表示させない
-                //選択中のdepthで判定
-                motion_tree.setSelectingDepth((char)1);
-            }
-        });
-
-        motion_tree.getTreeView().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        motion_tree.getTreeView().setEditable(true);
-
-    }
 
     /*
     * レイヤーを新しく作成する関数
@@ -600,19 +496,6 @@ public class Main extends Application {
             }
             addLayer(result.get(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree, referenceImagesUI);
         }
-    }
-
-    /*
-    * モーションを新しく作成する関数
-     */
-    private static void CreateMotion(Stage stage, LayersTree layersTree, LayersTree motion_tree){
-        Window window = stage;
-        CreateMotionWindow createMotionWindow = new CreateMotionWindow(window, layersTree, motion_tree);
-
-        /*
-        * ウィンドウクラス中にモーションを追加しているのでこちら側からは何もしない
-         */
-        createMotionWindow.showAndWait();
     }
 
     /*

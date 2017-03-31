@@ -133,19 +133,19 @@ public class LayersTree {
         }
     }
 
-    public void setLayer_selecting(boolean status){
+    public final void setLayer_selecting(boolean status){
         layer_selecting = status;
     }
 
-    public boolean isLayer_selecting(){
+    public final boolean isLayer_selecting(){
         return layer_selecting;
     }
 
-    public void setSelectingDepth(char selecting_depth) {
+    public final void setSelectingDepth(char selecting_depth) {
         this.selecting_depth = selecting_depth;
     }
 
-    public char getSelectingDepth() {
+    public final char getSelectingDepth() {
         return selecting_depth;
     }
 }
