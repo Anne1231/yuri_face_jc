@@ -50,7 +50,7 @@ public class Main extends Application {
         MenuBar menubar = new MenuBar();
 
         //参照画像のツリー
-        ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("パーツ", systemLayers);
+        ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("パーツ", systemLayers, stage);
 
         NormalLayersTree layersTree = new NormalLayersTree("レイヤー", stage, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
         MotionTree motionTree = new MotionTree("モーション", stage, layersTree, systemLayers.getPreview());
