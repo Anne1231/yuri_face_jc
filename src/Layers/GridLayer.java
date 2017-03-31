@@ -64,7 +64,7 @@ public class GridLayer extends Layer {
     * グリッドを消すメソッド
      */
     public void eraseGrid(){
-        this.graphicsContext.clearRect(0, 0, LAYER_WIDTH, LAYER_HEIGHT);
+        eraseLayer();
         drawFrame();
     }
 

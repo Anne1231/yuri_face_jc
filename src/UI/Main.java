@@ -148,7 +148,8 @@ public class Main extends Application {
                         systemLayers.getLines()
                 );
             }
-            AllEraseLayer(systemLayers.getCreateLL());
+            
+            systemLayers.getCreateLL().eraseLayer();
         });
 
 
@@ -522,7 +523,7 @@ public class Main extends Application {
                 SwitchUsersLayer(CurrentLayerData, normal_front, lines);
 
                 //パーツ側のフロントレイヤーを全削除
-                AllEraseLayer(front);
+                front.eraseLayer();
 
                 //新規レイヤーメニューは表示させない
                 //裏ではnullで判定してる
@@ -795,28 +796,19 @@ public class Main extends Application {
     * リストビューをクリックして変更する方
      */
     public static void SwitchUsersLayer(LayerData new_layer_data, FrontDotLayer front, Layer lines){
-        AllEraseLayer(front);
-        AllEraseLayer(lines);
+        front.eraseLayer();
+        lines.eraseLayer();
         new_layer_data.AllDraw4N(front, lines);
         lines.getCanvas().toFront();
         front.getCanvas().toFront();
     }
 
     public static void SwitchPartLayer(LayerData new_layer_data, FrontDotLayer front, Layer lines){
-        AllEraseLayer(front);
-        AllEraseLayer(lines);
+        front.eraseLayer();
+        lines.eraseLayer();
         new_layer_data.AllDraw4PR(front, lines);
         lines.getCanvas().toFront();
         front.getCanvas().toFront();
-    }
-
-    /*
-    * 指定したグラフィックレイヤーをすべて消す関数
-     */
-    private static void AllEraseLayer(Layer layer){
-        layer.getCanvas().toFront();
-        layer.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        layer.getCanvas().toBack();
     }
 
     /*
