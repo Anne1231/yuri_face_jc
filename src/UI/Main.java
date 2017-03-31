@@ -365,12 +365,12 @@ public class Main extends Application {
             }
 
             if(interval == 0){
-                EraseGrid(grid_layer);
+                grid_layer.eraseGrid();
                 grid_config.setSelected(false);
                 return;
             }
 
-            DrawGrid(grid_layer, interval);
+            grid_layer.drawGrid(interval);
             grid_config.setSelected(true);
 
             image_layer.getCanvas().toBack();
@@ -394,7 +394,7 @@ public class Main extends Application {
         });
 
         grid_config.setSelected(true);
-        DrawGrid(grid_layer, INIT_GRID_INTERVAL);
+        grid_layer.drawGrid(INIT_GRID_INTERVAL);
 
         display.getItems().addAll(grid_config, grid_complete, preview_menu);
         Menu file = new Menu("ファイル");
@@ -471,44 +471,6 @@ public class Main extends Application {
      */
     public static void SwitchFrontLayer(Layer new_layer){
         new_layer.getCanvas().toFront();
-    }
-
-    /*
-    * グリッドを描画する関数
-     */
-    private static void DrawGrid(GridLayer grid_layer, int interval){
-        int i;
-        grid_layer.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        grid_layer.getCanvas().toFront();
-        grid_layer.getGraphicsContext().setStroke(Color.GRAY);
-        grid_layer.getGraphicsContext().setLineWidth(0.5);
-
-        grid_layer.setInterval(interval);
-
-        for(i = 0;i < WINDOW_WIDTH;i += interval){
-            grid_layer.getGraphicsContext().strokeLine(i, 0, i, WINDOW_HEIGHT);
-        }
-
-        for(i = 0;i < WINDOW_HEIGHT;i += interval){
-            grid_layer.getGraphicsContext().strokeLine(0, i, WINDOW_WIDTH, i);
-        }
-        grid_layer.getCanvas().toBack();
-
-        grid_layer.getGraphicsContext().setLineWidth(2);
-        grid_layer.getGraphicsContext().setFill(Color.BLACK);
-        grid_layer.getGraphicsContext().strokeRect(0, 0, LAYER_WIDTH, LAYER_HEIGHT);
-    }
-
-    /*
-    * グリッドを消す関数
-     */
-    private static void EraseGrid(Layer grid_layer){
-        grid_layer.getCanvas().toFront();
-        grid_layer.getGraphicsContext().setFill(Color.WHITESMOKE);
-
-        grid_layer.getGraphicsContext().fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        grid_layer.getCanvas().toBack();
     }
 
 
