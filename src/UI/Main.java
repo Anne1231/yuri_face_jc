@@ -132,8 +132,7 @@ public class Main extends Application {
         });
 
 
-        LayersTree layersTree = new LayersTree("レイヤー");
-        ConfigLayerList(stage, layersTree, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
+        NormalLayersTree layersTree = new NormalLayersTree("レイヤー", stage, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
         MotionTree motionTree = new MotionTree("モーション", stage, layersTree, systemLayers.getPreview());
 
         /*
@@ -362,133 +361,6 @@ public class Main extends Application {
         stage.setTitle("Yuri Face");
         stage.setWidth(WINDOW_WIDTH);
         stage.setHeight(WINDOW_HEIGHT);
-    }
-
-
-    private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer normal_front, FrontDotLayer front, LinesLayer lines, ReferenceImagesUI referenceImagesUI){
-
-        ContextMenu popup_ll = new ContextMenu();
-        MenuItem create_layer = new MenuItem("新規レイヤー");
-        MenuItem clone_item = new MenuItem("複製");
-        popup_ll.getItems().addAll(create_layer, clone_item);
-
-        ContextMenu copy_menu = new ContextMenu();
-        MenuItem copy_item = new MenuItem("コピー");
-        copy_menu.getItems().addAll(copy_item);
-
-        layersTree.setLayer_selecting(false);
-
-        create_layer.setOnAction(event -> CreateLayer(stage, layersTree, referenceImagesUI));
-
-        layersTree.getTreeView().setOnContextMenuRequested(event -> {
-            if(layersTree.getSelecting_tree() != null) {
-                popup_ll.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
-            }else if(layersTree.isLayer_selecting()){
-                copy_menu.show(layersTree.getTreeView(), event.getScreenX(), event.getScreenY());
-            }
-        });
-
-        copy_item.setOnAction(event -> {
-            PinnedData = CurrentLayerData;
-        });
-
-        clone_item.setOnAction(event -> {
-
-            if(PinnedData == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("コピーされたレイヤーが存在しません");
-                alert.showAndWait();
-                return;
-            }
-
-            TextInputDialog clone_layer = new TextInputDialog("レイヤー");
-            clone_layer.setTitle("レイヤー複製");
-            clone_layer.setHeaderText("レイヤーの複製");
-            clone_layer.setContentText("レイヤー名 :");
-            Optional<String> result = clone_layer.showAndWait();
-
-            if(result.isPresent()) {
-                if (result.get().isEmpty())
-                    return;
-                for (TreeItem<String> item : layersTree.getSelecting_tree().getChildren()) {
-                    if (item.getValue().equals(result.get())) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setContentText("同名のレイヤーが存在します");
-                        alert.showAndWait();
-                        return;
-                    }
-                }
-                addCloneLayer(result.get(), PinnedData, layersTree);
-            }
-        });
-
-        layersTree.getTreeView().setOnMouseClicked(event -> {
-            if(event.getButton() == MouseButton.PRIMARY){
-                popup_ll.hide();
-                copy_menu.hide();
-            }
-            TreeItem<String> select = layersTree.getTreeView().getSelectionModel().selectedItemProperty().get();
-
-            int depth = 0;
-            TreeItem<String> ref = select;
-            while(true){
-                if(ref == null){
-                    break;
-                }
-                ref = ref.getParent();
-                depth++;
-            }
-
-            if(depth == 2) {
-                layersTree.setSelecting_tree(select);
-            }else if(depth == 3){
-                layersTree.setLayer_selecting(true);
-
-                CurrentLayerData = SearchAndGetLayer(select.getValue(), layersTree.WhichType(select.getParent()));
-                SwitchUsersLayer(CurrentLayerData, normal_front, lines);
-
-                //パーツ側のフロントレイヤーを全削除
-                front.eraseLayer();
-
-                //新規レイヤーメニューは表示させない
-                //裏ではnullで判定してる
-                layersTree.setSelecting_tree(null);
-            }else{
-                //新規レイヤーメニューは表示させない
-                //裏ではnullで判定してる
-                layersTree.setSelecting_tree(null);
-            }
-        });
-
-        layersTree.getTreeView().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        layersTree.getTreeView().setEditable(true);
-
-    }
-
-
-    /*
-    * レイヤーを新しく作成する関数
-     */
-    private static void CreateLayer(Stage stage, LayersTree layersTree, ReferenceImagesUI referenceImagesUI){
-        TextInputDialog create_layer = new TextInputDialog("レイヤー");
-        create_layer.setTitle("新規レイヤー");
-        create_layer.setHeaderText("新規レイヤーの作成");
-        create_layer.setContentText("レイヤー名 :");
-        Optional<String> result = create_layer.showAndWait();
-
-        if(result.isPresent()){
-            if(result.get().isEmpty())
-                return;
-            for(TreeItem<String> item : layersTree.getSelecting_tree().getChildren()){
-                if(item.getValue().equals(result.get())){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("同名のレイヤーが存在します");
-                    alert.showAndWait();
-                    return;
-                }
-            }
-            addLayer(result.get(), layersTree.WhichType(layersTree.getSelecting_tree()), layersTree, referenceImagesUI);
-        }
     }
 
     /*

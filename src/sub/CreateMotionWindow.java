@@ -117,6 +117,7 @@ public class CreateMotionWindow extends Stage {
 
         root.getChildren().addAll(layer_for_motion, including_layers, add, motion_name_box, create_button_box);
 
+
         setScene(new Scene(root));
 
     }
