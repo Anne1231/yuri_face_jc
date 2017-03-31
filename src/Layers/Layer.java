@@ -32,4 +32,11 @@ public class Layer {
     public void eraseLayer(){
         this.graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
+
+    /*
+    * アクティブレイヤーの変更を行うメソッド
+     */
+    public void beForward(){
+        canvas.toFront();
+    }
 }

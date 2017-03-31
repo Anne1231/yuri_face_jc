@@ -364,13 +364,6 @@ public class Main extends Application {
         stage.setHeight(WINDOW_HEIGHT);
     }
 
-    /*
-    * アクティブレイヤーの変更を行う関数
-     */
-    public static void SwitchFrontLayer(Layer new_layer){
-        new_layer.getCanvas().toFront();
-    }
-
 
     private static void ConfigLayerList(Stage stage, LayersTree layersTree, FrontDotLayer normal_front, FrontDotLayer front, LinesLayer lines, ReferenceImagesUI referenceImagesUI){
 

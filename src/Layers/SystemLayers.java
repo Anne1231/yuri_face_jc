@@ -125,7 +125,7 @@ public class SystemLayers {
                         selecting_dot = p;
                         selecting_dot.Select();
                         selecting_dot.Draw(front, Color.RED);
-                        SwitchFrontLayer(lines);
+                        lines.beForward();
                         break;
                     }
                 }
@@ -248,7 +248,7 @@ public class SystemLayers {
                         selecting_dot = p;
                         selecting_dot.Select();
                         selecting_dot.Draw(front, Color.RED);
-                        SwitchFrontLayer(lines);
+                        lines.beForward();
                         break;
                     }
                 }
@@ -358,7 +358,7 @@ public class SystemLayers {
                         if(!p.isSelected()){
                             CurrentLayerData.connect(selecting_dot, p).Draw(lines, 0.5, Color.BLACK);
                             selecting_dot.UnSelect();
-                            SwitchFrontLayer(front);
+                            front.beForward();
                             break;
                         }
                     }
@@ -373,7 +373,7 @@ public class SystemLayers {
          */
         quit_cat.setOnAction(event -> {
             selecting_dot.UnSelect();
-            SwitchFrontLayer(front);
+            front.beForward();
         });
 
         /*
@@ -385,7 +385,7 @@ public class SystemLayers {
             CurrentLayerData.RemoveDot(selecting_dot);
             lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
             CurrentLayerData.DrawAllLines(lines);
-            Main.SwitchFrontLayer(front);
+            front.beForward();
 
         });
 
