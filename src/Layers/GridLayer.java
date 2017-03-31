@@ -36,7 +36,7 @@ public class GridLayer extends Layer {
     }
 
     /*
-    * グリッドを描画する関数
+    * グリッドを描画するメソッド
      */
     public void drawGrid(int interval){
         int i;
@@ -61,13 +61,16 @@ public class GridLayer extends Layer {
     }
 
     /*
-    * グリッドを消す関数
+    * グリッドを消すメソッド
      */
     public void eraseGrid(){
         this.graphicsContext.clearRect(0, 0, LAYER_WIDTH, LAYER_HEIGHT);
         drawFrame();
     }
 
+    /*
+    * グリッドシステムレイヤーの枠を描画する非公開メソッド
+     */
     private void drawFrame(){
         this.graphicsContext.setLineWidth(2);
         this.graphicsContext.setFill(Color.BLACK);

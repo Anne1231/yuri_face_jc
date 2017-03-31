@@ -285,41 +285,6 @@ public class Main extends Application {
 
     }
 
-    public static void putDot(LayersTree layersTree, GridLayer gridLayer, FrontDotLayer put_layer){
-        if(CurrentLayerData == null){
-            return;
-        }
-        for(final Dot p : CurrentLayerData.getDotSet()){
-            if(Math.abs(p.getX() - x) < 5){
-                if(Math.abs(p.getY() - y) < 5){
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "ドットを配置しますか？", ButtonType.NO, ButtonType.YES);
-                    alert.setHeaderText("付近にドットがあります");
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if(!result.isPresent() || result.get() == ButtonType.NO){
-                        return;
-                    }
-                    break;
-                }
-            }
-        }
-
-        Dot dot;
-        if(gridLayer.isEnableComplete()) {
-            dot = new Dot(x, y, gridLayer.getInterval());
-        }else{
-            dot = new Dot(x, y);
-        }
-        dot.Draw(put_layer, Color.BLACK);
-        CurrentLayerData.AddDot(dot);
-
-        put_layer.setLast(dot);
-    }
-
-    /*
-    * 線を描画するレイヤーの初期設定
-     */
-
-
     /*
     * メニューバーの初期設定
      */

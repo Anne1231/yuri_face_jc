@@ -93,7 +93,7 @@ public class SystemLayers {
         * ドット配置処理
          */
         put.setOnAction(event -> {
-            putDot(layersTree, gridLayer, front);
+            front.putDot(gridLayer);
         });
 
         /*
@@ -128,11 +128,11 @@ public class SystemLayers {
             x = (int)event.getX();
             y = (int)event.getY();
             if(keyTable.isPressed(KeyCode.D)){
-                putDot(layersTree, gridLayer, front);
+                front.putDot(gridLayer);
             }else if(keyTable.isPressed(KeyCode.C)){
                 if(!front.isLastEmpty()) {
                     Dot dot = front.getLast();
-                    putDot(layersTree, gridLayer, front);
+                    front.putDot(gridLayer);
                     CurrentLayerData.connect(dot, front.getLast()).Draw(lines, 0.5, Color.BLACK);
                 }
             }
