@@ -32,7 +32,7 @@ public class MotionTree extends LayersTree {
 
         layer_selecting = false;
 
-        create_layer.setOnAction(event -> CreateMotion(stage, layersTree, this));
+        create_layer.setOnAction(event -> CreateMotion(stage, layersTree));
 
         this.treeView.setOnContextMenuRequested(event -> {
             if(this.selecting_depth == 2) {
@@ -119,14 +119,15 @@ public class MotionTree extends LayersTree {
     /*
     * モーションを新しく作成するメソッド
      */
-    private void CreateMotion(Stage stage, LayersTree layersTree, LayersTree motion_tree){
+    private void CreateMotion(Stage stage, LayersTree layersTree){
         Window window = stage;
-        CreateMotionWindow createMotionWindow = new CreateMotionWindow(window, layersTree, motion_tree);
+        CreateMotionWindow createMotionWindow = new CreateMotionWindow(window, layersTree, this);
 
         /*
         * ウィンドウクラス中にモーションを追加しているのでこちら側からは何もしない
          */
-        createMotionWindow.showAndWait();
+        createMotionWindow.show();
+
     }
 
 }
