@@ -3,6 +3,11 @@ package UI;
 import Layers.Layer;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TreeItem;
+import javafx.scene.layout.AnchorPane;
+
+import static UI.UIValues.LAYER_LIST_HEIGHT;
+import static UI.UIValues.LAYER_LIST_WIDTH;
+import static UI.UIValues.LAYER_WIDTH;
 
 /**
  * Created by Akihiro on 2017/03/04.
@@ -82,5 +87,10 @@ public class ReferenceImagesUI extends LayersTree {
 
     public CheckBox getPreviewBox() {
         return preview;
+    }
+
+    public void SettingAnchor(){
+        AnchorPane.setLeftAnchor(preview, LAYER_LIST_WIDTH + LAYER_WIDTH + 20);
+        AnchorPane.setTopAnchor(preview, LAYER_LIST_HEIGHT + 50);
     }
 }

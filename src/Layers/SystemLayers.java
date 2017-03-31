@@ -28,6 +28,7 @@ public class SystemLayers {
     private ImageLayer image_layer;
     private Layer preview;
     private SelectAreaLayer selecting_rect;
+    private Footer footer;
 
     /*
     * コンストラクタ
@@ -40,6 +41,19 @@ public class SystemLayers {
         image_layer = new ImageLayer(LAYER_WIDTH, LAYER_HEIGHT); //下敷き画像を描画するレイヤー
         preview = new Layer(LAYER_WIDTH, LAYER_HEIGHT);     //プレビューを描画するレイヤー
         selecting_rect = new SelectAreaLayer(stage, LAYER_WIDTH, LAYER_HEIGHT);
+
+        /*
+        * フッターの設定
+         */
+        footer = new Footer(WINDOW_WIDTH, 20);
+        footer.getGraphicsContext().setFill(new Color(0.7f, 0.7f, 0.7f, 1.0f));
+        footer.getGraphicsContext().fillRect(0, 0, UIValues.FOOTER_WIDTH, UIValues.FOOTER_HEIGHT);
+        /*
+        * グリッドのレイヤーとフッターだけはここでアンカーペインの設定を行う
+         */
+        AnchorPane.setBottomAnchor(footer.getCanvas(), 0.0);
+        AnchorPane.setLeftAnchor(footer.getCanvas(), 0.0);
+
 
         SettingAnchor(front, create_ll, lines, grid, image_layer, preview, selecting_rect);
     }
@@ -70,6 +84,10 @@ public class SystemLayers {
 
     public SelectAreaLayer getSelectingRect() {
         return selecting_rect;
+    }
+
+    public Footer getFooter(){
+        return footer;
     }
 
     public void ConfigLayers(LayersTree layersTree){
@@ -481,6 +499,20 @@ public class SystemLayers {
         lines.getCanvas().setOnMouseReleased(event -> dot_dragged = false);
 
 
+    }
+
+    /*
+    * レイヤーの順番を設定するメソッド
+    */
+    public final void InitSort(){
+
+        this.lines.getCanvas().toFront();
+        this.create_ll.getCanvas().toFront();
+        this.front.getCanvas().toFront();
+        this.grid.getCanvas().toBack();
+        this.image_layer.getCanvas().toBack();
+        this.footer.getCanvas().toFront();
+        this.preview.getCanvas().toBack();
     }
 
     /*

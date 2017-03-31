@@ -10,8 +10,8 @@ public class UIValues {
 
     static final double DOT_CIRCLE_WIDTH = 1;
 
-    static final double FOOTER_WIDTH = WINDOW_WIDTH;
-    static final double FOOTER_HEIGHT = 20;
+    public static final double FOOTER_WIDTH = WINDOW_WIDTH;
+    public static final double FOOTER_HEIGHT = 20;
 
     public static final double MENU_HEIGHT = 32;
 

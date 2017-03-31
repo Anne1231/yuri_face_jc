@@ -35,7 +35,6 @@ public class Main extends Application {
     private static LayerData PinnedData;
     public static ArrayList<BasicMotion> basicMotions = new ArrayList<>();
     public static ArrayList<LayerData> LayerDatas = new ArrayList<>();
-    public static Footer footer;
     public static KeyTable keyTable = new KeyTable();
 
     @Override
@@ -46,30 +45,11 @@ public class Main extends Application {
         InitWindow(stage);
 
         /*
-        * フッターの設定
-         */
-        footer = new Footer(WINDOW_WIDTH, 20);
-        footer.getGraphicsContext().setFill(new Color(0.7f, 0.7f, 0.7f, 1.0f));
-        footer.getGraphicsContext().fillRect(0, 0, UIValues.FOOTER_WIDTH, UIValues.FOOTER_HEIGHT);
-
-        /*
-        * yuri faceの初期化
-        * 最初のレイヤーの作成とか
-         */
-        //yuri_face_init(layer_list);
-
-        /*
         * アンカーペインを採用してみた
          */
         AnchorPane root = new AnchorPane();
 
         SystemLayers systemLayers = new SystemLayers(stage);
-
-        /*
-        * グリッドのレイヤーとフッターだけはここでアンカーペインの設定を行う
-         */
-        AnchorPane.setBottomAnchor(footer.getCanvas(), 0.0);
-        AnchorPane.setLeftAnchor(footer.getCanvas(), 0.0);
 
         /*
         * メニューバー
@@ -148,7 +128,7 @@ public class Main extends Application {
                         systemLayers.getLines()
                 );
             }
-            
+
             systemLayers.getCreateLL().eraseLayer();
         });
 
@@ -243,7 +223,7 @@ public class Main extends Application {
                 systemLayers.getImageLayer().getCanvas(),
                 systemLayers.getPreview().getCanvas(),
                 systemLayers.getSelectingRect().getCanvas(),
-                footer.getCanvas(),
+                systemLayers.getFooter().getCanvas(),
                 referenceImagesUI.getTreeView(),
                 referenceImagesUI.getPreviewBox()
         );
@@ -255,19 +235,8 @@ public class Main extends Application {
             }
         });
 
-        AnchorPane.setLeftAnchor(referenceImagesUI.getPreviewBox(), LAYER_LIST_WIDTH + LAYER_WIDTH + 20);
-        AnchorPane.setTopAnchor(referenceImagesUI.getPreviewBox(), LAYER_LIST_HEIGHT + 50);
-
-        /*
-        * レイヤーの順番をここで設定
-         */
-        systemLayers.getLines().getCanvas().toFront();
-        systemLayers.getCreateLL().getCanvas().toFront();
-        systemLayers.getFront().getCanvas().toFront();
-        systemLayers.getGrid().getCanvas().toBack();
-        systemLayers.getImageLayer().getCanvas().toBack();
-        footer.getCanvas().toFront();
-        systemLayers.getPreview().getCanvas().toBack();
+        //referenceImageUIのアンカーペイン上の位置を設定
+        referenceImagesUI.SettingAnchor();
 
         /*
         * 表示
@@ -280,6 +249,11 @@ public class Main extends Application {
         scene.setOnKeyReleased(event -> {
             keyTable.release(event.getCode());
         });
+
+        /*
+        * システムレイヤーの順番を調整
+         */
+        systemLayers.InitSort();
 
         stage.setScene(scene);
         stage.show();
