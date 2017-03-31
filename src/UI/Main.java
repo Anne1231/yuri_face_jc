@@ -308,10 +308,10 @@ public class Main extends Application {
                     }
                     CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
                 });
-                referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta().getPolygons().forEach(polygon -> {
+                referenceImagesUI.getCorePartLayerDatas().getL_e_matsuge().getPolygons().forEach(polygon -> {
                     CurrentLayerData.addPolygon(polygon.clone());
                 });
-                referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta().getPolygons().stream().parallel().forEach(polygon -> {
+                referenceImagesUI.getCorePartLayerDatas().getL_e_matsuge().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {
                         CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
                     }
@@ -331,10 +331,10 @@ public class Main extends Application {
                     }
                     CurrentLayerData.connect(new Dot((int)polygon.getX(0), (int)polygon.getY(0)), new Dot((int)polygon.getX(polygon.size() - 1), (int)polygon.getY(polygon.size() - 1)));
                 });
-                referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta().getPolygons().forEach(polygon -> {
+                referenceImagesUI.getCorePartLayerDatas().getR_e_matsuge().getPolygons().forEach(polygon -> {
                     CurrentLayerData.addPolygon(polygon.clone());
                 });
-                referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta().getPolygons().stream().parallel().forEach(polygon -> {
+                referenceImagesUI.getCorePartLayerDatas().getR_e_matsuge().getPolygons().stream().parallel().forEach(polygon -> {
                     for(int i = 0;i < polygon.size() - 1;i++) {
                         CurrentLayerData.connect(new Dot((int)polygon.getX(i), (int)polygon.getY(i)), new Dot((int)polygon.getX(i+1), (int)polygon.getY(i+1)));
                     }

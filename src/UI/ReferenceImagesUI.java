@@ -108,71 +108,94 @@ public class ReferenceImagesUI extends LayersTree {
             } else {
 
                 if (select.getValue().equals("輪郭")) {
-                    CurrentLayerData = corePartLayerDatas.getF_b_rinkaku();
+                    CurrentLayerData = corePartLayerDatas.getLayerData("f_b_rinkaku");
                     Main.SwitchPartLayer(
-                            corePartLayerDatas.getLayerData("f_b_rinkaku"),
+                            CurrentLayerData,
                             systemLayers.getFront(),
                             systemLayers.getLines()
                     );
                 } else if (select.getValue().equals("髪")) {
-                    CurrentLayerData = corePartLayerDatas.getF_b_rinkaku();
+                    CurrentLayerData = corePartLayerDatas.getLayerData("f_b_kami");
                     Main.SwitchPartLayer(
-                            corePartLayerDatas.getLayerData("f_b_rinkaku"),
+                            CurrentLayerData,
                             systemLayers.getFront(),
                             systemLayers.getLines()
                     );
                 }else if (select.getValue().equals("黒目")) {
                     if (select.getParent().getValue().equals("右目")) {
-                        CurrentLayerData = corePartLayerDatas.getR_e_kurome();
+                        CurrentLayerData = corePartLayerDatas.getLayerData("r_e_kurome");
                         Main.SwitchPartLayer(
-                                corePartLayerDatas.getLayerData("r_e_kurome"),
+                                CurrentLayerData,
                                 systemLayers.getFront(),
                                 systemLayers.getLines()
                         );
                     } else if (select.getParent().getValue().equals("左目")) {
-                        CurrentLayerData = corePartLayerDatas.getL_e_kurome();
+                        CurrentLayerData = corePartLayerDatas.getLayerData("l_e_kurome");
                         Main.SwitchPartLayer(
-                                corePartLayerDatas.getLayerData("l_e_kurome"),
+                                CurrentLayerData,
                                 systemLayers.getFront(),
                                 systemLayers.getLines()
                         );
                     }
-                } else if (select.getValue().equals("まぶた")) {
+                } else if (select.getValue().equals("まつげ")) {
                     if (select.getParent().getValue().equals("右目")) {
-                        CurrentLayerData = corePartLayerDatas.getR_e_mabuta();
+                        CurrentLayerData = corePartLayerDatas.getLayerData("r_e_matsuge");
                         Main.SwitchPartLayer(
-                                corePartLayerDatas.getLayerData("r_e_mabuta"),
+                                CurrentLayerData,
                                 systemLayers.getFront(),
                                 systemLayers.getLines()
                         );
                     } else if (select.getParent().getValue().equals("左目")) {
-                        CurrentLayerData = corePartLayerDatas.getL_e_mabuta();
+                        CurrentLayerData = corePartLayerDatas.getLayerData("l_e_matsuge");
                         Main.SwitchPartLayer(
-                                corePartLayerDatas.getLayerData("l_e_mabuta"),
+                                CurrentLayerData,
+                                systemLayers.getFront(),
+                                systemLayers.getLines()
+                        );
+                    }
+                } else if (select.getValue().equals("目の切り口")) {
+                    if (select.getParent().getValue().equals("右目")) {
+                        CurrentLayerData = corePartLayerDatas.getLayerData("r_e_kirikuchi");
+                        Main.SwitchPartLayer(
+                                CurrentLayerData,
+                                systemLayers.getFront(),
+                                systemLayers.getLines()
+                        );
+                    } else if (select.getParent().getValue().equals("左目")) {
+                        CurrentLayerData = corePartLayerDatas.getLayerData("l_e_kirikuchi");
+                        Main.SwitchPartLayer(
+                                CurrentLayerData,
                                 systemLayers.getFront(),
                                 systemLayers.getLines()
                         );
                     }
                 } else if (select.getValue().equals("眉")) {
                     if (select.getParent().getValue().equals("右眉")) {
-                        CurrentLayerData = corePartLayerDatas.getR_e_b_mayu();
+                        CurrentLayerData = corePartLayerDatas.getLayerData("r_e_b_mayu");
                         Main.SwitchPartLayer(
-                                corePartLayerDatas.getLayerData("r_e_b_mayu"),
+                                CurrentLayerData,
                                 systemLayers.getFront(),
                                 systemLayers.getLines()
                         );
                     } else if (select.getParent().getValue().equals("左眉")) {
-                        CurrentLayerData = corePartLayerDatas.getL_e_b_mayu();
+                        CurrentLayerData = corePartLayerDatas.getLayerData("l_e_b_mayu");
                         Main.SwitchPartLayer(
-                                corePartLayerDatas.getLayerData("l_e_b_mayu"),
+                                CurrentLayerData,
                                 systemLayers.getFront(),
                                 systemLayers.getLines()
                         );
                     }
                 } else if (select.getValue().equals("口")) {
-                    CurrentLayerData = corePartLayerDatas.getM_mouth();
+                    CurrentLayerData = corePartLayerDatas.getLayerData("m_mouth");
                     Main.SwitchPartLayer(
-                            corePartLayerDatas.getLayerData("m_mouth"),
+                            CurrentLayerData,
+                            systemLayers.getFront(),
+                            systemLayers.getLines()
+                    );
+                } else if (select.getValue().equals("舌")) {
+                    CurrentLayerData = corePartLayerDatas.getLayerData("m_shita");
+                    Main.SwitchPartLayer(
+                            CurrentLayerData,
                             systemLayers.getFront(),
                             systemLayers.getLines()
                     );
@@ -197,14 +220,9 @@ public class ReferenceImagesUI extends LayersTree {
     }
 
     public void DrawAllData(Layer front, Layer lines){
-        corePartLayerDatas.getM_mouth().AllDraw4PR(front, lines);
-        corePartLayerDatas.getR_e_mabuta().AllDraw4PR(front, lines);
-        corePartLayerDatas.getR_e_kurome().AllDraw4PR(front, lines);
-        corePartLayerDatas.getL_e_mabuta().AllDraw4PR(front, lines);
-        corePartLayerDatas.getL_e_kurome().AllDraw4PR(front, lines);
-        corePartLayerDatas.getR_e_b_mayu().AllDraw4PR(front, lines);
-        corePartLayerDatas.getL_e_b_mayu().AllDraw4PR(front, lines);
-        corePartLayerDatas.getM_mouth().AllDraw4PR(front, lines);
+        for(LayerDataEx data : corePartLayerDatas.getLayerDataExArray()){
+            data.AllDraw4PR(front, lines);
+        }
     }
 
     public CorePartLayerDatas getCorePartLayerDatas() {
