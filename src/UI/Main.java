@@ -43,93 +43,19 @@ public class Main extends Application {
 
         InitWindow(stage);
 
-        /*
-        * アンカーペインを採用してみた
-         */
+        //ルート
         AnchorPane root = new AnchorPane();
 
         SystemLayers systemLayers = new SystemLayers(stage);
 
-        /*
-        * メニューバー
-         */
+        //メニューバー
         MenuBar menubar = new MenuBar();
 
-        /*
-        *参照画像のツリー
-         */
-        ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("パーツ");
+        //参照画像のツリー
+        ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("パーツ", systemLayers);
         AnchorPane.setLeftAnchor(referenceImagesUI.getTreeView(), WINDOW_WIDTH - LAYER_LIST_WIDTH);
         AnchorPane.setRightAnchor(referenceImagesUI.getTreeView(), 0.0);
         AnchorPane.setTopAnchor(referenceImagesUI.getTreeView(), UIValues.MENU_HEIGHT);
-        referenceImagesUI.getTreeView().setOnMouseClicked(event -> {
-            TreeItem<String> select = referenceImagesUI.getTreeView().getSelectionModel().selectedItemProperty().get();
-            if(select.getValue().equals("輪郭")){
-                CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getF_b_rinkaku();
-                Main.SwitchPartLayer(
-                        referenceImagesUI.getCorePartLayerDatas().getLayerData("f_b_rinkaku"),
-                        systemLayers.getFront(),
-                        systemLayers.getLines()
-                );
-            }else if(select.getValue().equals("黒目")){
-                if(select.getParent().getValue().equals("右目")){
-                    CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getR_e_kurome();
-                    Main.SwitchPartLayer(
-                            referenceImagesUI.getCorePartLayerDatas().getLayerData("r_e_kurome"),
-                            systemLayers.getFront(),
-                            systemLayers.getLines()
-                    );
-                }else if(select.getParent().getValue().equals("左目")){
-                    CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getL_e_kurome();
-                    Main.SwitchPartLayer(
-                            referenceImagesUI.getCorePartLayerDatas().getLayerData("l_e_kurome"),
-                            systemLayers.getFront(),
-                            systemLayers.getLines()
-                    );
-                }
-            }else if(select.getValue().equals("まぶた")){
-                if(select.getParent().getValue().equals("右目")){
-                    CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getR_e_mabuta();
-                    Main.SwitchPartLayer(
-                            referenceImagesUI.getCorePartLayerDatas().getLayerData("r_e_mabuta"),
-                            systemLayers.getFront(),
-                            systemLayers.getLines()
-                    );
-                }else if(select.getParent().getValue().equals("左目")){
-                    CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getL_e_mabuta();
-                    Main.SwitchPartLayer(
-                            referenceImagesUI.getCorePartLayerDatas().getLayerData("l_e_mabuta"),
-                            systemLayers.getFront(),
-                            systemLayers.getLines()
-                    );
-                }
-            }else if(select.getValue().equals("眉")){
-                if(select.getParent().getValue().equals("右眉")){
-                    CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getR_e_b_mayu();
-                    Main.SwitchPartLayer(
-                            referenceImagesUI.getCorePartLayerDatas().getLayerData("r_e_b_mayu"),
-                            systemLayers.getFront(),
-                            systemLayers.getLines()
-                    );
-                }else if(select.getParent().getValue().equals("左眉")){
-                    CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getL_e_b_mayu();
-                    Main.SwitchPartLayer(
-                            referenceImagesUI.getCorePartLayerDatas().getLayerData("l_e_b_mayu"),
-                            systemLayers.getFront(),
-                            systemLayers.getLines()
-                    );
-                }
-            }else if(select.getValue().equals("口")){
-                CurrentLayerData = referenceImagesUI.getCorePartLayerDatas().getM_mouth();
-                Main.SwitchPartLayer(
-                        referenceImagesUI.getCorePartLayerDatas().getLayerData("m_mouth"),
-                        systemLayers.getFront(),
-                        systemLayers.getLines()
-                );
-            }
-
-            systemLayers.getCreateLL().eraseLayer();
-        });
 
 
         NormalLayersTree layersTree = new NormalLayersTree("レイヤー", stage, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
