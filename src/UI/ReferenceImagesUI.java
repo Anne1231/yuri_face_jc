@@ -6,10 +6,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import static UI.Main.CurrentLayerData;
-
-import static UI.UIValues.LAYER_LIST_HEIGHT;
-import static UI.UIValues.LAYER_LIST_WIDTH;
-import static UI.UIValues.LAYER_WIDTH;
+import static UI.UIValues.*;
 
 /**
  * Created by Akihiro on 2017/03/04.
@@ -140,6 +137,16 @@ public class ReferenceImagesUI extends LayersTree {
                     systemLayers.getCreateLL().eraseLayer();
                 });
 
+        preview.setOnAction(event -> {
+            systemLayers.getPreview().getGraphicsContext().clearRect(0, 0, systemLayers.getPreview().getCanvas().getWidth(), systemLayers.getPreview().getCanvas().getHeight());
+            if(preview.isSelected()){
+                this.DrawAllData(systemLayers.getPreview(), systemLayers.getPreview());
+            }
+        });
+
+        AnchorPane.setLeftAnchor(treeView, WINDOW_WIDTH - LAYER_LIST_WIDTH);
+        AnchorPane.setRightAnchor(treeView, 0.0);
+        AnchorPane.setTopAnchor(treeView, UIValues.MENU_HEIGHT);
 
     }
 

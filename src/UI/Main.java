@@ -39,9 +39,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage){
 
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
-        InitWindow(stage);
+        Init(stage);
 
         //ルート
         AnchorPane root = new AnchorPane();
@@ -53,10 +51,6 @@ public class Main extends Application {
 
         //参照画像のツリー
         ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("パーツ", systemLayers);
-        AnchorPane.setLeftAnchor(referenceImagesUI.getTreeView(), WINDOW_WIDTH - LAYER_LIST_WIDTH);
-        AnchorPane.setRightAnchor(referenceImagesUI.getTreeView(), 0.0);
-        AnchorPane.setTopAnchor(referenceImagesUI.getTreeView(), UIValues.MENU_HEIGHT);
-
 
         NormalLayersTree layersTree = new NormalLayersTree("レイヤー", stage, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
         MotionTree motionTree = new MotionTree("モーション", stage, layersTree, systemLayers.getPreview());
@@ -77,7 +71,6 @@ public class Main extends Application {
         tabs.setPrefWidth(UIValues.LAYER_LIST_WIDTH);
         tabs.setPrefHeight(UIValues.LAYER_LIST_HEIGHT);
 
-
         /*
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
@@ -95,7 +88,6 @@ public class Main extends Application {
         * メニューバーの設定
          */
         ConfigMenuBar(menubar, stage, systemLayers.getGrid(), systemLayers.getImageLayer(), systemLayers.getPreview(), backGroundImageUI.getImage_bairitsu_field(), layersTree, motionTree, backGroundImageUI, systemLayers.getSelectingRect());
-
 
         /*
         * ノードを登録
@@ -115,13 +107,6 @@ public class Main extends Application {
                 referenceImagesUI.getTreeView(),
                 referenceImagesUI.getPreviewBox()
         );
-
-        referenceImagesUI.getPreviewBox().setOnAction(event -> {
-            systemLayers.getPreview().getGraphicsContext().clearRect(0, 0, systemLayers.getPreview().getCanvas().getWidth(), systemLayers.getPreview().getCanvas().getHeight());
-            if(referenceImagesUI.getPreviewBox().isSelected()){
-                referenceImagesUI.DrawAllData(systemLayers.getPreview(), systemLayers.getPreview());
-            }
-        });
 
         //referenceImageUIのアンカーペイン上の位置を設定
         referenceImagesUI.SettingAnchor();
@@ -283,7 +268,8 @@ public class Main extends Application {
     /*
     * ウィンドウの初期設定
      */
-    private static void InitWindow(Stage stage){
+    private static void Init(Stage stage){
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         stage.setTitle("Yuri Face");
         stage.setWidth(WINDOW_WIDTH);
         stage.setHeight(WINDOW_HEIGHT);
