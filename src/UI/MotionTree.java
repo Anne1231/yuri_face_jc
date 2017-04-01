@@ -47,13 +47,10 @@ public class MotionTree extends LayersTree {
         });
 
         preview.setOnAction(event -> {
-
             BasicMotion basicMotion = SearchAndGetMotion(selecting, WhichType(selecting_tree));
             basicMotion.setMill_sec(1000);
             basicMotion.setPreviewLayer(preview_layer);
             basicMotion.usingFxPreview();
-            System.out.println(basicMotion.getMotion_data().size());
-            //basicMotion.preview(preview_layer);
         });
 
         clone_item.setOnAction(event -> {

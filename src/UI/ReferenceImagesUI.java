@@ -33,6 +33,10 @@ public class ReferenceImagesUI extends LayersTree {
             EditFPP(stage);
         });
 
+        preview_menu.setOnAction(event -> {
+            PreviewDepth2(systemLayers.getPreview());
+        });
+
         popup_menu_4_depth2.getItems().addAll(preview_menu, property);
 
         ContextMenu popup_menu_4_depth3 = new ContextMenu();
@@ -271,5 +275,24 @@ public class ReferenceImagesUI extends LayersTree {
                 selecting_tree.getParent().getValue() + "→" + selecting_tree.getValue(),
                 corePartLayerDatas.getLayerData(selecting_tree.getParent().getValue(), selecting_tree.getValue()));
         sub.show();
+    }
+
+    private void PreviewDepth2(Layer preview_layer){
+        for(TreeItem<String> item : selecting_tree.getChildren()){
+            Polygon polygon = corePartLayerDatas.getLayerData(selecting_tree.getValue(), item.getValue()).getPolygons().get(0);
+            preview_layer.getGraphicsContext().fillPolygon(
+                    polygon.getxPoints(),
+                    polygon.getyPoints(),
+                    polygon.getxPoints().length
+            );
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.FINISH);
+        alert.setHeaderText("プレビュー中です");
+        alert.setTitle("プレビュー");
+        alert.showAndWait();
+
+        preview_layer.eraseLayer();
+
     }
 }
