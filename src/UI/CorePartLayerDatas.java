@@ -111,6 +111,60 @@ public class CorePartLayerDatas {
         }
     }
 
+    public LayerDataEx getLayerData(String parent, String select){
+        switch (parent){
+            case "顔面":
+                switch (select){
+                    case "輪郭":
+                        return f_b_rinkaku;
+                    case "髪":
+                        return f_b_kami;
+                }
+                break;
+            case "右目":
+                switch (select){
+                    case "黒目":
+                        return r_e_kurome;
+                    case "まつげ":
+                        return r_e_matsuge;
+                    case "目の切り口":
+                        return r_e_kirikuchi;
+                }
+                break;
+            case "左目":
+                switch (select){
+                    case "黒目":
+                        return l_e_kurome;
+                    case "まつげ":
+                        return l_e_matsuge;
+                    case "目の切り口":
+                        return l_e_kirikuchi;
+                }
+                break;
+            case "右眉":
+                if(select.equals("眉"))
+                    return r_e_b_mayu;
+                break;
+            case "左眉":
+                if(select.equals("眉"))
+                    return l_e_b_mayu;
+                break;
+            case "口":
+                switch (select){
+                    case "口":
+                        return m_mouth;
+                    case "舌":
+                        return m_shita;
+                }
+                break;
+
+        }
+
+        System.err.println("ERROR!! in CorePartLayerDatas class, Method \"getLayerData(String parent, String select)\" ");
+
+        return null;
+    }
+
     public LayerDataEx[] getLayerDataExArray(){
         LayerDataEx[] array = {
                 f_b_rinkaku, f_b_kami,

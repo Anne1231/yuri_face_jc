@@ -361,4 +361,8 @@ public class LayerData {
     public ArrayList<Polygon> getPolygons() {
         return polygons;
     }
+
+    public boolean isPolygonEmpty(){
+        return polygons.isEmpty();
+    }
 }

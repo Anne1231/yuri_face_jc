@@ -96,6 +96,7 @@ public class ReferenceImagesUI extends LayersTree {
             int depth = 0;
 
             TreeItem<String> select = treeView.getSelectionModel().selectedItemProperty().get();
+            setSelecting_tree(select);
 
             if(event.getButton() == MouseButton.PRIMARY){
                 popup_menu_4_depth2.hide();
@@ -214,7 +215,6 @@ public class ReferenceImagesUI extends LayersTree {
                     );
                 }
 
-                setSelecting_tree(null);
                 systemLayers.getCreateLL().eraseLayer();
             }
         });
@@ -253,13 +253,23 @@ public class ReferenceImagesUI extends LayersTree {
 
     private void EditFPP(Stage stage){
         Window window = stage;
-        EditFPPropertyWindow sub = new EditFPPropertyWindow(window, selecting_tree.getValue());
+        EditFPPropertyWindow sub = new EditFPPropertyWindow(window, selecting_tree.getValue(), corePartLayerDatas.getLayerData(selecting_tree.getValue()));
         sub.show();
     }
 
     private void EditFPP_Depth3(Stage stage){
+        if(corePartLayerDatas.getLayerData(selecting_tree.getParent().getValue(), selecting_tree.getValue()).isPolygonEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("パーツが定義されていません");
+            alert.showAndWait();
+            return;
+        }
+
         Window window = stage;
-        EditFPPWindowDepth3 sub = new EditFPPWindowDepth3(window, selecting_tree.getValue());
+        EditFPPWindowDepth3 sub = new EditFPPWindowDepth3(
+                window,
+                selecting_tree.getParent().getValue() + "→" + selecting_tree.getValue(),
+                corePartLayerDatas.getLayerData(selecting_tree.getParent().getValue(), selecting_tree.getValue()));
         sub.show();
     }
 }

@@ -51,6 +51,10 @@ public class Polygon {
         yPoints[index] = value;
     }
 
+    public void setDotColor(Color color){
+        this.dot_color = color;
+    }
+
     public String getPolygonName() {
         return polygon_name;
     }
