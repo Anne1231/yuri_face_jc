@@ -147,8 +147,16 @@ public class Main extends Application {
             selectAreaLayer.getCanvas().toFront();
 
         });
-
         selecting_area.getItems().addAll(make_group);
+
+
+
+        Menu tool = new Menu("ツール");
+        MenuItem spuit = new MenuItem("スポイト");
+        spuit.setOnAction(event -> {
+            System.out.println("スポイト");
+        });
+        tool.getItems().addAll(spuit);
 
         grid_config.setOnAction(event -> {
             int interval;
@@ -260,7 +268,7 @@ public class Main extends Application {
         });
 
         file.getItems().addAll(open_yfml, open, save, quit);
-        menu.getMenus().addAll(file, display, selecting_area, help);
+        menu.getMenus().addAll(file, display, selecting_area, tool, help);
 
         menu.setPrefWidth(WINDOW_WIDTH);
     }
