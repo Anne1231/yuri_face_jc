@@ -68,7 +68,7 @@ public class SelectAreaLayer extends Layer {
                 }
             }
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "グループ化しますか？", ButtonType.NO, ButtonType.YES);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "グループ化しますか？", ButtonType.YES, ButtonType.NO);
             alert.setHeaderText("グループ作成の確認");
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.YES){

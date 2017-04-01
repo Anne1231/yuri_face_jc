@@ -269,7 +269,7 @@ public class Main extends Application {
     * ウィンドウの初期設定
      */
     private static void Init(Stage stage){
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         stage.setTitle("Yuri Face");
         stage.setWidth(WINDOW_WIDTH);
         stage.setHeight(WINDOW_HEIGHT);
