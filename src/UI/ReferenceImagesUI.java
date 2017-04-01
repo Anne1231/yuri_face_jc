@@ -58,13 +58,13 @@ public class ReferenceImagesUI extends LayersTree {
             face_base.setExpanded(true);
         });
 
-        right_eye_tree.getChildren().addAll(new TreeItem<>("目の切り口"), new TreeItem<>("まつげ"), new TreeItem<>("黒目"));
+        right_eye_tree.getChildren().addAll(new TreeItem<>("目の切り口"), new TreeItem<>("黒目"), new TreeItem<>("まつげ"));
         right_eye_tree.setExpanded(true);
         right_eye_tree.expandedProperty().addListener((observable, oldValue, newValue) -> {
             right_eye_tree.setExpanded(true);
         });
 
-        left_eye_tree.getChildren().addAll(new TreeItem<>("目の切り口"), new TreeItem<>("まつげ"), new TreeItem<>("黒目"));
+        left_eye_tree.getChildren().addAll(new TreeItem<>("目の切り口"), new TreeItem<>("黒目"), new TreeItem<>("まつげ"));
         left_eye_tree.setExpanded(true);
         left_eye_tree.expandedProperty().addListener((observable, oldValue, newValue) -> {
             left_eye_tree.setExpanded(true);
@@ -280,11 +280,14 @@ public class ReferenceImagesUI extends LayersTree {
     private void PreviewDepth2(Layer preview_layer){
         for(TreeItem<String> item : selecting_tree.getChildren()){
             Polygon polygon = corePartLayerDatas.getLayerData(selecting_tree.getValue(), item.getValue()).getPolygons().get(0);
+            preview_layer.getGraphicsContext().setFill(polygon.getDotColor());
+            polygon.DrawDots(preview_layer);
             preview_layer.getGraphicsContext().fillPolygon(
                     polygon.getxPoints(),
                     polygon.getyPoints(),
                     polygon.getxPoints().length
             );
+            System.out.println(item.getValue());
         }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.FINISH);
