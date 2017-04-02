@@ -34,7 +34,7 @@ public class SystemLayers {
     /*
     * コンストラクタ
      */
-    public SystemLayers(Stage stage){
+    public SystemLayers(Stage stage, PickedColorUI pickedColorUI){
         front = new FrontDotLayer(LAYER_WIDTH, LAYER_HEIGHT);       //ドットを描画するレイヤー
         create_ll = new FrontDotLayer(LAYER_WIDTH, LAYER_HEIGHT);       //ドットを打てないアニメーション用レイヤー
         lines = new LinesLayer(LAYER_WIDTH, LAYER_HEIGHT);       //線を描画するレイヤー
@@ -42,7 +42,7 @@ public class SystemLayers {
         image_layer = new ImageLayer(LAYER_WIDTH, LAYER_HEIGHT); //下敷き画像を描画するレイヤー
         preview = new Layer(LAYER_WIDTH, LAYER_HEIGHT);     //プレビューを描画するレイヤー
         selecting_rect = new SelectAreaLayer(stage, LAYER_WIDTH, LAYER_HEIGHT);
-        spuit = new SpuitLayer(this, LAYER_WIDTH, LAYER_HEIGHT);
+        spuit = new SpuitLayer(this, LAYER_WIDTH, LAYER_HEIGHT, pickedColorUI);
 
         /*
         * フッターの設定

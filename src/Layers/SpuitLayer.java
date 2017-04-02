@@ -1,5 +1,6 @@
 package Layers;
 
+import UI.PickedColorUI;
 import UI.UIValues;
 import javafx.scene.Cursor;
 import javafx.scene.image.*;
@@ -13,10 +14,11 @@ import java.nio.IntBuffer;
  */
 public class SpuitLayer extends Layer {
 
-    private Color picked_color;
+    private PickedColorUI ref;
 
-    public SpuitLayer(SystemLayers systemLayers, double width, double height){
+    public SpuitLayer(SystemLayers systemLayers, double width, double height, PickedColorUI pickedColorUI){
         super(width, height);
+        ref = pickedColorUI;
 
         this.canvas.setOnMouseClicked(event -> {
 
@@ -42,8 +44,10 @@ public class SpuitLayer extends Layer {
 
                 int b = (pixel & 0xFF);
 
-                this.picked_color = Color.color((double) r / 255.0, (double) g / 255.0, (double) b / 255.0);
+                ref.updateColor(Color.color((double) r / 255.0, (double) g / 255.0, (double) b / 255.0));
 
+            }else{
+                ref.updateColor(Color.WHITE);
             }
 
             this.canvas.toBack();
@@ -52,8 +56,7 @@ public class SpuitLayer extends Layer {
         canvas.setCursor(Cursor.CROSSHAIR);
     }
 
-    private Color getPickedColor(){
-        return picked_color;
+    public void setRef(PickedColorUI ref) {
+        this.ref = ref;
     }
-
 }

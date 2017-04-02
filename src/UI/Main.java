@@ -44,13 +44,14 @@ public class Main extends Application {
         //ルート
         AnchorPane root = new AnchorPane();
 
-        SystemLayers systemLayers = new SystemLayers(stage);
+        SystemLayers systemLayers = new SystemLayers(stage, null);
 
         //メニューバー
         MenuBar menubar = new MenuBar();
 
         //参照画像のツリー
         ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("パーツ", systemLayers, stage);
+        systemLayers.getSpuit().setRef(referenceImagesUI.getPickedColorUI());
 
         NormalLayersTree layersTree = new NormalLayersTree("レイヤー", stage, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
         MotionTree motionTree = new MotionTree("モーション", stage, layersTree, systemLayers.getPreview());
@@ -157,6 +158,7 @@ public class Main extends Application {
         MenuItem spuit = new MenuItem("スポイト");
         spuit.setOnAction(event -> {
             spuitLayer.getCanvas().toFront();
+
         });
         tool.getItems().addAll(spuit);
 
