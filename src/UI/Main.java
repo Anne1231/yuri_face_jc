@@ -87,7 +87,7 @@ public class Main extends Application {
         /*
         * メニューバーの設定
          */
-        ConfigMenuBar(menubar, stage, systemLayers.getGrid(), systemLayers.getImageLayer(), systemLayers.getPreview(), backGroundImageUI.getImage_bairitsu_field(), layersTree, motionTree, backGroundImageUI, systemLayers.getSelectingRect());
+        ConfigMenuBar(menubar, stage, systemLayers.getGrid(), systemLayers.getImageLayer(), systemLayers.getPreview(), backGroundImageUI.getImage_bairitsu_field(), layersTree, motionTree, backGroundImageUI, systemLayers.getSelectingRect(), systemLayers.getSpuit());
 
         /*
         * ノードを登録
@@ -104,8 +104,10 @@ public class Main extends Application {
                 systemLayers.getPreview().getCanvas(),
                 systemLayers.getSelectingRect().getCanvas(),
                 systemLayers.getFooter().getCanvas(),
+                systemLayers.getSpuit().getCanvas(),
                 referenceImagesUI.getTreeView(),
-                referenceImagesUI.getPreviewBox()
+                referenceImagesUI.getPreviewBox(),
+                referenceImagesUI.getPickedColorUI()
         );
 
         //referenceImageUIのアンカーペイン上の位置を設定
@@ -131,7 +133,7 @@ public class Main extends Application {
     /*
     * メニューバーの初期設定
      */
-    private static void ConfigMenuBar(MenuBar menu, Stage stage, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree, LayersTree motion_tree, BackGroundImageUI backGroundImageUI, SelectAreaLayer selectAreaLayer){
+    private static void ConfigMenuBar(MenuBar menu, Stage stage, GridLayer grid_layer, ImageLayer image_layer, Layer preview, TextField image_b, LayersTree layersTree, LayersTree motion_tree, BackGroundImageUI backGroundImageUI, SelectAreaLayer selectAreaLayer, SpuitLayer spuitLayer){
         Menu help = new Menu("ヘルプ");
         MenuItem dev = new MenuItem("DEVELOPERS");
         help.getItems().addAll(dev);
@@ -154,7 +156,7 @@ public class Main extends Application {
         Menu tool = new Menu("ツール");
         MenuItem spuit = new MenuItem("スポイト");
         spuit.setOnAction(event -> {
-            System.out.println("スポイト");
+            spuitLayer.getCanvas().toFront();
         });
         tool.getItems().addAll(spuit);
 

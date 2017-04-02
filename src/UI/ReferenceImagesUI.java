@@ -21,9 +21,12 @@ public class ReferenceImagesUI extends LayersTree {
     private TreeItem<String> face_base;
     private CorePartLayerDatas corePartLayerDatas;
     private CheckBox preview;
+    private PickedColorUI pickedColorUI;
 
     public ReferenceImagesUI(String tree_name, SystemLayers systemLayers, Stage stage){
         super(tree_name);
+
+        pickedColorUI = new PickedColorUI(LAYER_LIST_WIDTH + LAYER_WIDTH + 20, LAYER_LIST_HEIGHT + 80);
 
         ContextMenu popup_menu_4_depth2 = new ContextMenu();
         MenuItem property = new MenuItem("プロパティ");
@@ -297,5 +300,9 @@ public class ReferenceImagesUI extends LayersTree {
 
         preview_layer.eraseLayer();
 
+    }
+
+    public PickedColorUI getPickedColorUI() {
+        return pickedColorUI;
     }
 }

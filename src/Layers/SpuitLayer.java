@@ -45,7 +45,7 @@ public class SpuitLayer extends Layer {
                 this.picked_color = Color.color((double) r / 255.0, (double) g / 255.0, (double) b / 255.0);
 
             }
-            
+
             this.canvas.toBack();
         });
 

@@ -29,4 +29,6 @@ public class UIValues {
 
     static final int MAX__CONNECTION = 50;
 
+    public static final int PICKED_COLOR_RECT_WIDTH = 20;
+
 }
