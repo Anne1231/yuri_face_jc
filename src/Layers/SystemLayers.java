@@ -57,7 +57,7 @@ public class SystemLayers {
         AnchorPane.setLeftAnchor(footer.getCanvas(), 0.0);
 
 
-        SettingAnchor(front, create_ll, lines, grid, image_layer, preview, selecting_rect);
+        SettingAnchor(front, create_ll, lines, grid, image_layer, preview, selecting_rect, spuit);
     }
 
     public FrontDotLayer getFront() {
