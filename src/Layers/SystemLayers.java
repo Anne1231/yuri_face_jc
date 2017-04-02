@@ -29,6 +29,7 @@ public class SystemLayers {
     private Layer preview;
     private SelectAreaLayer selecting_rect;
     private Footer footer;
+    private SpuitLayer spuit;
 
     /*
     * コンストラクタ
@@ -41,6 +42,7 @@ public class SystemLayers {
         image_layer = new ImageLayer(LAYER_WIDTH, LAYER_HEIGHT); //下敷き画像を描画するレイヤー
         preview = new Layer(LAYER_WIDTH, LAYER_HEIGHT);     //プレビューを描画するレイヤー
         selecting_rect = new SelectAreaLayer(stage, LAYER_WIDTH, LAYER_HEIGHT);
+        spuit = new SpuitLayer(this, LAYER_WIDTH, LAYER_HEIGHT);
 
         /*
         * フッターの設定
@@ -88,6 +90,10 @@ public class SystemLayers {
 
     public Footer getFooter(){
         return footer;
+    }
+
+    public SpuitLayer getSpuit() {
+        return spuit;
     }
 
     public void ConfigLayers(LayersTree layersTree){
@@ -513,6 +519,7 @@ public class SystemLayers {
         this.image_layer.getCanvas().toBack();
         this.footer.getCanvas().toFront();
         this.preview.getCanvas().toBack();
+        this.spuit.getCanvas().toBack();
     }
 
     /*

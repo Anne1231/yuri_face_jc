@@ -1,5 +1,6 @@
 package Layers;
 
+import UI.UIValues;
 import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -19,8 +20,8 @@ public class SpuitLayer extends Layer {
         this.canvas.setOnMouseClicked(event -> {
             Image img = systemLayers.getImageLayer().getImage();
 
-            int x = (int)event.getX();
-            int y = (int)event.getY();
+            int x = (int)(event.getX() * systemLayers.getImageLayer().getBairitsu());
+            int y = (int)(event.getY() * systemLayers.getImageLayer().getBairitsu());
 
             //ピクセル配列取得
             WritablePixelFormat<IntBuffer> format = WritablePixelFormat.getIntArgbInstance();
@@ -31,15 +32,16 @@ public class SpuitLayer extends Layer {
             int index = (y * (int)width) + x;
             int pixel = pixels[index];
 
-            int a = (pixel >> 24) & 0xFF;
-
             int r = ((pixel >> 16) & 0xFF);
 
             int g = ((pixel >> 8) & 0xFF);
 
             int b = (pixel & 0xFF);
 
-            this.picked_color = Color.color(r, g, b);
+            this.picked_color = Color.color((double)r / 255.0, (double)g / 255.0, (double)b / 255.0);
+
+            this.graphicsContext.clearRect(0, 0, UIValues.LAYER_WIDTH, UIValues.LAYER_HEIGHT);
+            this.canvas.toBack();
         });
     }
 
