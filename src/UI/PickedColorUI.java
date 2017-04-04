@@ -39,7 +39,7 @@ public class PickedColorUI extends HBox {
     }
 
     public void updateColor(Color color){
-        web_color_label.setText(color.toString());
+        web_color_label.setText(color.toString().substring(0, color.toString().length() - 2));
         rect.setFill(color);
     }
 

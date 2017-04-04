@@ -28,6 +28,10 @@ public class ReferenceImagesUI extends LayersTree {
 
         pickedColorUI = new PickedColorUI(LAYER_LIST_WIDTH + LAYER_WIDTH + 20, LAYER_LIST_HEIGHT + 80);
 
+        ContextMenu popup_menu_4_depth1 = new ContextMenu();
+        MenuItem preview_all_menu  = new MenuItem("全体をプレビュー");
+        popup_menu_4_depth1.getItems().add(preview_all_menu);
+
         ContextMenu popup_menu_4_depth2 = new ContextMenu();
         MenuItem property = new MenuItem("プロパティ");
         MenuItem preview_menu  = new MenuItem("プレビュー");
@@ -119,11 +123,15 @@ public class ReferenceImagesUI extends LayersTree {
                 }
             }
 
-            if(depth == 2){
+            if(depth == 1) {
+                if(event.getButton() == MouseButton.SECONDARY)
+                    popup_menu_4_depth1.show(treeView, event.getScreenX(), event.getScreenY());
+                setSelecting_tree(select);
+            } else if(depth == 2){
                 if(event.getButton() == MouseButton.SECONDARY)
                     popup_menu_4_depth2.show(treeView, event.getScreenX(), event.getScreenY());
                 setSelecting_tree(select);
-            } else {
+            } else if(depth == 3){
                 if(event.getButton() == MouseButton.SECONDARY)
                     popup_menu_4_depth3.show(treeView, event.getScreenX(), event.getScreenY());
                 setSelecting_tree(select);
