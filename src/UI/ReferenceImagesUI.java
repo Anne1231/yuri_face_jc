@@ -30,6 +30,11 @@ public class ReferenceImagesUI extends LayersTree {
 
         ContextMenu popup_menu_4_depth1 = new ContextMenu();
         MenuItem preview_all_menu  = new MenuItem("全体をプレビュー");
+
+        preview_all_menu.setOnAction(event -> {
+            PreviewAll(systemLayers.getPreview());
+        });
+
         popup_menu_4_depth1.getItems().add(preview_all_menu);
 
         ContextMenu popup_menu_4_depth2 = new ContextMenu();
@@ -112,16 +117,16 @@ public class ReferenceImagesUI extends LayersTree {
             if(event.getButton() == MouseButton.PRIMARY){
                 popup_menu_4_depth2.hide();
                 popup_menu_4_depth3.hide();
-            }else if(event.getButton() == MouseButton.SECONDARY){
-                TreeItem<String> ref = select;
-                while(true){
-                    if(ref == null){
-                        break;
-                    }
-                    ref = ref.getParent();
-                    depth++;
-                }
             }
+            TreeItem<String> ref = select;
+            while(true){
+                if(ref == null){
+                    break;
+                }
+                ref = ref.getParent();
+                depth++;
+            }
+
 
             if(depth == 1) {
                 if(event.getButton() == MouseButton.SECONDARY)
@@ -298,7 +303,6 @@ public class ReferenceImagesUI extends LayersTree {
                     polygon.getyPoints(),
                     polygon.getxPoints().length
             );
-            System.out.println(item.getValue());
         }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.FINISH);
@@ -312,5 +316,25 @@ public class ReferenceImagesUI extends LayersTree {
 
     public PickedColorUI getPickedColorUI() {
         return pickedColorUI;
+    }
+
+    private void PreviewAll(Layer preview_layer){
+
+        LayerDataEx[] array = corePartLayerDatas.getLayerDataExArray();
+
+        Polygon polygon;
+
+        for(LayerDataEx layerDataEx : array){
+            if(layerDataEx.getPolygons().size() == 0)
+                continue;
+            polygon = layerDataEx.getPolygons().get(0);
+            preview_layer.getGraphicsContext().setFill(polygon.getDotColor());
+            polygon.DrawDots(preview_layer);
+            preview_layer.getGraphicsContext().fillPolygon(
+                    polygon.getxPoints(),
+                    polygon.getyPoints(),
+                    polygon.getxPoints().length
+            );
+        }
     }
 }
