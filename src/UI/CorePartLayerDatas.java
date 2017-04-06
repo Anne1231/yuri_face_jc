@@ -168,8 +168,9 @@ public class CorePartLayerDatas {
     public LayerDataEx[] getLayerDataExArray(){
         LayerDataEx[] array = {
                 f_b_rinkaku, f_b_kami,
-                r_e_kurome, r_e_matsuge, r_e_kirikuchi,
-                l_e_kurome, l_e_matsuge, l_e_kirikuchi,
+                r_e_kirikuchi, l_e_kirikuchi,
+                r_e_kurome, l_e_kurome,
+                r_e_matsuge, l_e_matsuge,
                 r_e_b_mayu,
                 l_e_b_mayu,
                 m_mouth, m_shita
