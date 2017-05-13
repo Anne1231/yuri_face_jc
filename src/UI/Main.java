@@ -13,10 +13,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import motion.SynchronizableBasicMotion;
-import org.opencv.core.*;
-import sub.CreateMotionWindow;
 
 import java.util.ArrayList;
 import java.util.Optional;
