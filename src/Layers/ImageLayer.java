@@ -41,12 +41,12 @@ public class ImageLayer extends Layer {
         this.image = image;
         this.bairitsu = bairitsu;
         graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        graphicsContext.drawImage(image, x, y, x + (width * bairitsu), y + (height * bairitsu));
+        graphicsContext.drawImage(image, x, y, width * bairitsu, height * bairitsu);
     }
 
     public void MoveImage(double x, double y){
         graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        graphicsContext.drawImage(image, x, y, x + (image.getWidth() * bairitsu), y + (image.getHeight() * bairitsu));
+        graphicsContext.drawImage(image, x, y, image.getWidth() * bairitsu, image.getHeight() * bairitsu);
     }
 
     public void Redraw(double x, double y){
