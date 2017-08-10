@@ -5,6 +5,7 @@ import UI.Main;
 import UI.UIValues;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 
@@ -50,9 +51,11 @@ public class FrontDotLayer extends Layer {
     @Override
     public void scroll_handler(ScrollEvent event)
     {
-        GridLayer grid_layer = Main.systemLayers.getGrid();
-        grid_layer.editInterval(event.getDeltaY() > 0 ? UIValues.EXPANSION_PER_ONE_SCROLL : -UIValues.EXPANSION_PER_ONE_SCROLL);
-        grid_layer.redrawGrid();
+        if(Main.keyTable.isPressed(KeyCode.Z)) {
+            GridLayer grid_layer = Main.main_view.getSystemLayers().getGrid();
+            grid_layer.editInterval(event.getDeltaY() > 0 ? UIValues.EXPANSION_PER_ONE_SCROLL : -UIValues.EXPANSION_PER_ONE_SCROLL);
+            grid_layer.redrawGrid();
+        }
     }
 
     /*

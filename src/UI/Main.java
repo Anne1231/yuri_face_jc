@@ -30,7 +30,7 @@ public class Main extends Application {
     public static ArrayList<BasicMotion> basicMotions = new ArrayList<>();
     public static ArrayList<LayerData> LayerDatas = new ArrayList<>();
     public static KeyTable keyTable = new KeyTable();
-    public static SystemLayers systemLayers;
+    public static MainView main_view;
 
     @Override
     public void start(Stage stage){
@@ -40,17 +40,18 @@ public class Main extends Application {
         //ルート
         AnchorPane root = new AnchorPane();
 
-        systemLayers = new SystemLayers(stage, null);
+        main_view = new MainView(stage);
+
 
         //メニューバー
         MenuBar menubar = new MenuBar();
 
         //参照画像のツリー
-        ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("パーツ", systemLayers, stage);
-        systemLayers.getSpuit().setRef(referenceImagesUI.getPickedColorUI());
+        ReferenceImagesUI referenceImagesUI = new ReferenceImagesUI("パーツ", main_view.getSystemLayers(), stage);
+        main_view.getSystemLayers().getSpuit().setRef(referenceImagesUI.getPickedColorUI());
 
-        NormalLayersTree layersTree = new NormalLayersTree("レイヤー", stage, systemLayers.getCreateLL(), systemLayers.getFront(), systemLayers.getLines(), referenceImagesUI);
-        MotionTree motionTree = new MotionTree("モーション", stage, layersTree, systemLayers.getPreview());
+        NormalLayersTree layersTree = new NormalLayersTree("レイヤー", stage, main_view.getSystemLayers().getCreateLL(), main_view.getSystemLayers().getFront(), main_view.getSystemLayers().getLines(), referenceImagesUI);
+        MotionTree motionTree = new MotionTree("モーション", stage, layersTree, main_view.getSystemLayers().getPreview());
 
         /*
         * アルファ
@@ -72,19 +73,19 @@ public class Main extends Application {
         * レイヤーの各種設定
         * この中でアンカーペインの設定も行う
          */
-        systemLayers.ConfigLayers(layersTree);
+        main_view.config_place(layersTree);
 
         /*
         *下敷き画像関係
          */
-        BackGroundImageUI backGroundImageUI = new BackGroundImageUI(systemLayers);
+        BackGroundImageUI backGroundImageUI = new BackGroundImageUI(main_view.getSystemLayers());
         AnchorPane.setBottomAnchor(backGroundImageUI.getRoot(), UIValues.FOOTER_HEIGHT + 5);
         AnchorPane.setLeftAnchor(backGroundImageUI.getRoot(), 0.0);
 
         /*
         * メニューバーの設定
          */
-        ConfigMenuBar(menubar, stage, systemLayers.getGrid(), systemLayers.getImageLayer(), systemLayers.getPreview(), backGroundImageUI.getImage_bairitsu_field(), layersTree, motionTree, backGroundImageUI, systemLayers.getSelectingRect(), systemLayers.getSpuit());
+        ConfigMenuBar(menubar, stage, main_view.getSystemLayers().getGrid(), main_view.getSystemLayers().getImageLayer(), main_view.getSystemLayers().getPreview(), backGroundImageUI.getImage_bairitsu_field(), layersTree, motionTree, backGroundImageUI, main_view.getSystemLayers().getSelectingRect(), main_view.getSystemLayers().getSpuit());
 
         /*
         * ノードを登録
@@ -93,25 +94,17 @@ public class Main extends Application {
                 menubar,
                 tabs,
                 backGroundImageUI.getRoot(),
-                systemLayers.getFront().getCanvas(),
-                systemLayers.getCreateLL().getCanvas(),
-                systemLayers.getLines().getCanvas(),
-                systemLayers.getGrid().getCanvas(),
-                systemLayers.getImageLayer().getCanvas(),
-                systemLayers.getPreview().getCanvas(),
-                systemLayers.getSelectingRect().getCanvas(),
-                systemLayers.getFooter().getCanvas(),
-                systemLayers.getSpuit().getCanvas(),
                 referenceImagesUI.getTreeView(),
                 referenceImagesUI.getPreviewBox(),
                 referenceImagesUI.getPickedColorUI()
         );
+        main_view.registerToRoot(root);
 
         //referenceImageUIのアンカーペイン上の位置を設定
         referenceImagesUI.SettingAnchor();
 
         //システムレイヤーの順番を調整
-        systemLayers.InitSort();
+        main_view.getSystemLayers().InitSort();
 
         Scene scene = new Scene(root);
 

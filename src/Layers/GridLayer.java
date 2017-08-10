@@ -84,6 +84,7 @@ public class GridLayer extends Layer {
 
     void editInterval(int value)
     {
+        System.out.println(value);
         if(value > 0)
         {
             if(interval <= UIValues.MAXIMUM_GRID_INTERVAL)
