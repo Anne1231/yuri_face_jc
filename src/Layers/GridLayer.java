@@ -1,5 +1,6 @@
 package Layers;
 
+import UI.UIValues;
 import javafx.scene.paint.Color;
 
 import static UI.UIValues.*;
@@ -38,14 +39,19 @@ public class GridLayer extends Layer {
     /*
     * グリッドを描画するメソッド
      */
-    public void drawGrid(int interval){
-        int i;
-        this.graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        this.canvas.toFront();
-        this.graphicsContext.setStroke(Color.GRAY);
-        this.graphicsContext.setLineWidth(0.5);
+    public void redrawGrid(int interval){
 
         this.interval = interval;
+        redrawGrid();
+
+    }
+
+    public void redrawGrid(){
+        int i;
+        this.graphicsContext.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        this.graphicsContext.setStroke(Color.GRAY);
+        this.graphicsContext.setLineWidth(0.5);
 
         for(i = 0;i < WINDOW_WIDTH;i += interval){
             this.graphicsContext.strokeLine(i, 0, i, WINDOW_HEIGHT);
@@ -55,7 +61,6 @@ public class GridLayer extends Layer {
             this.graphicsContext.strokeLine(0, i, WINDOW_WIDTH, i);
         }
 
-        this.canvas.toBack();
 
         drawFrame();
     }
@@ -75,5 +80,22 @@ public class GridLayer extends Layer {
         this.graphicsContext.setLineWidth(2);
         this.graphicsContext.setFill(Color.BLACK);
         this.graphicsContext.strokeRect(0, 0, LAYER_WIDTH, LAYER_HEIGHT);
+    }
+
+    void editInterval(int value)
+    {
+        if(value > 0)
+        {
+            if(interval <= UIValues.MAXIMUM_GRID_INTERVAL)
+            {
+                interval += value;
+            }
+        }else if(value < 0)
+        {
+            if(interval >= UIValues.MINIMUM_GRID_INTERVAL)
+            {
+                interval += value;
+            }
+        }
     }
 }

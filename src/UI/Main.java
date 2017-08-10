@@ -9,9 +9,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import motion.SynchronizableBasicMotion;
 
@@ -32,6 +30,7 @@ public class Main extends Application {
     public static ArrayList<BasicMotion> basicMotions = new ArrayList<>();
     public static ArrayList<LayerData> LayerDatas = new ArrayList<>();
     public static KeyTable keyTable = new KeyTable();
+    public static SystemLayers systemLayers;
 
     @Override
     public void start(Stage stage){
@@ -41,7 +40,7 @@ public class Main extends Application {
         //ルート
         AnchorPane root = new AnchorPane();
 
-        SystemLayers systemLayers = new SystemLayers(stage, null);
+        systemLayers = new SystemLayers(stage, null);
 
         //メニューバー
         MenuBar menubar = new MenuBar();
@@ -187,7 +186,7 @@ public class Main extends Application {
                 return;
             }
 
-            grid_layer.drawGrid(interval);
+            grid_layer.redrawGrid(interval);
             grid_config.setSelected(true);
 
             image_layer.getCanvas().toBack();
@@ -211,7 +210,7 @@ public class Main extends Application {
         });
 
         grid_config.setSelected(true);
-        grid_layer.drawGrid(INIT_GRID_INTERVAL);
+        grid_layer.redrawGrid(INIT_GRID_INTERVAL);
 
         display.getItems().addAll(grid_config, grid_complete, preview_menu);
         Menu file = new Menu("ファイル");

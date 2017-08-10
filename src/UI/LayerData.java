@@ -224,11 +224,18 @@ public class LayerData {
         ArrayList<Dot> memo = new ArrayList<>();
         ArrayList<Line> line_memo = new ArrayList<>();
 
+        /*
+        * memoには選択矩形に含まれるドットが格納される
+         */
         dot_set.forEach(dot -> {
-            if(rectangle2D.contains(new Point2D(dot.getX(), dot.getY()))) {
-                memo.add(dot.clone());
+            if(rectangle2D.contains(new Point2D(dot.getX(), dot.getY()))) {     // dotは選択矩形の中に入っているか？
+                memo.add(dot.clone());  //入っていたのでクローンして格納
             }
         });
+
+        /*
+        * line_listには選択矩形に始点または終点のどちらかが入っている線が格納される
+         */
         this.line_list
                 .stream()
                 .filter(line ->

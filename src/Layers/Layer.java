@@ -1,7 +1,9 @@
 package Layers;
 
+import javafx.event.Event;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.ScrollEvent;
 
 import static UI.UIValues.WINDOW_HEIGHT;
 import static UI.UIValues.WINDOW_WIDTH;
@@ -16,6 +18,7 @@ public class Layer {
     public Layer(double width, double height){
         canvas = new Canvas(width, height);
         graphicsContext = canvas.getGraphicsContext2D();
+        canvas.setOnScroll(event -> scroll_handler(event));
     }
 
     public Canvas getCanvas() {
@@ -39,4 +42,7 @@ public class Layer {
     public void beForward(){
         canvas.toFront();
     }
+
+    public void scroll_handler(ScrollEvent event){}
+
 }

@@ -31,4 +31,9 @@ public class UIValues {
 
     public static final int PICKED_COLOR_RECT_WIDTH = 20;
 
+    public static final int MINIMUM_GRID_INTERVAL = 10;
+    public static final int MAXIMUM_GRID_INTERVAL = 80;
+
+    public static final int EXPANSION_PER_ONE_SCROLL = 4;
+
 }
