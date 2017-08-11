@@ -106,12 +106,12 @@ public class LayerData {
 
     public void AllDraw4PR(Layer front, Layer lines){
         line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
-        dot_set.forEach(dot -> dot.Draw(front, Color.BLACK));
+        dot_set.forEach(dot -> dot.Draw(front, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval()));
     }
 
     public void AllDraw4N(Layer front, Layer lines){
         line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
-        dot_set.forEach(dot -> dot.Draw(front, Color.BLACK));
+        dot_set.forEach(dot -> dot.Draw(front, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval()));
 
         polygons.forEach(polygon -> {
             for(int i = 0;i < polygon.size();i++){

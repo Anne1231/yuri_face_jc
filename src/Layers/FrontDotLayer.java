@@ -2,6 +2,7 @@ package Layers;
 
 import UI.Dot;
 import UI.Main;
+import UI.Point2i;
 import UI.UIValues;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -67,9 +68,12 @@ public class FrontDotLayer extends Layer {
         if(CurrentLayerData == null)
             return;
 
+        Point2i begin_point = Main.main_view.getMainViewBegin();
+        System.out.println((begin_point.getX() + (x / gridLayer.getInterval())) + ":" + (begin_point.getY() + (y / gridLayer.getInterval())));
+
         for(final Dot p : CurrentLayerData.getDotSet()){
-            if(Math.abs(p.getX() - x) < 5){
-                if(Math.abs(p.getY() - y) < 5){
+            if(Math.abs(p.getX() - x) == 0){
+                if(Math.abs(p.getY() - y) == 0){
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "ドットを配置しますか？", ButtonType.NO, ButtonType.YES);
                     alert.setHeaderText("付近にドットがあります");
                     Optional<ButtonType> result = alert.showAndWait();
@@ -82,9 +86,21 @@ public class FrontDotLayer extends Layer {
         }
 
         //グリッド補正の判定
-        Dot dot = gridLayer.isEnableComplete() ? new Dot(x, y, gridLayer.getInterval()) : new Dot(x, y);
+        //Dot dot = gridLayer.isEnableComplete() ? new Dot(x, y, gridLayer.getInterval()) : new Dot(x, y);
+        Dot dot = new Dot(begin_point.getX() + (x / gridLayer.getInterval()), begin_point.getY() + (y / gridLayer.getInterval()));
 
-        dot.Draw(this, Color.BLACK);
+
+        dot.Draw(this, Color.BLACK, gridLayer.getInterval());
+        CurrentLayerData.AddDot(dot);
+
+        System.out.println("came");
+
+        setLast(dot);
+    }
+
+    public void putOneDot(Dot dot){
+
+        dot.Draw(this, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval());
         CurrentLayerData.AddDot(dot);
 
         setLast(dot);

@@ -130,7 +130,7 @@ public class SystemLayers {
                         p.Select();
                         selecting_dot = p;
                         selecting_dot.Select();
-                        selecting_dot.Draw(front, Color.RED);
+                        selecting_dot.Draw(front, Color.RED, gridLayer.getInterval());
                         lines.beForward();
                         break;
                     }
@@ -173,15 +173,15 @@ public class SystemLayers {
                     if(Math.abs(p.getY() - event.getY()) < 5){
                         choose.setDisable(false);
                         selecting_dot = p;
-                        p.Draw(front, Color.RED);
+                        p.Draw(front, Color.RED, gridLayer.getInterval());
                         break;
                     }else{
                         choose.setDisable(true);
-                        p.Draw(front, Color.BLACK);
+                        p.Draw(front, Color.BLACK, gridLayer.getInterval());
                     }
                 }else{
                     choose.setDisable(true);
-                    p.Draw(front, Color.BLACK);
+                    p.Draw(front, Color.BLACK, gridLayer.getInterval());
                 }
             }
 
@@ -216,7 +216,7 @@ public class SystemLayers {
             //消されていたドットを更新した座標に再描画
             selecting_dot = update_dot;
             front.setLast(update_dot);
-            selecting_dot.Draw(front, Color.RED);
+            selecting_dot.Draw(front, Color.RED, gridLayer.getInterval());
         });
 
         front.getCanvas().setOnMousePressed(event -> {
@@ -253,7 +253,7 @@ public class SystemLayers {
                         p.Select();
                         selecting_dot = p;
                         selecting_dot.Select();
-                        selecting_dot.Draw(front, Color.RED);
+                        selecting_dot.Draw(front, Color.RED, gridLayer.getInterval());
                         lines.beForward();
                         break;
                     }
@@ -325,7 +325,7 @@ public class SystemLayers {
 
             //消されていたドットを更新した座標に再描画
             selecting_dot = update_dot;
-            selecting_dot.Draw(front, Color.RED);
+            selecting_dot.Draw(front, Color.RED, gridLayer.getInterval());
         });
 
         front.getCanvas().setOnMousePressed(event -> {
@@ -423,7 +423,7 @@ public class SystemLayers {
             CurrentLayerData.DrawAllLines(lines);
 
             //消されていたドットを更新した座標に再描画
-            update_dot.Draw(front, Color.RED);
+            update_dot.Draw(front, Color.RED, gridLayer.getInterval());
 
         });
 
@@ -449,14 +449,14 @@ public class SystemLayers {
                 if(Math.abs(p.getX() - event.getX()) < 5){
                     if(Math.abs(p.getY() - event.getY()) < 5){
                         cat_dot.setDisable(false);
-                        p.Draw(front, Color.RED);
+                        p.Draw(front, Color.RED, gridLayer.getInterval());
                         break;
                     }else{
-                        p.Draw(front, Color.BLACK);
+                        p.Draw(front, Color.BLACK, gridLayer.getInterval());
                         cat_dot.setDisable(true);
                     }
                 }else{
-                    p.Draw(front, Color.BLACK);
+                    p.Draw(front, Color.BLACK, gridLayer.getInterval());
                     cat_dot.setDisable(true);
                 }
             }
@@ -491,7 +491,7 @@ public class SystemLayers {
             //消されていたドットを更新した座標に再描画
             selecting_dot = update_dot;
             selecting_dot.Select();
-            update_dot.Draw(front, Color.RED);
+            update_dot.Draw(front, Color.RED, gridLayer.getInterval());
         });
 
         lines.getCanvas().setOnMousePressed(event -> {

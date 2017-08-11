@@ -46,13 +46,21 @@ public class Dot extends Point2i {
     public void UnSelect(){
         selected = false;
     }
-
+/*
     public void Draw(Layer layer, Paint color){
         layer.getGraphicsContext().setFill(color);
         layer.getGraphicsContext().setStroke(color);
         layer.getGraphicsContext().setLineWidth(UIValues.DOT_CIRCLE_WIDTH);
         layer.getGraphicsContext().fillOval(x, y, 4, 4);
         layer.getGraphicsContext().strokeOval(x - 3, y - 3, 10, 10);
+    }
+*/
+    public void Draw(Layer layer, Paint color, int interval){
+        layer.getGraphicsContext().setFill(color);
+        layer.getGraphicsContext().setStroke(color);
+        layer.getGraphicsContext().setLineWidth(UIValues.DOT_CIRCLE_WIDTH);
+        layer.getGraphicsContext().fillOval(x * interval, y * interval, 4, 4);
+        layer.getGraphicsContext().strokeOval((x * interval) - 3, (y * interval) - 3, 10, 10);
     }
 
     public void Erase(FrontDotLayer layer){
