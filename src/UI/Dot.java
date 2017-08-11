@@ -63,8 +63,8 @@ public class Dot extends Point2i {
         layer.getGraphicsContext().strokeOval((x * interval) - 3, (y * interval) - 3, 10, 10);
     }
 
-    public void Erase(FrontDotLayer layer){
-        layer.getGraphicsContext().clearRect(this.x-3, this.y-3, 11, 11);
+    public void Erase(FrontDotLayer layer, int interval){
+        layer.getGraphicsContext().clearRect((this.x * interval) - 3, (this.y * interval) - 3, 11, 11);
     }
 
     public boolean equals(Dot dot){

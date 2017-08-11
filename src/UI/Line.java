@@ -16,9 +16,11 @@ public class Line {
     }
 
     public void Draw(Layer layer, double width, Color color){
+        int interval = Main.main_view.getSystemLayers().getGrid().getInterval();
+
         layer.getGraphicsContext().setLineWidth(width);
         layer.getGraphicsContext().setStroke(color);
-        layer.getGraphicsContext().strokeLine(begin.getX(), begin.getY(), end.getX(), end.getY());
+        layer.getGraphicsContext().strokeLine(begin.getX() * interval, begin.getY() * interval, end.getX() * interval , end.getY() * interval);
     }
 
     public boolean contains(Point2i p){

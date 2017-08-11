@@ -53,9 +53,12 @@ public class FrontDotLayer extends Layer {
     public void scroll_handler(ScrollEvent event)
     {
         if(Main.keyTable.isPressed(KeyCode.Z)) {
+            clear();
+            Main.main_view.getSystemLayers().getLines().clear();
             GridLayer grid_layer = Main.main_view.getSystemLayers().getGrid();
             grid_layer.editInterval(event.getDeltaY() > 0 ? UIValues.EXPANSION_PER_ONE_SCROLL : -UIValues.EXPANSION_PER_ONE_SCROLL);
             grid_layer.redrawGrid();
+            CurrentLayerData.AllDraw4PR(this, Main.main_view.getSystemLayers().getLines());
         }
     }
 

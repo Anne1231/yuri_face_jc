@@ -35,4 +35,8 @@ public class Geometry {
                 (start.distance(mid) * end.distance(mid))
         );
     }
+
+    public static int EventDotToGridDot(double val, int interval){
+        return (int)(val / interval);
+    }
 }

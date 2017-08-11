@@ -1,6 +1,7 @@
 package Layers;
 
 import UI.*;
+import backend.utility.Geometry;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
@@ -125,8 +126,8 @@ public class SystemLayers {
          */
         choose.setOnAction(event -> {
             for(final Dot p : CurrentLayerData.getDotSet()){
-                if(Math.abs(p.getX() - x) < 5){
-                    if(Math.abs(p.getY() - y) < 5){
+                if(abs_double((double)p.getX(), (double)x / (double)gridLayer.getInterval()) <= 0.5){
+                    if(abs_double((double)p.getY(), (double)y / (double)gridLayer.getInterval()) <= 0.5){
                         p.Select();
                         selecting_dot = p;
                         selecting_dot.Select();
@@ -147,8 +148,9 @@ public class SystemLayers {
         });
 
         front.getCanvas().setOnMouseClicked(event -> {
-            if(event.getButton() == MouseButton.PRIMARY)
+            if(event.getButton() == MouseButton.PRIMARY) {
                 popup.hide();
+            }
             x = (int)event.getX();
             y = (int)event.getY();
             if(keyTable.isPressed(KeyCode.D)){
@@ -169,8 +171,8 @@ public class SystemLayers {
             for(final Dot p : CurrentLayerData.getDotSet()){
                 if(p.isSelected())
                     continue;
-                if(Math.abs(p.getX() - event.getX()) < 5){
-                    if(Math.abs(p.getY() - event.getY()) < 5){
+                if(abs_double((double)p.getX(), (event.getX() / (double)gridLayer.getInterval())) <= 0.5){
+                    if(abs_double((double)p.getY(), (event.getY() / (double)gridLayer.getInterval())) <= 0.5){
                         choose.setDisable(false);
                         selecting_dot = p;
                         p.Draw(front, Color.RED, gridLayer.getInterval());
@@ -189,20 +191,16 @@ public class SystemLayers {
         });
 
         front.getCanvas().setOnMouseDragged(event -> {
-            if(!ConfigLayer.dot_dragged)
+            if(!ConfigLayer.dot_dragged) {
                 return;
+            }
             /*
             * 新しい座標を決定
              */
-            Dot update_dot;
-            if(gridLayer.isEnableComplete()) {
-                update_dot = new Dot((int)event.getX(), (int)event.getY(), gridLayer.getInterval());
-            }else{
-                update_dot = new Dot((int)event.getX(), (int)event.getY());
-            }
+            Dot update_dot = new Dot(Geometry.EventDotToGridDot(event.getX(), gridLayer.getInterval()), Geometry.EventDotToGridDot(event.getY(), gridLayer.getInterval()));
 
             //現在のドットをレイヤーから消す（消しゴム）
-            selecting_dot.Erase(front);
+            selecting_dot.Erase(front, gridLayer.getInterval());
 
             //レイヤーデータ上で、現在地のデータを移動先の座標に変更
             CurrentLayerData.MoveDot(selecting_dot, update_dot);
@@ -222,8 +220,8 @@ public class SystemLayers {
         front.getCanvas().setOnMousePressed(event -> {
             if(selecting_dot == null)
                 return;
-            if(Math.abs(selecting_dot.getX() - event.getX()) < 5){
-                if(Math.abs(selecting_dot.getY() - event.getY()) < 5) {
+            if(abs_double((double)selecting_dot.getX(), (event.getX() / (double)gridLayer.getInterval())) <= 0.5){
+                if(abs_double((double)selecting_dot.getY(), (event.getY() / (double)gridLayer.getInterval())) <= 0.5) {
                     ConfigLayer.dot_dragged = true;
                 }
             }
@@ -237,6 +235,10 @@ public class SystemLayers {
         choose.setDisable(true);
     }
 
+    private double abs_double(double val1, double val2){
+        return Math.abs(val1 - val2);
+    }
+
     private void ConfigCreateLLayer(FrontDotLayer front, LinesLayer lines, GridLayer gridLayer, LayersTree layersTree){
         SettingAnchor(front);
 
@@ -248,8 +250,8 @@ public class SystemLayers {
          */
         choose.setOnAction(event -> {
             for(final Dot p : CurrentLayerData.getDotSet()){
-                if(Math.abs(p.getX() - x) < 5){
-                    if(Math.abs(p.getY() - y) < 5){
+                if(abs_double((double)p.getX(), (double)x / (double)gridLayer.getInterval()) <= 0.5){
+                    if(abs_double((double)p.getY(), (double)y / (double)gridLayer.getInterval()) <= 0.5){
                         p.Select();
                         selecting_dot = p;
                         selecting_dot.Select();
@@ -297,20 +299,17 @@ public class SystemLayers {
         });
 
         front.getCanvas().setOnMouseDragged(event -> {
-            if(!ConfigLayer.dot_dragged)
+            if(!ConfigLayer.dot_dragged) {
                 return;
+            }
+
             /*
             * 新しい座標を決定
              */
-            Dot update_dot;
-            if(gridLayer.isEnableComplete()) {
-                update_dot = new Dot((int)event.getX(), (int)event.getY(), gridLayer.getInterval());
-            }else{
-                update_dot = new Dot((int)event.getX(), (int)event.getY());
-            }
+            Dot update_dot = new Dot((int)event.getX(), (int)event.getY(), gridLayer.getInterval());
 
             //現在のドットをレイヤーから消す（消しゴム）
-            selecting_dot.Erase(front);
+            selecting_dot.Erase(front, gridLayer.getInterval());
 
             for(Polygon polygon : CurrentLayerData.getPolygons()){
                 polygon.MoveDot(selecting_dot, update_dot);
@@ -331,7 +330,7 @@ public class SystemLayers {
         front.getCanvas().setOnMousePressed(event -> {
 
             for(Polygon polygon : CurrentLayerData.getPolygons()){
-                if(polygon.isOverlaps(new Point2i((int)event.getX(), (int)event.getY())) != null){
+                if(polygon.isOverlaps(new Point2i((int)event.getX(), (int)event.getY()).EventDotToGridDot(gridLayer.getInterval())) != null){
                     ConfigLayer.dot_dragged = true;
                     break;
                 }
@@ -359,8 +358,8 @@ public class SystemLayers {
          */
         cat_dot.setOnAction(event -> {
             for(final Dot p : CurrentLayerData.getDotSet()){
-                if(Math.abs(p.getX() - x) < 5){
-                    if(Math.abs(p.getY() - y) < 5){
+                if(abs_double((double)p.getX(), (double)x / (double)gridLayer.getInterval()) <= 0.5){
+                    if(abs_double((double)p.getY(), (double)y / (double)gridLayer.getInterval()) <= 0.5){
                         if(!p.isSelected()){
                             CurrentLayerData.connect(selecting_dot, p).Draw(lines, 0.5, Color.BLACK);
                             selecting_dot.UnSelect();
@@ -387,7 +386,7 @@ public class SystemLayers {
          */
         remove_dot.setOnAction(event -> {
 
-            selecting_dot.Erase(front);
+            selecting_dot.Erase(front, gridLayer.getInterval());
             CurrentLayerData.RemoveDot(selecting_dot);
             lines.getGraphicsContext().clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
             CurrentLayerData.DrawAllLines(lines);
@@ -411,7 +410,7 @@ public class SystemLayers {
             }
 
             //現在のドットをレイヤーから消す（消しゴム）
-            selecting_dot.Erase(front);
+            selecting_dot.Erase(front, gridLayer.getInterval());
 
             //レイヤーデータ上で、現在地のデータを移動先の座標に変更
             CurrentLayerData.MoveDot(selecting_dot, update_dot);
@@ -446,8 +445,8 @@ public class SystemLayers {
             for(Dot p : CurrentLayerData.getDotSet()){
                 if(p.isSelected())
                     continue;
-                if(Math.abs(p.getX() - event.getX()) < 5){
-                    if(Math.abs(p.getY() - event.getY()) < 5){
+                if(abs_double((double)p.getX(), (event.getX() / (double)gridLayer.getInterval())) <= 0.5){
+                    if(abs_double((double)p.getY(), (event.getY() / (double)gridLayer.getInterval())) <= 0.5){
                         cat_dot.setDisable(false);
                         p.Draw(front, Color.RED, gridLayer.getInterval());
                         break;
@@ -477,7 +476,7 @@ public class SystemLayers {
             }
 
             //現在のドットをレイヤーから消す（消しゴム）
-            selecting_dot.Erase(front);
+            selecting_dot.Erase(front, gridLayer.getInterval());
 
             //レイヤーデータ上で、現在地のデータを移動先の座標に変更
             CurrentLayerData.MoveDot(selecting_dot, update_dot);

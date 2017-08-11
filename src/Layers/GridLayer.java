@@ -61,7 +61,6 @@ public class GridLayer extends Layer {
             this.graphicsContext.strokeLine(0, i, WINDOW_WIDTH, i);
         }
 
-
         drawFrame();
     }
 

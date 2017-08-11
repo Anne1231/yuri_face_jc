@@ -45,4 +45,7 @@ public class Layer {
 
     public void scroll_handler(ScrollEvent event){}
 
+    public void clear(){
+        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
 }

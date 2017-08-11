@@ -1,5 +1,7 @@
 package UI;
 
+import backend.utility.Geometry;
+
 /**
  * Created by Akihiro on 2017/02/26.
  */
@@ -43,5 +45,11 @@ public class Point2i {
 
     public double distance(Point2i p){
         return Math.sqrt(Math.pow(this.x - p.getX(), 2) + Math.pow(this.y - p.getY(), 2));
+    }
+
+    public Point2i EventDotToGridDot(int interval){
+        x = Geometry.EventDotToGridDot(x, interval);
+        y = Geometry.EventDotToGridDot(y, interval);
+        return this;
     }
 }
