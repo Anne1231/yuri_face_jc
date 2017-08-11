@@ -1,6 +1,8 @@
 package UI;
 
 import Layers.SystemLayers;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Orientation;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -20,14 +22,19 @@ public class MainView {
         AnchorPane.setLeftAnchor(h_scroll_bar, UIValues.LAYER_LIST_WIDTH + UIValues.LIST_TO_CANVAS_WIDTH);
         AnchorPane.setBottomAnchor(h_scroll_bar, UIValues.FOOTER_HEIGHT);
 
-        v_scroll_bar.setPrefSize(UIValues.LAYER_HEIGHT, 6);
-        AnchorPane.setLeftAnchor(v_scroll_bar, UIValues.LAYER_LIST_WIDTH + UIValues.LIST_TO_CANVAS_WIDTH + UIValues.LAYER_WIDTH - 470);
-        AnchorPane.setTopAnchor(v_scroll_bar, (UIValues.LAYER_HEIGHT / 2) + 25);
-        v_scroll_bar.setRotate(90);
+        v_scroll_bar.setPrefSize(UIValues.LAYER_HEIGHT, UIValues.LAYER_HEIGHT);
+        v_scroll_bar.setMaxWidth(6.0);
+        AnchorPane.setLeftAnchor(v_scroll_bar, UIValues.LAYER_LIST_WIDTH + UIValues.LIST_TO_CANVAS_WIDTH + UIValues.LAYER_WIDTH);
+        AnchorPane.setTopAnchor(v_scroll_bar, 32.0);
+        v_scroll_bar.setOrientation(Orientation.VERTICAL);
+
+        v_scroll_bar.valueProperty().addListener(((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
+           System.out.println(old_val + ":" + new_val);
+        }));
 
     }
 
-    public SystemLayers getSystemLayers() {
+    public SystemLayers getSystemLayers(){
         return system_layers;
     }
 

@@ -93,11 +93,9 @@ public class Main extends Application {
         root.getChildren().addAll(
                 menubar,
                 tabs,
-                backGroundImageUI.getRoot(),
-                referenceImagesUI.getTreeView(),
-                referenceImagesUI.getPreviewBox(),
-                referenceImagesUI.getPickedColorUI()
+                backGroundImageUI.getRoot()
         );
+        referenceImagesUI.registerToRoot(root);
         main_view.registerToRoot(root);
 
         //referenceImageUIのアンカーペイン上の位置を設定

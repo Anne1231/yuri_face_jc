@@ -26,7 +26,7 @@ public class ReferenceImagesUI extends LayersTree {
     public ReferenceImagesUI(String tree_name, SystemLayers systemLayers, Stage stage){
         super(tree_name);
 
-        pickedColorUI = new PickedColorUI(LAYER_LIST_WIDTH + LAYER_WIDTH + 20, LAYER_LIST_HEIGHT + 80);
+        pickedColorUI = new PickedColorUI(LAYER_LIST_WIDTH + LAYER_WIDTH + 30, LAYER_LIST_HEIGHT + 80);
 
         ContextMenu popup_menu_4_depth1 = new ContextMenu();
         MenuItem preview_all_menu  = new MenuItem("全体をプレビュー");
@@ -267,7 +267,7 @@ public class ReferenceImagesUI extends LayersTree {
     }
 
     public void SettingAnchor(){
-        AnchorPane.setLeftAnchor(preview, LAYER_LIST_WIDTH + LAYER_WIDTH + 20);
+        AnchorPane.setLeftAnchor(preview, LAYER_LIST_WIDTH + LAYER_WIDTH + 30);
         AnchorPane.setTopAnchor(preview, LAYER_LIST_HEIGHT + 50);
     }
 
@@ -337,4 +337,13 @@ public class ReferenceImagesUI extends LayersTree {
             );
         }
     }
+
+    void registerToRoot(AnchorPane root){
+        root.getChildren().addAll(
+                treeView,
+                preview,
+                pickedColorUI
+        );
+    }
+
 }
