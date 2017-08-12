@@ -5,8 +5,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class MainView {
@@ -32,8 +34,13 @@ public class MainView {
         AnchorPane.setTopAnchor(v_scroll_bar, 32.0);
         v_scroll_bar.setOrientation(Orientation.VERTICAL);
 
+        h_scroll_bar.valueProperty().addListener(((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
+            main_view_begin.x = new_val.intValue();
+            lookAt(main_view_begin.x, main_view_begin.y);
+        }));
         v_scroll_bar.valueProperty().addListener(((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
-           System.out.println(old_val + ":" + new_val);
+            main_view_begin.y = new_val.intValue();
+            lookAt(main_view_begin.x, main_view_begin.y);
         }));
 
     }
@@ -63,11 +70,28 @@ public class MainView {
     }
 
     public void lookAt(int x, int y){
+
+        /*
+        * クリア
+         */
+        system_layers.getFront().clear();
+        system_layers.getLines().clear();
+
         int grid_interval = system_layers.getGrid().getInterval();
         int end_x = grid_interval + x, end_y = grid_interval + y;
 
+        /*
+        * 描画
+         */
         HashSet<Dot> data_set = Main.CurrentLayerData.getDotSet();
         data_set.stream().filter(dot -> dot.x >= x && dot.x <= end_x && dot.y >= y && dot.y <= end_y).forEach(system_layers.getFront()::putOneDot);
+        ArrayList<Line> lines = Main.CurrentLayerData.getLineList();
+        lines.stream().filter(line -> {
+            Point2i dot1 = line.getBegin(), dot2 = line.getEnd();
+            return (dot1.x >= x && dot1.x <= end_x && dot1.y >= y && dot1.y <= end_y) || (dot2.x >= x && dot2.x <= end_x && dot2.y >= y && dot2.y <= end_y);
+        }).forEach(line -> {
+            line.Draw(system_layers.getLines(), 0.5, Color.BLACK);
+        });
     }
 
     public Point2i getMainViewBegin() {

@@ -3,6 +3,8 @@ package UI;
 import Layers.Layer;
 import javafx.scene.paint.Color;
 
+import java.awt.*;
+
 /**
  * Created by Akihiro on 2017/03/03.
  */
@@ -17,10 +19,16 @@ public class Line {
 
     public void Draw(Layer layer, double width, Color color){
         int interval = Main.main_view.getSystemLayers().getGrid().getInterval();
+        Point2i offset = Main.main_view.getMainViewBegin();
 
         layer.getGraphicsContext().setLineWidth(width);
         layer.getGraphicsContext().setStroke(color);
-        layer.getGraphicsContext().strokeLine(begin.getX() * interval, begin.getY() * interval, end.getX() * interval , end.getY() * interval);
+        layer.getGraphicsContext().strokeLine(
+                (begin.getX() - offset.x) * interval,
+                (begin.getY() - offset.y) * interval,
+                (end.getX() - offset.x) * interval,
+                (end.getY() - offset.y) * interval
+        );
     }
 
     public boolean contains(Point2i p){

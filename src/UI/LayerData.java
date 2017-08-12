@@ -106,12 +106,20 @@ public class LayerData {
 
     public void AllDraw4PR(Layer front, Layer lines){
         line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
-        dot_set.forEach(dot -> dot.Draw(front, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval()));
+        dot_set.forEach(dot -> dot.drawOffset(front, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval(), Main.main_view.getMainViewBegin()));
+
+        int grid_interval = Main.main_view.getSystemLayers().getGrid().getInterval();
+        int begin_x = Main.main_view.getMainViewBegin().x, begin_y = Main.main_view.getMainViewBegin().y;
+        int end_x = (int)(grid_interval / UIValues.LAYER_WIDTH) + begin_x, end_y = (int)(grid_interval / UIValues.LAYER_WIDTH) + begin_y;
+
+        HashSet<Dot> data_set = Main.CurrentLayerData.getDotSet();
+        data_set.stream().filter(dot -> dot.x >= begin_x && dot.x <= end_x && dot.y >= begin_y && dot.y <= end_y).forEach(Main.main_view.getSystemLayers().getFront()::putOneDot);
+
     }
 
     public void AllDraw4N(Layer front, Layer lines){
         line_list.forEach(line -> line.Draw(lines, 0.5, Color.BLACK));
-        dot_set.forEach(dot -> dot.Draw(front, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval()));
+        dot_set.forEach(dot -> dot.drawOffset(front, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval(), Main.main_view.getMainViewBegin()));
 
         polygons.forEach(polygon -> {
             for(int i = 0;i < polygon.size();i++){

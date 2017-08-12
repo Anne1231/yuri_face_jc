@@ -93,7 +93,7 @@ public class FrontDotLayer extends Layer {
         Dot dot = new Dot(begin_point.getX() + (x / gridLayer.getInterval()), begin_point.getY() + (y / gridLayer.getInterval()));
 
 
-        dot.Draw(this, Color.BLACK, gridLayer.getInterval());
+        dot.drawOffset(this, Color.BLACK, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
         CurrentLayerData.AddDot(dot);
 
         System.out.println("came");
@@ -103,7 +103,7 @@ public class FrontDotLayer extends Layer {
 
     public void putOneDot(Dot dot){
 
-        dot.Draw(this, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval());
+        dot.drawOffset(this, Color.BLACK, Main.main_view.getSystemLayers().getGrid().getInterval(), Main.main_view.getMainViewBegin());
         CurrentLayerData.AddDot(dot);
 
         setLast(dot);

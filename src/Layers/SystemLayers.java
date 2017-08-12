@@ -131,7 +131,7 @@ public class SystemLayers {
                         p.Select();
                         selecting_dot = p;
                         selecting_dot.Select();
-                        selecting_dot.Draw(front, Color.RED, gridLayer.getInterval());
+                        selecting_dot.drawOffset(front, Color.RED, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
                         lines.beForward();
                         break;
                     }
@@ -169,21 +169,26 @@ public class SystemLayers {
                 return;
             }
             for(final Dot p : CurrentLayerData.getDotSet()){
-                if(p.isSelected())
+                if(p.isSelected()) {
                     continue;
+                }
                 if(abs_double((double)p.getX(), (event.getX() / (double)gridLayer.getInterval())) <= 0.5){
                     if(abs_double((double)p.getY(), (event.getY() / (double)gridLayer.getInterval())) <= 0.5){
                         choose.setDisable(false);
                         selecting_dot = p;
-                        p.Draw(front, Color.RED, gridLayer.getInterval());
+                        p.drawOffset(front, Color.RED, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
                         break;
                     }else{
                         choose.setDisable(true);
-                        p.Draw(front, Color.BLACK, gridLayer.getInterval());
+                        p.drawOffset(front, Color.BLACK, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
                     }
                 }else{
                     choose.setDisable(true);
-                    p.Draw(front, Color.BLACK, gridLayer.getInterval());
+
+                    /*
+                    * ↓この処理が重い
+                     */
+                    p.drawOffset(front, Color.BLACK, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
                 }
             }
 
@@ -214,12 +219,13 @@ public class SystemLayers {
             //消されていたドットを更新した座標に再描画
             selecting_dot = update_dot;
             front.setLast(update_dot);
-            selecting_dot.Draw(front, Color.RED, gridLayer.getInterval());
+            selecting_dot.drawOffset(front, Color.RED, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
         });
 
         front.getCanvas().setOnMousePressed(event -> {
-            if(selecting_dot == null)
+            if(selecting_dot == null) {
                 return;
+            }
             if(abs_double((double)selecting_dot.getX(), (event.getX() / (double)gridLayer.getInterval())) <= 0.5){
                 if(abs_double((double)selecting_dot.getY(), (event.getY() / (double)gridLayer.getInterval())) <= 0.5) {
                     ConfigLayer.dot_dragged = true;
@@ -255,7 +261,7 @@ public class SystemLayers {
                         p.Select();
                         selecting_dot = p;
                         selecting_dot.Select();
-                        selecting_dot.Draw(front, Color.RED, gridLayer.getInterval());
+                        selecting_dot.drawOffset(front, Color.RED, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
                         lines.beForward();
                         break;
                     }
@@ -324,7 +330,7 @@ public class SystemLayers {
 
             //消されていたドットを更新した座標に再描画
             selecting_dot = update_dot;
-            selecting_dot.Draw(front, Color.RED, gridLayer.getInterval());
+            selecting_dot.drawOffset(front, Color.RED, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
         });
 
         front.getCanvas().setOnMousePressed(event -> {
@@ -422,7 +428,7 @@ public class SystemLayers {
             CurrentLayerData.DrawAllLines(lines);
 
             //消されていたドットを更新した座標に再描画
-            update_dot.Draw(front, Color.RED, gridLayer.getInterval());
+            update_dot.drawOffset(front, Color.RED, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
 
         });
 
@@ -448,14 +454,14 @@ public class SystemLayers {
                 if(abs_double((double)p.getX(), (event.getX() / (double)gridLayer.getInterval())) <= 0.5){
                     if(abs_double((double)p.getY(), (event.getY() / (double)gridLayer.getInterval())) <= 0.5){
                         cat_dot.setDisable(false);
-                        p.Draw(front, Color.RED, gridLayer.getInterval());
+                        p.drawOffset(front, Color.RED, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
                         break;
                     }else{
-                        p.Draw(front, Color.BLACK, gridLayer.getInterval());
+                        p.drawOffset(front, Color.BLACK, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
                         cat_dot.setDisable(true);
                     }
                 }else{
-                    p.Draw(front, Color.BLACK, gridLayer.getInterval());
+                    p.drawOffset(front, Color.BLACK, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
                     cat_dot.setDisable(true);
                 }
             }
@@ -490,13 +496,16 @@ public class SystemLayers {
             //消されていたドットを更新した座標に再描画
             selecting_dot = update_dot;
             selecting_dot.Select();
-            update_dot.Draw(front, Color.RED, gridLayer.getInterval());
+            update_dot.drawOffset(front, Color.RED, gridLayer.getInterval(), Main.main_view.getMainViewBegin());
         });
 
         lines.getCanvas().setOnMousePressed(event -> {
-            if(Math.abs(selecting_dot.getX() - event.getX()) < 5){
-                if(Math.abs(selecting_dot.getY() - event.getY()) < 5) {
-                    dot_dragged = true;
+            if(selecting_dot == null) {
+                return;
+            }
+            if(abs_double((double)selecting_dot.getX(), (event.getX() / (double)gridLayer.getInterval())) <= 0.5){
+                if(abs_double((double)selecting_dot.getY(), (event.getY() / (double)gridLayer.getInterval())) <= 0.5) {
+                    ConfigLayer.dot_dragged = true;
                 }
             }
         });
