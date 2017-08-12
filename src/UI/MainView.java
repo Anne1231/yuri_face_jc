@@ -94,7 +94,71 @@ public class MainView {
         });
     }
 
+    public void lookAt(){
+        lookAt(main_view_begin.x, main_view_begin.y);
+    }
+
     public Point2i getMainViewBegin() {
         return main_view_begin;
+    }
+
+    public void scroll(int delta_x, int delta_y){
+        /*
+        * main_view_begin.y += check_y(-delta_y);
+        * この処理は、マウスホイールの+-がこのプログラムの+-と逆であるから減算を使っている
+         */
+        main_view_begin.x += check_x(delta_x);
+        main_view_begin.y += check_y(-delta_y);
+        update_scrollbar();
+    }
+
+    private void update_scrollbar(){
+        h_scroll_bar.setValue(main_view_begin.x);
+        v_scroll_bar.setValue(main_view_begin.y);
+    }
+
+    private int check_x(int delta_x){
+        if(delta_x < 0){
+            if(main_view_begin.x <= 0){
+                return 0;
+            }else if(main_view_begin.x <= (-delta_x)){
+                return -main_view_begin.x;
+            }else{
+                return delta_x;
+            }
+        }else if(delta_x > 0){
+            if(main_view_begin.x >= h_scroll_bar.getMax()){
+                return 0;
+            }else if((int)h_scroll_bar.getMax() - main_view_begin.x <= delta_x){
+                return (int)h_scroll_bar.getMax() - main_view_begin.x;
+            }else{
+                return delta_x;
+            }
+        }
+
+        return delta_x;
+    }
+
+    private int check_y(int delta_y){
+        if(delta_y < 0){
+            if(main_view_begin.y <= 0){
+                return 0;
+            }else if(main_view_begin.y <= (-delta_y)){
+                return -main_view_begin.y;
+            }else{
+                return delta_y;
+            }
+        }else if(delta_y > 0){
+            if(main_view_begin.y >= h_scroll_bar.getMax()){
+                return 0;
+            }else if((int)h_scroll_bar.getMax() - main_view_begin.y <= delta_y){
+                return (int)h_scroll_bar.getMax() - main_view_begin.y;
+            }else{
+                return delta_y;
+            }
+
+        }
+
+        return delta_y;
     }
 }

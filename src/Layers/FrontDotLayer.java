@@ -59,6 +59,9 @@ public class FrontDotLayer extends Layer {
             grid_layer.editInterval(event.getDeltaY() > 0 ? UIValues.EXPANSION_PER_ONE_SCROLL : -UIValues.EXPANSION_PER_ONE_SCROLL);
             grid_layer.redrawGrid();
             CurrentLayerData.AllDraw4PR(this, Main.main_view.getSystemLayers().getLines());
+        }else{
+            Main.main_view.scroll((int)event.getDeltaX() / 4, (int)event.getDeltaY() / 10);
+            Main.main_view.lookAt();
         }
     }
 
